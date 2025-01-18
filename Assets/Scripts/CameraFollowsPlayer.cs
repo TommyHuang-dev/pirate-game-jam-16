@@ -12,6 +12,7 @@ public class FollowPlayer : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // Track character movement, with an offset.
-        transform.position = character.transform.position + new Vector3(0, 1, -5);
+        //transform.position = character.transform.position + new Vector3(0, 1, -5);
+        transform.position = character.transform.position + new Vector3(0, 0, -100);
     }
 }
