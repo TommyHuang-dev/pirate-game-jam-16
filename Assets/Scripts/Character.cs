@@ -30,9 +30,12 @@ public class Character : MonoBehaviour {
     private static float globalGravity = -9.81f;
     private float gravityScale = 0.0f;  // default to no gravity since we are "suspended" in fluid
 
-    public Vector2 movement;
     public Vector2 veldebug;
 
+    #region Dash Attack
+
+
+    #endregion
 
     // Called before first frame update
     private void Start() {
@@ -110,13 +113,13 @@ public class Character : MonoBehaviour {
 
         //// DEBUG
         //print(targetVelocity + " t");
-        print(_rb.linearVelocity + " v");
+        //print(_rb.linearVelocity + " v");
         //print(hMovement + " m");
         //print(hSpeedDiff + " d");
         //print(hAccelRate + " a");
         //// For animator on movement update
         //_animator.SetFloat("speed", _rb.linearVelocity.magnitude);
-        veldebug = _rb.linearVelocity;
+        //veldebug = _rb.linearVelocity;
     }
 
     //#region Movement
