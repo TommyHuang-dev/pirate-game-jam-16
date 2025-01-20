@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.TimeZoneInfo;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour {
     private Animator _animator;
@@ -20,7 +22,7 @@ public class Character : MonoBehaviour {
     private float gravityScale = 0.0f;  // default to no gravity since we are "suspended" in fluid
     //public Vector2 veldebug;
 
-    private enum PlayerState
+    public enum PlayerState
     {
         Stopped,
         Moving,  // still moving but actively accelerating
@@ -28,7 +30,7 @@ public class Character : MonoBehaviour {
         Drifting, // still moving but not actively accelerating
         NoControl // in this state the PC can't be controlled
     }
-    [SerializeField] private PlayerState currentState = PlayerState.Stopped;
+    [SerializeField] public PlayerState currentState = PlayerState.Stopped;
 
     private enum DashState
     {
@@ -67,6 +69,10 @@ public class Character : MonoBehaviour {
 
         // Turn off regular gravity so we can use a custom implementation
         _rb.gravityScale = 0;
+
+        // Test: Player entrance
+        currentState = PlayerState.NoControl;
+        StartCoroutine(EnterScene());
     }
     // Called once per frame
     private void Update() {
@@ -206,6 +212,7 @@ public class Character : MonoBehaviour {
 
     private void calcPlayerState()
     {
+        if (currentState == PlayerState.NoControl) { return; }
         if (Mathf.Abs(Input.GetAxis("Horizontal")) < 0.01f && Mathf.Abs(Input.GetAxis("Vertical")) < 0.01f)
         {
             if (_rb.linearVelocity.magnitude < 0.01f)
@@ -223,4 +230,14 @@ public class Character : MonoBehaviour {
         }
     }
 
+    private IEnumerator EnterScene() {
+        // Play animation, then wait 2 seconds and let the player play.
+        var actualMaxMoveSpeed = maxMoveSpeed;
+        maxMoveSpeed = 6.0f; // A slightly faster fall.
+        currentState = PlayerState.NoControl;
+        _rb.AddForce(-10.0f * Vector2.up, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(1.3f);
+        currentState = PlayerState.Stopped;
+        maxMoveSpeed = actualMaxMoveSpeed;
+    }
 }
