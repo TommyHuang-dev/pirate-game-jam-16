@@ -1,4 +1,0 @@
-repository "pirate-game-jam-16@nadnerbb@cloud"
-  path "/"
-    br "/main"
-    co "/main"
