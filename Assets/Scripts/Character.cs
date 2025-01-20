@@ -70,7 +70,7 @@ public class Character : MonoBehaviour {
         // Turn off regular gravity so we can use a custom implementation
         _rb.gravityScale = 0;
 
-        // Test: Player entrance
+        // Player entrance
         currentState = PlayerState.NoControl;
         StartCoroutine(EnterScene());
     }

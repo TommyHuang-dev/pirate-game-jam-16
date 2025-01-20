@@ -16,7 +16,6 @@ public class LevelLoader : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("collision!");
         if (other.tag == "RoomExit") { // TODO: Check if room exit is open.
             //SceneManager.LoadScene("Placeholder1"); // TODO: Should be able to load one of the two next scenes.
             //Debug.Log(SceneManager.GetActiveScene().name); 
