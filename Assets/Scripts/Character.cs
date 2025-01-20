@@ -20,6 +20,7 @@ public class Character : MonoBehaviour {
 
     private static float globalGravity = -9.81f;
     private float gravityScale = 0.0f;  // default to no gravity since we are "suspended" in fluid
+
     //public Vector2 veldebug;
 
     public enum PlayerState
@@ -56,6 +57,9 @@ public class Character : MonoBehaviour {
     public Vector2 dashDrift = new Vector2(0.0f, 0.4f); // removes speed cap to allow for gradual slow down
     private Vector2 dashVector = new Vector2(0, 0);
     #endregion
+
+    [Header("Navigation")]
+    [SerializeField] private LevelLoader _levelLoader;
 
     // Called before first frame update
     private void Start() {
@@ -230,6 +234,17 @@ public class Character : MonoBehaviour {
         }
     }
 
+    #region Collision Handling
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("RoomExit")) { // TODO: Check if room exit is open.
+            //Debug.Log(SceneManager.GetActiveScene().name); 
+            _levelLoader.LoadNextLevel();
+            // Probably useful info: SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1) can load next room in sequence, but that's not really what we want? 
+            // Instead, each capillary should hold an int for the room type we'd like to go to. Leaving this here for now tho
+        }
+    }
+    #endregion
+    
     private IEnumerator EnterScene() {
         // Play animation, then wait 2 seconds and let the player play.
         var actualMaxMoveSpeed = maxMoveSpeed;
