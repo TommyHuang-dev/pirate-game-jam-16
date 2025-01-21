@@ -104,9 +104,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMoveSpeed: 4
-  acceleration: 1
-  accelerationMaxSpeedInc: 6
-  deceleration: 4
+  acceleration: 22
+  accelerationMaxSpeedInc: 2
   friction: 0.8
   currentState: 0
   currentDashState: 0
