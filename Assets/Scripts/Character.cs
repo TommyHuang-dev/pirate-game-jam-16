@@ -237,10 +237,9 @@ public class Character : MonoBehaviour {
     #region Collision Handling
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("RoomExit")) { // TODO: Check if room exit is open.
-            //Debug.Log(SceneManager.GetActiveScene().name); 
-            _levelLoader.LoadNextLevel();
-            // Probably useful info: SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1) can load next room in sequence, but that's not really what we want? 
-            // Instead, each capillary should hold an int for the room type we'd like to go to. Leaving this here for now tho
+            var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
+            Debug.Log("Going to a " + capillary.queuedScene.ToString());
+            _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
         }
     }
     #endregion
