@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WBC-movement-horizontal-4xupscale_0: -6736856543269980224
+      WBC-movement-horizontal-4xupscale_1: -8616404868679717692
+      WBC-movement-horizontal-4xupscale_2: -4980554718917418479
+      WBC-movement-horizontal-4xupscale_3: -2668123762553946134
+      WBC-movement-horizontal-4xupscale_4: 493138213864907190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
