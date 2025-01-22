@@ -13,9 +13,9 @@ public class Character : MonoBehaviour {
 
     [Header("Movement Variables")]
     public float maxMoveSpeed = 4.0f;
-    public float acceleration = 1.0f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
+    public float acceleration = 2.5f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
     public float accelerationMaxSpeedInc = 2.0f; // when moving the player, a higher acceleration value is used
-    public float friction = 0.8f; // how fast the player slows down naturally if they stop accelerating
+    public float friction = 1.5f; // how fast the player slows down naturally if they stop accelerating
 
     private static float globalGravity = -9.81f;
     private float gravityScale = 0.0f;  // default to no gravity since we are "suspended" in fluid
@@ -89,7 +89,7 @@ public class Character : MonoBehaviour {
         //float hSpeedDiff = targetHSpeed - _rb.linearVelocity.x;
 
         #region movement
-        if (currentState != PlayerState.NoControl && currentDashState != DashState.Dashing) {
+        if (currentState == PlayerState.Moving && currentDashState != DashState.Dashing) {
             // get values from keeb
             var targetVelocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             targetVelocity.Normalize();
@@ -101,7 +101,6 @@ public class Character : MonoBehaviour {
 
             var debugTargetVelocity = new Vector3(targetVelocity.x, targetVelocity.y, 0);
             Debug.DrawLine(transform.position, transform.position + debugTargetVelocity, Color.green);
-            Debug.Log("TARGET VELOCITY: " + debugTargetVelocity);
         }
 
         // clamp velocity to max
@@ -248,7 +247,7 @@ public class Character : MonoBehaviour {
     private IEnumerator EnterScene() {
         // Play animation, then wait 2 seconds and let the player play.
         var actualMaxMoveSpeed = maxMoveSpeed;
-        maxMoveSpeed = 6.0f; // A slightly faster fall.
+        maxMoveSpeed = 6.5f; // A slightly faster fall.
         currentState = PlayerState.NoControl;
         _rb.AddForce(-10.0f * Vector2.up, ForceMode2D.Impulse);
         yield return new WaitForSeconds(1.3f);
