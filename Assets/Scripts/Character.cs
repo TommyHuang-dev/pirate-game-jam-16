@@ -17,9 +17,6 @@ public class Character : MonoBehaviour {
     public float accelerationMaxSpeedInc = 2.0f; // when moving the player, a higher acceleration value is used
     public float friction = 1.5f; // how fast the player slows down naturally if they stop accelerating
 
-    private static float globalGravity = -9.81f;
-    private float gravityScale = 0.0f;  // default to no gravity since we are "suspended" in fluid
-
     //public Vector2 veldebug;
 
     public enum PlayerState
@@ -58,13 +55,15 @@ public class Character : MonoBehaviour {
     #endregion
 
     [Header("Navigation")]
-    [SerializeField] private LevelLoader _levelLoader;
+    private LevelLoader _levelLoader;
 
     // Called before first frame update
     private void Start() {
         _rb = this.GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<Animator>();
         _collider = GetComponent<Collider2D>();
+        _levelLoader = FindFirstObjectByType<LevelLoader>();
+
         if (camera == null)
         {
             camera = Camera.main; // Automatically assign the main camera if not set
