@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - RoomExit
+  - LevelLoader
   layers:
   - Default
   - TransparentFX

@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 316713433}
   m_Layer: 5
   m_Name: LevelLoader
-  m_TagString: Untagged
+  m_TagString: LevelLoader
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,10 +461,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1089277660445042813, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
-      propertyPath: _levelLoader
-      value: 
-      objectReference: {fileID: 316713433}
     - target: {fileID: 3510197382726775008, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
       propertyPath: m_Name
       value: Basic W Blood Cell

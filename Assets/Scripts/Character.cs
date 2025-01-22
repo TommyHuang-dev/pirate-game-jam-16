@@ -13,13 +13,9 @@ public class Character : MonoBehaviour {
 
     [Header("Movement Variables")]
     public float maxMoveSpeed = 4.0f;
-    public float acceleration = 1.0f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
-    public float accelerationMaxSpeedInc = 6.0f; // when moving the player, a higher acceleration value is used
-    public float deceleration = 4.0f; // speed at which the player can actively stop and change direction. Currently does nothing.
-    public float friction = 0.8f; // how fast the player slows down naturally if they stop accelerating
-
-    private static float globalGravity = -9.81f;
-    private float gravityScale = 0.0f;  // default to no gravity since we are "suspended" in fluid
+    public float acceleration = 2.5f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
+    public float accelerationMaxSpeedInc = 2.0f; // when moving the player, a higher acceleration value is used
+    public float friction = 1.5f; // how fast the player slows down naturally if they stop accelerating
 
     //public Vector2 veldebug;
 
@@ -59,13 +55,15 @@ public class Character : MonoBehaviour {
     #endregion
 
     [Header("Navigation")]
-    [SerializeField] private LevelLoader _levelLoader;
+    private LevelLoader _levelLoader;
 
     // Called before first frame update
     private void Start() {
         _rb = this.GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<Animator>();
         _collider = GetComponent<Collider2D>();
+        _levelLoader = FindFirstObjectByType<LevelLoader>();
+
         if (camera == null)
         {
             camera = Camera.main; // Automatically assign the main camera if not set
@@ -85,42 +83,23 @@ public class Character : MonoBehaviour {
     private void FixedUpdate() {
         calcPlayerState();
 
-        // get values from keeb
-        var targetVelocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        targetVelocity.Normalize();
-        targetVelocity *= (maxMoveSpeed + accelerationMaxSpeedInc);
-        var targetVelocityLerp = Vector2.LerpUnclamped(_rb.linearVelocity, targetVelocity, acceleration);
-        var velocityDiff = targetVelocityLerp - _rb.linearVelocity;
-
         //targetHSpeed = Mathf.Lerp(_rb.linearVelocity.x, targetHSpeed, 1);
         //float hAccelRate = (Mathf.Abs(targetHSpeed) > 0.01f) ? runAcceleration : runDeceleration;
         //float hSpeedDiff = targetHSpeed - _rb.linearVelocity.x;
 
-        #region Friction
-        // if the player isn't actively accelerating, add friction
-        if (currentState == PlayerState.Stopped)
-        {
-            _rb.linearVelocity.Set(0, 0);
-        }
-        else if (currentState != PlayerState.Moving && currentDashState != DashState.Dashing) {
-            float frictionAmount = Mathf.Max(_rb.linearVelocity.magnitude * friction, friction);
-            if (frictionAmount * Time.fixedDeltaTime > _rb.linearVelocity.magnitude) {
-                _rb.linearVelocity.Set(0, 0);
-            }
-            var direction = _rb.linearVelocity;
-            direction.Normalize();
-            
-            _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
-        }
-        #endregion
         #region movement
-        if (currentState != PlayerState.NoControl && currentDashState != DashState.Dashing) {
-            var movement = velocityDiff * acceleration;
-            if (currentDashState == DashState.Charging) {
-                movement *= (1 - dashChargeSlow);
-            }
+        if (currentState == PlayerState.Moving && currentDashState != DashState.Dashing) {
+            // get values from keeb
+            var targetVelocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            targetVelocity.Normalize();
+            targetVelocity *= (maxMoveSpeed + accelerationMaxSpeedInc) * (currentDashState == DashState.Charging ? (1 - dashChargeSlow) : 1);
+            targetVelocity = Vector2.Lerp(_rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+
             //_rb.AddForce(movement, ForceMode2D.Force);
-            _rb.linearVelocity += movement * Time.fixedDeltaTime;
+            _rb.linearVelocity = targetVelocity;
+
+            var debugTargetVelocity = new Vector3(targetVelocity.x, targetVelocity.y, 0);
+            Debug.DrawLine(transform.position, transform.position + debugTargetVelocity, Color.green);
         }
 
         // clamp velocity to max
@@ -152,6 +131,26 @@ public class Character : MonoBehaviour {
             // TODO damage on enemy contact
         }
         #endregion
+
+        #region Friction
+        // if the player isn't actively accelerating, add friction
+        if (currentState == PlayerState.Stopped)
+        {
+            _rb.linearVelocity.Set(0, 0);
+        }
+        else if (currentState != PlayerState.Moving && currentDashState != DashState.Dashing)
+        {
+            float frictionAmount = Mathf.Max(_rb.linearVelocity.magnitude * friction, friction);
+            if (frictionAmount * Time.fixedDeltaTime > _rb.linearVelocity.magnitude)
+            {
+                _rb.linearVelocity.Set(0, 0);
+            }
+            var direction = _rb.linearVelocity;
+            direction.Normalize();
+
+            _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
+        }
+        #endregion
     }
 
     private void calcDashState()
@@ -160,7 +159,7 @@ public class Character : MonoBehaviour {
         if (currentDashState == DashState.None || currentDashState == DashState.Recovery)
         {
             dashCooldown.x -= Time.deltaTime;
-            if (Input.GetKey(KeyCode.Space) && dashCooldown.x <= 0)
+            if (currentState != PlayerState.NoControl && Input.GetKey(KeyCode.Space) && dashCooldown.x <= 0)
             {
                 dashCharge.x = 0.0f;
                 currentDashState = DashState.Charging;
@@ -228,7 +227,7 @@ public class Character : MonoBehaviour {
                 currentState = PlayerState.Drifting;
             }
         }
-        else if (currentState != PlayerState.NoControl)
+        else 
         {
             currentState = PlayerState.Moving;
         }
@@ -247,7 +246,7 @@ public class Character : MonoBehaviour {
     private IEnumerator EnterScene() {
         // Play animation, then wait 2 seconds and let the player play.
         var actualMaxMoveSpeed = maxMoveSpeed;
-        maxMoveSpeed = 6.0f; // A slightly faster fall.
+        maxMoveSpeed = 6.5f; // A slightly faster fall.
         currentState = PlayerState.NoControl;
         _rb.AddForce(-10.0f * Vector2.up, ForceMode2D.Impulse);
         yield return new WaitForSeconds(1.3f);
