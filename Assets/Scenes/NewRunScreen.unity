@@ -461,18 +461,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1089277660445042813, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
-      propertyPath: _levelLoader
-      value: 
-      objectReference: {fileID: 316713433}
-    - target: {fileID: 1089277660445042813, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
-      propertyPath: acceleration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1089277660445042813, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
-      propertyPath: accelerationMaxSpeedInc
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3510197382726775008, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
       propertyPath: m_Name
       value: Basic W Blood Cell
