@@ -1,13 +1,24 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
-{
+public class AudioManager : MonoBehaviour {
+    public class Song {
+        public List<AudioClip> clips;
+        public int BPM;
+
+        public Song(List<AudioClip> clips, int BPM) {
+            this.clips = clips;
+            this.BPM = BPM;
+        }
+    }
     public static AudioManager Instance; // Singleton audio manager, shared by all scripts
-    [SerializeField] private AudioSource audioSource, musicSource1, musicSource2;
+    [SerializeField] private AudioSource audioSource, musicSourceIntro1, musicSource1, musicSourceIntro2, musicSource2, musicSourceOutro;
 
     [Header("Scene Music")]
-    [SerializeField] private AudioClip[] sceneMusic;
+    [SerializeField] List<AudioClip> mainTheme, battle, evilBattle, boss, finalBoss;
+    private Song[] songs = new Song[5];
     [SerializeField] private float FadeTime;
     private bool isPlayingMusic1 = false;
 
@@ -21,52 +32,139 @@ public class AudioManager : MonoBehaviour
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start(){
+    void Start() {
+        // Gross lol
+        songs[0] = new Song(mainTheme, 84); songs[1] = new Song(battle, 136); songs[2] = new Song(evilBattle, 0);
+        songs[3] = new Song(boss, 0); songs[4] = new Song(finalBoss, 0);
         SwapTrack(0);
     }
 
     // Transition between two songs
-    public void SwapTrack(int songIdx) {
+    public void SwapTrack(int levelIndex) {
         StopAllCoroutines();
 
-        StartCoroutine(FadeCurrentMusic(sceneMusic[songIdx]));
+        int songIdx = GetSongIndex(levelIndex);
+        StartCoroutine(SwapAndFadeMusic(songIdx));
 
         isPlayingMusic1 = !isPlayingMusic1;
-
     }
     public void ReturnToDefault() {
         // SwapTrack(defaultAmbience);
     }
 
+    // Play win or loss music corresponding to current level.
+    public void PlayWinLoss(bool hasWon, int levelIndex) {
+        int songIdx = GetSongIndex(levelIndex);
+        Song curr_song = songs[songIdx];
+        Debug.Log("Play win " + hasWon + " curr song idx: " + songIdx);
+        if (curr_song.clips.Count <= 1) { return; }
 
+        //StopAllCoroutines();
+
+        // Calculate the duration of a bar in 4/4 - not planning on other time signatures.
+        double barDuration = (60d / curr_song.BPM * 4) * (4/4);
+        // This line works out how far you are through the current bar
+        double remainder;
+        if (isPlayingMusic1) {
+            remainder = ((double)musicSource1.timeSamples / musicSource1.clip.frequency) % (barDuration);
+        } else {
+            remainder = ((double)musicSource2.timeSamples / musicSource2.clip.frequency) % (barDuration);
+        }
+                            
+        // This line works out when the next bar will occur
+        double nextBarTime = AudioSettings.dspTime + barDuration - remainder;
+        // Set the current Clip to end on the next bar
+        if (isPlayingMusic1) {
+            musicSource1.SetScheduledEndTime(nextBarTime);
+        } else {
+            musicSource2.SetScheduledEndTime(nextBarTime);
+        }
+
+        // Play the win/loss clip
+        if (hasWon) { 
+            musicSourceOutro.clip = curr_song.clips[(int)BattleSongParts.Win];
+        } else {
+            musicSourceOutro.clip = curr_song.clips[(int)BattleSongParts.Loss];
+        }
+        // Schedule an ending clip to start on the next bar
+        musicSourceOutro.PlayScheduled(nextBarTime);
+    }
+    private int GetSongIndex(int levelIndex) {
+        if (levelIndex == 2 || levelIndex == 3 || levelIndex == 5) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
     // discussions.unity.com/t/fade-out-audio-source/585912/5 may be helpful in the future
-    private IEnumerator FadeCurrentMusic(AudioClip newClip) {
+    private IEnumerator SwapAndFadeMusic(int songIdx) {
         float timeToFade = 1.0f;
         float timeElapsed = 0;
 
+        Debug.Log("songidx" + songIdx);
+        List<AudioClip> song = songs[songIdx].clips;
+        Debug.Log("Song at idx " + songIdx + " has " + song.Count + " parts.");
+
         if (isPlayingMusic1) {
-            musicSource2.clip = newClip;
-            musicSource2.Play();
+            // If this is a battle theme with multiple sections, play the intro and loop the main part.
+            if (song.Count > 1) {
+                Debug.Log("Playing " + songIdx);
+                // Most precise duration calculation possible.
+                double introDuration = ((double)song[0].samples / song[0].frequency);
+                double startTime = AudioSettings.dspTime + 0.2;
+                musicSourceIntro2.clip = song[0]; musicSource2.clip = song[1];
+                musicSource2.loop = true;
+
+                musicSourceIntro2.PlayScheduled(startTime);
+                musicSource2.PlayScheduled(startTime + introDuration);
+            } else { // Otherwise, just play the song.
+                musicSourceIntro2.clip = song[0];
+                musicSourceIntro2.Play();
+            }
 
             while (timeElapsed < timeToFade) {
-                musicSource2.volume = Mathf.Lerp(0, 1, timeElapsed /  timeToFade);
+                musicSource2.volume = Mathf.Lerp(0, 1, timeElapsed / timeToFade);
+                musicSourceIntro2.volume = Mathf.Lerp(0, 1, timeElapsed / timeToFade);
                 musicSource1.volume = Mathf.Lerp(1, 0, timeElapsed / timeToFade);
+                musicSourceIntro1.volume = Mathf.Lerp(1, 0, timeElapsed / timeToFade);
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
+            musicSourceIntro1.Stop();
             musicSource1.Stop();
         } else {
-            musicSource1.clip = newClip;
-            musicSource1.Play();
+            if (song.Count > 1) {
+                Debug.Log("Playing " + songIdx);
+                double introDuration = ((double)song[0].samples / song[0].frequency);
+                double startTime = AudioSettings.dspTime + 0.2;
+                musicSourceIntro1.clip = song[0]; musicSource1.clip = song[1];
+                musicSource1.loop = true;
+
+                musicSourceIntro1.PlayScheduled(startTime);
+                musicSource1.PlayScheduled(startTime + introDuration);
+            } else { // Otherwise, just play the song.
+                musicSource1.clip = song[0];
+                musicSource1.Play(); musicSource2.loop = false;
+            }
 
             while (timeElapsed < timeToFade) {
                 musicSource1.volume = Mathf.Lerp(0, 1, timeElapsed / timeToFade);
+                musicSourceIntro1.volume = Mathf.Lerp(0, 1, timeElapsed / timeToFade);
                 musicSource2.volume = Mathf.Lerp(1, 0, timeElapsed / timeToFade);
+                musicSourceIntro2.volume = Mathf.Lerp(1, 0, timeElapsed / timeToFade);
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
-            musicSource2.Stop();
+            musicSourceIntro2.Stop();
+            musicSource2.Stop(); musicSource2.loop = false;
         }
+    }
+
+    public enum BattleSongParts {
+        Intro,
+        Loop,
+        Win,
+        Loss,
     }
 }

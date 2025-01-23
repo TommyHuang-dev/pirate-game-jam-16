@@ -9,11 +9,16 @@ public class LevelLoader : MonoBehaviour
 
     public enum SceneType {
         MainMenu,
-        BasicEnemy=2, // Start from 2, new run room = 1.
+        NewRunRoom,
+        BasicEnemy,
         EliteEnemy,
         Event,
         Boss
-    } [SerializeField] private SceneType currentScene;
+    } [SerializeField] public SceneType currentScene;
+
+    private void Start() {
+        currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
+    }
 
     public void LoadNextLevel(SceneType nextType) {
         StartCoroutine(LoadLevel((int) nextType));
@@ -32,11 +37,6 @@ public class LevelLoader : MonoBehaviour
             Debug.Log("Current Room: " + PlayerPrefs.GetInt("currentRoomNumber", 0));
         }
          
-        //TODO: Make this an enum maybe
-        if (levelIndex == 2 || levelIndex == 3 || levelIndex == 5) {
-            AudioManager.Instance.SwapTrack(1);
-        } else {
-            AudioManager.Instance.SwapTrack(0);
-        }
+        AudioManager.Instance.SwapTrack(levelIndex);
     }
 }
