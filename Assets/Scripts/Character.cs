@@ -12,8 +12,8 @@ public class Character : MonoBehaviour {
     private Camera camera;
 
     [Header("Movement Variables")]
-    public float maxMoveSpeed = 4.0f;
-    public float acceleration = 2.5f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
+    public float maxMoveSpeed = 5.0f;
+    public float acceleration = 2f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
     public float accelerationMaxSpeedInc = 2.0f; // when moving the player, a higher acceleration value is used
     public float friction = 1.5f; // how fast the player slows down naturally if they stop accelerating
 
@@ -54,6 +54,16 @@ public class Character : MonoBehaviour {
     private Vector2 dashVector = new Vector2(0, 0);
     #endregion
 
+    [Header("Ranged Attack Variables")]
+    #region Ranged Attack
+    public GameObject projectile;
+    public float attackRate = 4.0f;
+    private float attackCooldown = 0; // remaining cooldown before next shot
+    public float attackDamage = 5.0f;
+    public float attackProjectileSpeed = 10.0f;
+    public float attackProjectileDuration = 1.5f;
+    #endregion
+
     [Header("Navigation")]
     private LevelLoader _levelLoader;
 
@@ -78,9 +88,27 @@ public class Character : MonoBehaviour {
     }
     // Called once per frame
     private void Update() {
-        calcDashState();
+        
     }
     private void FixedUpdate() {
+        #region attacc
+        attackCooldown -= Time.fixedDeltaTime;
+        if (Input.GetKey(KeyCode.Mouse0) && attackCooldown <= 0f)
+        {
+            attackCooldown = 1.0f / attackRate;
+            Vector3 mouseScreenPos = Input.mousePosition;
+            Vector3 mouseWorldPos = camera.ScreenToWorldPoint(mouseScreenPos);
+            var attackVelocity = mouseWorldPos - transform.position;
+            attackVelocity.z = 0;
+            attackVelocity.Normalize();
+            attackVelocity *= attackProjectileSpeed;
+
+            spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
+        }
+        #endregion
+
+
+        calcDashState();
         calcPlayerState();
 
         //targetHSpeed = Mathf.Lerp(_rb.linearVelocity.x, targetHSpeed, 1);
@@ -151,6 +179,29 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
         }
         #endregion
+    }
+
+    private void spawnAttack(Vector2 velocity)
+    {
+        if (projectile != null)
+        {
+            var spawnLocation = new Vector3(transform.position.x, transform.position.y, -5);
+            var direction = velocity.normalized;
+            spawnLocation.x += direction.x * 0.5f;
+            spawnLocation.y += direction.y * 0.5f;
+            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+            GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
+            Debug.Log(angle);
+            Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
+
+            rb.linearVelocity = velocity;
+            Destroy(spawnedObject, attackProjectileDuration);
+        }
+        else
+        {
+            Debug.LogWarning("Player has no projectile");
+        }
+            
     }
 
     private void calcDashState()
