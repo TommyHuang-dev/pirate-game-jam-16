@@ -102,14 +102,11 @@ public class AudioManager : MonoBehaviour {
         float timeToFade = 1.0f;
         float timeElapsed = 0;
 
-        Debug.Log("songidx" + songIdx);
         List<AudioClip> song = songs[songIdx].clips;
-        Debug.Log("Song at idx " + songIdx + " has " + song.Count + " parts.");
 
         if (isPlayingMusic1) {
             // If this is a battle theme with multiple sections, play the intro and loop the main part.
             if (song.Count > 1) {
-                Debug.Log("Playing " + songIdx);
                 // Most precise duration calculation possible.
                 double introDuration = ((double)song[0].samples / song[0].frequency);
                 double startTime = AudioSettings.dspTime + 0.2;
@@ -135,7 +132,6 @@ public class AudioManager : MonoBehaviour {
             musicSource1.Stop();
         } else {
             if (song.Count > 1) {
-                Debug.Log("Playing " + songIdx);
                 double introDuration = ((double)song[0].samples / song[0].frequency);
                 double startTime = AudioSettings.dspTime + 0.2;
                 musicSourceIntro1.clip = song[0]; musicSource1.clip = song[1];

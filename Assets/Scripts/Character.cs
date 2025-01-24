@@ -12,7 +12,7 @@ public class Character : MonoBehaviour {
     private Camera camera;
 
     [Header("Movement Variables")]
-    public float maxMoveSpeed = 5.0f;
+    public float maxMoveSpeed;
     public float acceleration = 2f; // value between 0 and 1 used by lerp (technically it could be higher than 1)
     public float accelerationMaxSpeedInc = 2.0f; // when moving the player, a higher acceleration value is used
     public float friction = 1.5f; // how fast the player slows down naturally if they stop accelerating
@@ -57,9 +57,8 @@ public class Character : MonoBehaviour {
     [Header("Ranged Attack Variables")]
     #region Ranged Attack
     public GameObject projectile;
-    public float attackRate = 4.0f;
+    public float attackRate, attackDamage;
     private float attackCooldown = 0; // remaining cooldown before next shot
-    public float attackDamage = 5.0f;
     public float attackProjectileSpeed = 10.0f;
     public float attackProjectileDuration = 1.5f;
     #endregion
@@ -86,10 +85,13 @@ public class Character : MonoBehaviour {
         currentState = PlayerState.NoControl;
         StartCoroutine(EnterScene());
     }
-    // Called once per frame
-    private void Update() {
-        
+    private void Awake() {
+        // Load in data when player spawns
+        maxMoveSpeed = SaveData.Instance.data.moveSpeed;
+        attackRate = SaveData.Instance.data.attackRate;
+        attackDamage = SaveData.Instance.data.attackDamage;
     }
+
     private void FixedUpdate() {
         #region attacc
         attackCooldown -= Time.fixedDeltaTime;
@@ -106,8 +108,6 @@ public class Character : MonoBehaviour {
             spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
         }
         #endregion
-
-
         calcDashState();
         calcPlayerState();
 

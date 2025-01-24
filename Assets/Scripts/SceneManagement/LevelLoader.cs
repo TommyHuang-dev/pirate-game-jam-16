@@ -17,6 +17,7 @@ public class LevelLoader : MonoBehaviour
     } [SerializeField] public SceneType currentScene;
 
     private void Start() {
+        SaveData.Instance.data.currentRoomType = SceneManager.GetActiveScene().buildIndex;
         currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
     }
 
@@ -30,11 +31,10 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene(levelIndex);
         if (currentScene != SceneType.MainMenu) {
             // Increment player progression
-            PlayerPrefs.SetInt(
-                "currentRoomNumber",
-                PlayerPrefs.GetInt("currentRoomNumber", 0) + 1
-            );
-            Debug.Log("Current Room: " + PlayerPrefs.GetInt("currentRoomNumber", 0));
+            SaveData.Instance.data.currentRoomNumber++;
+            SaveData.Instance.data.currentRoomCompleted = false;
+            
+            Debug.Log("Current Room: " + SaveData.Instance.data.currentRoomNumber);
         }
          
         AudioManager.Instance.SwapTrack(levelIndex);

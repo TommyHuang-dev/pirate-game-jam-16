@@ -13,8 +13,7 @@ public class Capillary : MonoBehaviour
     private int invalidRoomType; // If the other capillary already has a queued scene type, that one is invalid
     void Start()
     {
-        currRoomNum = PlayerPrefs.GetInt("currentRoomNumber");
-        
+        currRoomNum = SaveData.Instance.data.currentRoomNumber;
         if (otherCapillary.queuedScene == null) {
             invalidRoomType = -1;
         } else {
