@@ -198,6 +198,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &160313393
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1237943348555027927, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_Name
+      value: Red Bacteria (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
 --- !u!1 &316713432
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +561,10 @@ PrefabInstance:
     - target: {fileID: 5174570298323661591, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576685442405156074, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -839,6 +900,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &911795563
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1237943348555027927, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_Name
+      value: Red Bacteria (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
 --- !u!1001 &979025090
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -998,6 +1116,63 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &1326249639
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1237943348555027927, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_Name
+      value: Red Bacteria
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
 --- !u!1001 &7577404657254989644
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1067,3 +1242,6 @@ SceneRoots:
   - {fileID: 11083707}
   - {fileID: 316713437}
   - {fileID: 7577404657254989644}
+  - {fileID: 1326249639}
+  - {fileID: 160313393}
+  - {fileID: 911795563}

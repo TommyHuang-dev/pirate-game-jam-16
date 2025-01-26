@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7255501548104681726}
   - component: {fileID: 757297382974585058}
   - component: {fileID: 8941908485204490593}
+  - component: {fileID: 3284027395170946763}
   m_Layer: 0
   m_Name: antibody
   m_TagString: PlayerProjectile
@@ -154,11 +155,24 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &3284027395170946763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6107819281015337438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0e8ee79433b7c94d951fd932e3b3337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5

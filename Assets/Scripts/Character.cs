@@ -40,6 +40,7 @@ public class Character : MonoBehaviour {
 
     [Header("Dash Variables")]
     #region Dash Attack
+    public int dashDamage = 10;
     // Variables during charge
     public Vector2 dashCharge = new Vector2(0.0f, 0.8f);
     public float dashChargePerSec = 1.0f;
@@ -191,7 +192,6 @@ public class Character : MonoBehaviour {
             spawnLocation.y += direction.y * 0.5f;
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
             GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
-            Debug.Log(angle);
             Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
 
             rb.linearVelocity = velocity;
@@ -290,6 +290,19 @@ public class Character : MonoBehaviour {
             var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
             Debug.Log("Going to a " + capillary.queuedScene.ToString());
             _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
+        }
+
+        // Check if the other object is an enemy
+        if (currentDashState == DashState.Dashing && other.CompareTag("Enemy"))
+        {
+            Debug.Log("Player ate enemy");
+            // Add logic to damage the enemy
+            RBacteria_Chase enemy = other.GetComponent<RBacteria_Chase>();
+            if (enemy != null)
+            {
+                Debug.Log("Applying " + dashDamage + " damage");
+                enemy.ApplyDamage(dashDamage); // Example damage value
+            }
         }
     }
     #endregion

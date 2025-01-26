@@ -20,8 +20,13 @@ public class Capillary : MonoBehaviour
             invalidRoomType = (int) otherCapillary.queuedScene;
         }
 
+        // bruh
+        queuedScene = LevelLoader.SceneType.BasicEnemy;
+        queuedSceneDebug = queuedScene.ToString();
+        return;
+
         // Generate a random event based on the current room number.
-        
+
         if ((currRoomNum + 1) % 4 != 0 || currRoomNum == 0) {
             var range = Enumerable.Range(2, 3).Where(i => i != invalidRoomType);
             var rand = new System.Random();
