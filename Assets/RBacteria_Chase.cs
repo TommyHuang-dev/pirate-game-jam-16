@@ -7,6 +7,7 @@ public class RBacteria_Chase : MonoBehaviour
     public GameObject player;
     public float speed;
     public float distanceBetween;
+    public int healthPoints;
 
     private float distance;
 
@@ -14,7 +15,7 @@ public class RBacteria_Chase : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        healthPoints = 10;
     }
 
     // Update is called once per frame
@@ -36,6 +37,22 @@ public class RBacteria_Chase : MonoBehaviour
             // Rotate
             //transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
-
+        
     }
+    private void OnCollisionEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerProjectile"))
+        {
+            // Handle the hit (e.g., reduce health)
+            healthPoints -= 5;
+            if (healthPoints <= 0)
+            {
+                Destroy(gameObject);
+            }
+            Debug.Log("Enemy hit!");
+        }
+        Debug.Log("alsdlfajnslkdfjnalkjsdfn");
+    }
+
+
 }
