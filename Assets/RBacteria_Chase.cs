@@ -23,7 +23,8 @@ public class RBacteria_Chase : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        DirectionFacing();
         // set up for distance and direction bacteria need to move to
         distance = Vector2.Distance(transform.position, player.transform.position);
         Vector2 direction = player.transform.position - transform.position;
@@ -31,9 +32,9 @@ public class RBacteria_Chase : MonoBehaviour
         // normalize the vector so that it points to the player
         //direction.Normalize();
         //float angle = Mathf.Atan2(direction.y direction.x) * Mathf.Rad2Deg;
-        
 
-        if(distance < distanceBetween)
+
+        if (distance < distanceBetween)
         {
             // Calculate how to move to player and how fast
             transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
@@ -68,5 +69,18 @@ public class RBacteria_Chase : MonoBehaviour
     //    Debug.Log("alsdlfajnslkdfjnalkjsdfn");
     //}
 
+    void DirectionFacing()
+    {
+        Vector2 directionToTarget = (player.transform.position - transform.position).normalized;
+        float dotProduct = Vector2.Dot(transform.right, directionToTarget);
 
+        if (dotProduct > 0)
+        {
+            sprite.flipX = true;
+        }
+        else if (dotProduct < 0)
+        {
+            sprite.flipX = false;
+        }
+    }
 }
