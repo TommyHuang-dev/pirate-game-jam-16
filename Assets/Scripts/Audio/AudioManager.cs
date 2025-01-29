@@ -62,7 +62,8 @@ public class AudioManager : MonoBehaviour {
         //StopAllCoroutines();
 
         // Calculate the duration of a bar in 4/4 - not planning on other time signatures.
-        double barDuration = (60d / curr_song.BPM * 4) * (4/4);
+        //double barDuration = (60d / curr_song.BPM * 4) * (4/4);
+        double barDuration = (60d / curr_song.BPM); // This is the beat duration
         // This line works out how far you are through the current bar
         double remainder;
         if (isPlayingMusic1) {

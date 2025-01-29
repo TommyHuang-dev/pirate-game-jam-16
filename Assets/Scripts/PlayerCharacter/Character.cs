@@ -8,7 +8,7 @@ public class Character : MonoBehaviour {
     private Animator _animator;
     private Collider2D _collider;
     private Rigidbody2D _rb;
-    private Vector2 _respawnPoint;
+    private SpriteRenderer _effects;
     private Camera camera;
 
     [Header("Movement Variables")]
@@ -55,13 +55,16 @@ public class Character : MonoBehaviour {
     private Vector2 dashVector = new Vector2(0, 0);
     #endregion
 
-    [Header("Ranged Attack Variables")]
+    [Header("Combat Variables")]
+    public int maxHealth;
+    public int currentHealth;
     #region Ranged Attack
     public GameObject projectile;
     public float attackRate, attackDamage;
     private float attackCooldown = 0; // remaining cooldown before next shot
     public float attackProjectileSpeed = 10.0f;
     public float attackProjectileDuration = 1.5f;
+    private float damageFlash = 0;  // set after taking damage, ticks down
     #endregion
 
     [Header("Navigation")]
@@ -76,9 +79,9 @@ public class Character : MonoBehaviour {
         _animator = GetComponentInChildren<Animator>();
         _collider = GetComponent<Collider2D>();
         _levelLoader = FindFirstObjectByType<LevelLoader>();
+        _effects = GetComponent<SpriteRenderer>();
 
-        if (camera == null)
-        {
+        if (camera == null) {
             camera = Camera.main; // Automatically assign the main camera if not set
         }
 
@@ -90,16 +93,18 @@ public class Character : MonoBehaviour {
         StartCoroutine(EnterScene());
     }
     private void Awake() {
-        // Load in data when player spawns
-        maxMoveSpeed = SaveData.Instance.data.moveSpeed;
-        attackRate = SaveData.Instance.data.attackRate;
-        attackDamage = SaveData.Instance.data.attackDamage;
+        SyncStats();
     }
 
     private void FixedUpdate() {
         #region attacc
         attackCooldown -= Time.fixedDeltaTime;
-        if (Input.GetKey(KeyCode.Mouse0) && attackCooldown <= 0f && currentDashState != DashState.Charging)
+        if ( // Determine if the player can attack
+            Input.GetKey(KeyCode.Mouse0) 
+            && attackCooldown <= 0f 
+            && currentDashState != DashState.Charging 
+            && currentState != PlayerState.NoControl
+            )
         {
             attackCooldown = 1.0f / attackRate;
             Vector3 mouseScreenPos = Input.mousePosition;
@@ -210,6 +215,12 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
         }
         #endregion
+    }
+
+    // Called every frame.
+    private void Update() {
+        _effects.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
+        damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
     }
 
     private void spawnAttack(Vector2 velocity)
@@ -337,7 +348,36 @@ public class Character : MonoBehaviour {
         }
     }
     #endregion
-    
+
+
+    #region Combat
+    public void TakeDamage(int amount) {
+        Debug.Log("Taking " + amount + " damage. Current health before = " + SaveData.Instance.data.currentHealth);
+        damageFlash = 0.5f;
+        SaveData.Instance.data.currentHealth -= amount;
+        SyncStats();
+
+        if (currentHealth <= 0) {
+            Die();
+        }
+    }
+
+    private void Die() {
+        currentState = PlayerState.NoControl;
+        //_rb.AddForce(5.0f * Vector2.up, ForceMode2D.Impulse);
+        StartCoroutine(Lose());
+    }
+
+    private IEnumerator Lose() {
+        damageFlash = 1.0f;
+        AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
+        _collider.enabled = false;
+        yield return new WaitForSeconds(10f);
+        _levelLoader.LoadNextLevel(0);
+        SaveData.Instance.DeleteSaveData(); // ouch
+    }
+
+    #endregion
     private IEnumerator EnterScene() {
         // Play animation, then wait 2 seconds and let the player play.
         var actualMaxMoveSpeed = maxMoveSpeed;
@@ -351,6 +391,11 @@ public class Character : MonoBehaviour {
 
     public void SyncStats()
     {
-        Awake();
+        // Load in data when player spawns
+        maxMoveSpeed = SaveData.Instance.data.moveSpeed;
+        attackRate = SaveData.Instance.data.attackRate;
+        attackDamage = SaveData.Instance.data.attackDamage;
+        maxHealth = SaveData.Instance.data.maxHealth;
+        currentHealth = SaveData.Instance.data.currentHealth;
     }
 }

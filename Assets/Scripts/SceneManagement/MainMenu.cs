@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
     }
 
     public void LoadGame() {
-        if (SaveData.Instance.LoadFromJson()) {
+        if (SaveData.Instance.LoadFromJson() && SaveData.Instance.data.currentRoomNumber > 1) {
             Debug.Log("Loading room " + System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(SaveData.Instance.data.currentRoomType)));
             SceneManager.LoadScene(System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(SaveData.Instance.data.currentRoomType)));
 

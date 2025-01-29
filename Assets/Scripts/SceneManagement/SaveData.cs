@@ -80,4 +80,6 @@ public class Data {
     public float moveSpeed = 5.0f;
     public float attackRate = 4;
     public int attackDamage = 5;
+    public int maxHealth = 10;
+    public int currentHealth = 10;
 }

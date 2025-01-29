@@ -119,6 +119,8 @@ MonoBehaviour:
   dashDuration: {x: 0, y: 0.6}
   dashCooldown: {x: 0, y: 0.4}
   dashDrift: {x: 0, y: 0.4}
+  maxHealth: 0
+  currentHealth: 0
   projectile: {fileID: 6107819281015337438, guid: a3ec6206a7ff60c458f19717ed84a3a4, type: 3}
   attackRate: 4
   attackDamage: 5

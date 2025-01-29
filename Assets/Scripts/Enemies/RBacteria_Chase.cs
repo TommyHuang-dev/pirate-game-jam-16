@@ -8,6 +8,7 @@ public class RBacteria_Chase : MonoBehaviour
     public float speed;
     public float distanceBetween;
     public int healthPoints = 10;
+    public int damage = 2;
 
     private float distance;
 
@@ -36,6 +37,12 @@ public class RBacteria_Chase : MonoBehaviour
 
         if (distance < distanceBetween)
         {
+            if (player.GetComponent<Character>().currentHealth <= 0) {
+                float random = Random.Range(0f, 2 * Mathf.PI);
+                Vector2 randomVec = new Vector2(Mathf.Cos(random) * 100, Mathf.Sin(random) * 100);
+                transform.position = Vector2.MoveTowards(this.transform.position, randomVec, (speed / 4f) * Time.deltaTime);
+                return;
+            }
             // Calculate how to move to player and how fast
             transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, speed * Time.deltaTime);
             // Rotate
@@ -54,21 +61,18 @@ public class RBacteria_Chase : MonoBehaviour
         }
         damageFlash = 0.5f;
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("PlayerProjectile"))
-    //    {
-    //        // Handle the hit (e.g., reduce health)
-    //        healthPoints -= 5;
-    //        if (healthPoints <= 0)
-    //        {
-    //            Destroy(gameObject);
-    //        }
-    //        Debug.Log("Enemy hit!");
-    //    }
-    //    Debug.Log("alsdlfajnslkdfjnalkjsdfn");
-    //}
 
+    public void OnTriggerEnter2D(Collider2D other) {
+        // Check if the other object is an enemy
+        if (other.CompareTag("Player")) {
+            // Damage the player on hit
+            Character player = other.GetComponent<Character>();
+            if (player != null) {
+                Debug.Log("Applying " + damage + " damage");
+                player.TakeDamage(damage);
+            }
+        }
+    }
     void DirectionFacing()
     {
         Vector2 directionToTarget = (player.transform.position - transform.position).normalized;

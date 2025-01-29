@@ -1,6 +1,4 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlueRangedBacteria : MonoBehaviour
@@ -36,6 +34,13 @@ public class BlueRangedBacteria : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If the player is dead, stop shooting and go in a random direction
+        if (player.GetComponent<Character>().currentHealth <= 0) {
+            float random = Random.Range(0f, 2 * Mathf.PI);
+            Vector2 randomVec = new Vector2(Mathf.Cos(random) * 100, Mathf.Sin(random) * 100);
+            transform.position = Vector2.MoveTowards(this.transform.position, randomVec, (speed / 4f) * Time.deltaTime);
+            return;
+        }
 
         if (Vector2.Distance(transform.position, player.position) > stoppingDistance)
         {

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8941908485204490593}
   - component: {fileID: 3284027395170946763}
   - component: {fileID: 396309528444465272}
-  - component: {fileID: 6927883543899273488}
   m_Layer: 0
   m_Name: antibody
   m_TagString: PlayerProjectile
@@ -200,19 +199,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!111 &6927883543899273488
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6107819281015337438}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 5d94e68f617500047ada35ae4a07f1f8, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
