@@ -222,7 +222,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      virus attack-Sheet_0: -6430179460431005328
+      virus attack-Sheet_1: -1879467363294829985
+      virus attack-Sheet_2: -300624887144099806
+      virus attack-Sheet_3: 1028593919497985906
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class BlueRangedBacteria : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class BlueRangedBacteria : MonoBehaviour
     private float distance; 
 
     private Transform player;
+    private SpriteRenderer sprite; // of the enemy
+    private float damageFlash = 0;  // set after taking damage, ticks down
 
     //public GameObject projectilePrefab; // The projectile to shoot
     //public Transform shootPoint;       // Where the projectile spawns
@@ -27,6 +30,7 @@ public class BlueRangedBacteria : MonoBehaviour
         //player = GameObject.Find("Player");
         // Find the player GameObject (make sure it's tagged as "Player")
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        sprite = GetComponent<SpriteRenderer>();
 
         timeBtwShots = attackRate;
     }
@@ -41,6 +45,8 @@ public class BlueRangedBacteria : MonoBehaviour
             transform.position = Vector2.MoveTowards(this.transform.position, randomVec, (speed / 4f) * Time.deltaTime);
             return;
         }
+
+        DirectionFacing();
 
         if (Vector2.Distance(transform.position, player.position) > stoppingDistance)
         {
@@ -67,6 +73,10 @@ public class BlueRangedBacteria : MonoBehaviour
         distance = Vector2.Distance(transform.position, player.transform.position);
         Vector2 direction = player.transform.position - transform.position;
 
+        // Sprite colour changes to indicate damage
+        sprite.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
+        damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
+
         // normalize the vector so that it points to the player
         //direction.Normalize();
         //float angle = Mathf.Atan2(direction.y direction.x) * Mathf.Rad2Deg;
@@ -75,7 +85,7 @@ public class BlueRangedBacteria : MonoBehaviour
         //if (distance < distanceBetween && distance > 4)
         //{
         //    // Calculate how to move to player and how fast
-            
+
         //    // Rotate
         //    //transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         //}
@@ -96,6 +106,18 @@ public class BlueRangedBacteria : MonoBehaviour
         if (healthPoints <= 0)
         {
             Destroy(gameObject);
+        }
+        damageFlash = 0.5f;
+    }
+
+    void DirectionFacing() {
+        Vector2 directionToTarget = (player.transform.position - transform.position).normalized;
+        float dotProduct = Vector2.Dot(transform.right, directionToTarget);
+
+        if (dotProduct > 0) {
+            sprite.flipX = true;
+        } else if (dotProduct < 0) {
+            sprite.flipX = false;
         }
     }
 

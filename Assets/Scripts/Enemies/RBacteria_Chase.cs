@@ -49,6 +49,7 @@ public class RBacteria_Chase : MonoBehaviour
             //transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
 
+        // Sprite colour changes to indicate damage
         sprite.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
         damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
     }
