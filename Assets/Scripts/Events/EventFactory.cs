@@ -26,9 +26,8 @@ public class EventFactory : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             player = other.GetComponent<Character>();
-            // TODO spawn menu
+            Instantiate(pickupEffect, transform.position, transform.rotation);
             upgradeUI.gameObject.SetActive(true);
-            //StartEvent(player);
         }
     }
 
@@ -62,6 +61,7 @@ public class EventFactory : MonoBehaviour
         SaveData.Instance.SaveToJson();
         player.SyncStats();
         upgradeUI.gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     private void StartEvent(Character player) {
