@@ -99,7 +99,7 @@ public class Character : MonoBehaviour {
     private void FixedUpdate() {
         #region attacc
         attackCooldown -= Time.fixedDeltaTime;
-        if (Input.GetKey(KeyCode.Mouse0) && attackCooldown <= 0f)
+        if (Input.GetKey(KeyCode.Mouse0) && attackCooldown <= 0f && currentDashState != DashState.Charging)
         {
             attackCooldown = 1.0f / attackRate;
             Vector3 mouseScreenPos = Input.mousePosition;
