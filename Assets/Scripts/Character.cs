@@ -286,7 +286,8 @@ public class Character : MonoBehaviour {
 
     #region Collision Handling
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("RoomExit")) { // TODO: Check if room exit is open.
+        if (other.CompareTag("RoomExit")) { 
+            // TODO: Check if room exit is open. Could probably check theres nothing left with the tag "Enemy"
             var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
             Debug.Log("Going to a " + capillary.queuedScene.ToString());
             _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
@@ -316,5 +317,10 @@ public class Character : MonoBehaviour {
         yield return new WaitForSeconds(1.3f);
         currentState = PlayerState.Stopped;
         maxMoveSpeed = actualMaxMoveSpeed;
+    }
+
+    public void SyncStats()
+    {
+        Awake();
     }
 }

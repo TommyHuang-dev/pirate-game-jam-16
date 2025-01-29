@@ -347,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      melee enemy attack-Sheet_0: 7040561033911071275
+      melee enemy attack-Sheet_1: 3833924641570256873
+      melee enemy attack-Sheet_2: -6745604082314253689
+      melee enemy attack-Sheet_3: 8720770494567650574
+      melee enemy attack-Sheet_4: -8244359918802498702
+      melee enemy attack-Sheet_5: 1645978918004146449
+      melee enemy attack-Sheet_6: 4678312907692524564
+      melee enemy attack-Sheet_7: -4491743295958031269
+      melee enemy attack-Sheet_8: -6375818765875252541
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

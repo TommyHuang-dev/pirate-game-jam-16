@@ -58,7 +58,7 @@ public class SaveData : MonoBehaviour
 
     public void DeleteSaveData() {
         if ( !File.Exists(filePath) ) {
-            Debug.LogWarning("No save data found, nothing to delete");
+            Debug.Log("No save data found, nothing to delete");
         } else {
             Debug.Log("Deleting save data from " + filePath);
             File.Delete(filePath);
@@ -78,6 +78,6 @@ public class Data {
 
     // Character attributes
     public float moveSpeed = 5.0f;
-    public int attackRate = 4;
+    public float attackRate = 4;
     public int attackDamage = 5;
 }
