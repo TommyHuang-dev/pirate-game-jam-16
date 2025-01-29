@@ -67,6 +67,9 @@ public class Character : MonoBehaviour {
     [Header("Navigation")]
     private LevelLoader _levelLoader;
 
+    [Header("Sprite animation")]
+    private bool flipped = false;
+
     // Called before first frame update
     private void Start() {
         _rb = this.GetComponent<Rigidbody2D>();
@@ -107,6 +110,14 @@ public class Character : MonoBehaviour {
             attackVelocity *= attackProjectileSpeed;
 
             spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
+            
+            if (attackVelocity.x > 0.1f)
+            {
+                flipped = false;
+            } else if (attackVelocity.x < -0.1f)
+            {
+                flipped = true;
+            }
         }
         #endregion
         calcDashState();
@@ -160,6 +171,25 @@ public class Character : MonoBehaviour {
             // TODO damage on enemy contact
         }
         #endregion
+
+        // flip sprite depending on how its moving
+        if (attackCooldown <= 0f)
+        {
+            if (_rb.linearVelocity.x > 0.1f) {
+                flipped = false;
+            } else if (_rb.linearVelocity.x < -0.1f)
+            {
+                flipped = true;
+            
+            }
+        }
+        if (flipped)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        } else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
 
         #region Friction
         // if the player isn't actively accelerating, add friction

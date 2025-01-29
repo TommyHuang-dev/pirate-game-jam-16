@@ -105,7 +105,7 @@ MonoBehaviour:
   player: {fileID: 3510197382726775008, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
   speed: 2
   distanceBetween: 998
-  healthPoints: 10
+  healthPoints: 20
 --- !u!58 &5651591905723713042
 CircleCollider2D:
   m_ObjectHideFlags: 0
