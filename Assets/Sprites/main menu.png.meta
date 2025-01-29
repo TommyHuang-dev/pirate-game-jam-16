@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 93d23bfab71ce744e9311701b8992890
+guid: 58a805559746d314d8130c13db2dc906
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2541933977286349777
-    second: Yellow Enemy Projectile_0
+      213: 7437685092641353733
+    second: main menu_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Yellow Enemy Projectile_0
+      name: main menu_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 10
-        width: 270
-        height: 268
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f2ce951f38c39bcd0800000000000000
-      internalID: -2541933977286349777
+      spriteID: 5003b1a6f27f73760800000000000000
+      internalID: 7437685092641353733
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Yellow Enemy Projectile_0: -2541933977286349777
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
