@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7485553521614835980}
   - component: {fileID: 5651591905723713042}
   - component: {fileID: 881717708696843885}
+  - component: {fileID: 1266760929076871999}
   m_Layer: 0
   m_Name: Red Bacteria
   m_TagString: Enemy
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 7040561033911071275, guid: cf36eeb7c2c79744aab1133bcd0d2f64, type: 3}
+  m_Sprite: {fileID: -6375818765875252541, guid: cf36eeb7c2c79744aab1133bcd0d2f64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -169,3 +170,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &1266760929076871999
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237943348555027927}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9a934ae3ede17d8459f875622fc3aba5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
