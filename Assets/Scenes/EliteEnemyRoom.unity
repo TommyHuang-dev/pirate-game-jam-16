@@ -591,15 +591,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.3
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.3
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -640,10 +640,6 @@ PrefabInstance:
     - target: {fileID: 1687327322595652342, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7485553521614835980, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
-      propertyPath: speed
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7485553521614835980, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: healthPoints

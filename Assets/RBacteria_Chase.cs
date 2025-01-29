@@ -11,11 +11,14 @@ public class RBacteria_Chase : MonoBehaviour
 
     private float distance;
 
+    SpriteRenderer sprite;
+    private float damageFlash = 0;  // set after taking damage, ticks down
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -37,7 +40,9 @@ public class RBacteria_Chase : MonoBehaviour
             // Rotate
             //transform.rotation = Quaternion.Euler(Vector3.forward * angle);
         }
-        
+
+        sprite.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
+        damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
     }
     public void ApplyDamage(int damage)
     {
@@ -46,6 +51,7 @@ public class RBacteria_Chase : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        damageFlash = 0.5f;
     }
     //private void OnTriggerEnter(Collider other)
     //{
