@@ -215,6 +215,8 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
         }
         #endregion
+
+        _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
     }
 
     // Called every frame.
@@ -372,7 +374,7 @@ public class Character : MonoBehaviour {
         damageFlash = 1.0f;
         AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
         _collider.enabled = false;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(9f);
         _levelLoader.LoadNextLevel(0);
         SaveData.Instance.DeleteSaveData(); // ouch
     }
