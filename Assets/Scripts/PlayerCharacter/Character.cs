@@ -149,6 +149,7 @@ public class Character : MonoBehaviour {
 
         // clamp velocity to max
         if (currentDashState != DashState.Dashing && currentDashState != DashState.Recovery) {
+            _animator.SetFloat("speed", 0);
             var tempMaxSpeed = maxMoveSpeed;
             if (currentDashState == DashState.Charging)
             {
@@ -163,7 +164,8 @@ public class Character : MonoBehaviour {
 
         // dash movement
         if (currentDashState == DashState.Dashing)
-        {
+        {   
+            _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
             dashDuration.x -= Time.fixedDeltaTime;
             _rb.linearVelocity = dashVector;
             if (dashDuration.x <= 0)
@@ -216,7 +218,7 @@ public class Character : MonoBehaviour {
         }
         #endregion
 
-        _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
+
     }
 
     // Called every frame.
@@ -264,7 +266,7 @@ public class Character : MonoBehaviour {
             // change state to dash and set dash vector if button released
             dashCharge.x = Mathf.Min(dashCharge.y, dashCharge.x + Time.deltaTime);
             if (!Input.GetKey(KeyCode.Space))
-            {
+            {   
                 var dashDistance = dashMinDistance + (dashMaxDistance - dashMinDistance) * (dashCharge.x / dashCharge.y);
                 var dashSpeed = dashDistance / dashDuration.y;
 
@@ -284,7 +286,7 @@ public class Character : MonoBehaviour {
             }
             // DEBUG STUFF ***
             else
-            {
+            {   
                 var dashDistance = dashMinDistance + (dashMaxDistance - dashMinDistance) * (dashCharge.x / dashCharge.y);
                 var dashSpeed = dashDistance / dashDuration.y;
                 Vector3 mouseScreenPos = Input.mousePosition;
