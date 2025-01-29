@@ -18,6 +18,8 @@ public class MainMenu : MonoBehaviour
         if (SaveData.Instance.LoadFromJson()) {
             Debug.Log("Loading room " + System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(SaveData.Instance.data.currentRoomType)));
             SceneManager.LoadScene(System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(SaveData.Instance.data.currentRoomType)));
+
+            AudioManager.Instance.SwapTrack(SaveData.Instance.data.currentRoomType);
         }       
     }
 }

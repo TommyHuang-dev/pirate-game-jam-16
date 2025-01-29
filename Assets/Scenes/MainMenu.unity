@@ -408,6 +408,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     currentRoomNumber: 0
+    currentRoomType: 0
+    currentRoomCompleted: 0
     moveSpeed: 5
     attackRate: 4
     attackDamage: 5
@@ -1078,11 +1080,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: aab07b007707fcc48b54386693cea4b4, type: 3}
   - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
   - {fileID: 8300000, guid: 443347f4b3739b94d8a58085ce03986e, type: 3}
-  - {fileID: 8300000, guid: 443347f4b3739b94d8a58085ce03986e, type: 3}
+  - {fileID: 8300000, guid: 53b1ec99638c05d4290aca2f80284a8a, type: 3}
   evilBattle:
   - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
   boss:
-  - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
+  - {fileID: 8300000, guid: 790a68703567ca5478c0820477e89ac6, type: 3}
+  - {fileID: 8300000, guid: fe520f5f58d3d5e4386f1665aa06817e, type: 3}
+  - {fileID: 8300000, guid: bbc479455585a854c98bb1ddfe2654b2, type: 3}
+  - {fileID: 8300000, guid: 3e85620257b364b45a365f1adac8840d, type: 3}
   finalBoss:
   - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
   FadeTime: 0

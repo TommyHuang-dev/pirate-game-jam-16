@@ -90,8 +90,10 @@ public class AudioManager : MonoBehaviour {
         musicSourceOutro.PlayScheduled(nextBarTime);
     }
     private int GetSongIndex(int levelIndex) {
-        if (levelIndex == 2 || levelIndex == 3 || levelIndex == 5) {
+        if (levelIndex == 2 || levelIndex == 3) { // Battle
             return 1;
+        } else if (levelIndex == 5) { // Boss
+            return 3;
         } else {
             return 0;
         }
