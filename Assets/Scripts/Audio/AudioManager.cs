@@ -19,8 +19,13 @@ public class AudioManager : MonoBehaviour {
     [Header("Scene Music")]
     [SerializeField] List<AudioClip> mainTheme, battle, evilBattle, boss, finalBoss;
     private Song[] songs = new Song[5];
+
     [SerializeField] private float FadeTime;
     private bool isPlayingMusic1 = false;
+
+    [Header("SFX")]
+    [SerializeField] List<AudioClip> SFX;
+    
 
     private void Awake() {
         // Can only have one audio manager (singleton)
@@ -50,6 +55,11 @@ public class AudioManager : MonoBehaviour {
     }
     public void ReturnToDefault() {
         // SwapTrack(defaultAmbience);
+    }
+
+    public void PlaySFX(SoundEffects sfx, float pitch) {
+        audioSource.pitch = pitch;
+        audioSource.PlayOneShot(SFX[(int)sfx]);
     }
 
     // Play win or loss music corresponding to current level.
@@ -165,5 +175,9 @@ public class AudioManager : MonoBehaviour {
         Loop,
         Win,
         Loss,
+    }
+
+    public enum SoundEffects {
+        Shoot
     }
 }

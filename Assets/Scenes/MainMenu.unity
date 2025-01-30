@@ -1093,6 +1093,8 @@ MonoBehaviour:
   finalBoss:
   - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
   FadeTime: 0
+  SFX:
+  - {fileID: 8300000, guid: 6c4ab7c03a2a8094d80d6928024fdcf5, type: 3}
 --- !u!4 &890155945
 Transform:
   m_ObjectHideFlags: 0

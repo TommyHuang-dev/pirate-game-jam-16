@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static System.TimeZoneInfo;
 using UnityEngine.SceneManagement;
+using CameraShake;
 
 public class Character : MonoBehaviour {
     private Animator _animator;
@@ -115,7 +116,7 @@ public class Character : MonoBehaviour {
             attackVelocity *= attackProjectileSpeed;
 
             spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
-            
+            CameraShaker.Presets.ShortShake2D(positionStrength:0.04f, rotationStrength:0.05f);
             if (attackVelocity.x > 0.1f)
             {
                 flipped = false;
@@ -238,6 +239,7 @@ public class Character : MonoBehaviour {
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
             GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
             Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.1f));
 
             rb.linearVelocity = velocity;
             Destroy(spawnedObject, attackProjectileDuration);
