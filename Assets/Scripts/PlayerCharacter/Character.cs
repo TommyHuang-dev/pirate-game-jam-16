@@ -58,6 +58,8 @@ public class Character : MonoBehaviour {
     [Header("Combat Variables")]
     public int maxHealth;
     public int currentHealth;
+    public HealthBar healthBar;
+
     #region Ranged Attack
     public GameObject projectile;
     public float attackRate, attackDamage;
@@ -80,6 +82,7 @@ public class Character : MonoBehaviour {
         _collider = GetComponent<Collider2D>();
         _levelLoader = FindFirstObjectByType<LevelLoader>();
         _effects = GetComponent<SpriteRenderer>();
+        healthBar = FindFirstObjectByType<HealthBar>();
 
         if (camera == null) {
             camera = Camera.main; // Automatically assign the main camera if not set
@@ -99,6 +102,7 @@ public class Character : MonoBehaviour {
     private void FixedUpdate() {
         #region attacc
         attackCooldown -= Time.fixedDeltaTime;
+        healthBar.SetHealth(currentHealth);
         if ( // Determine if the player can attack
             Input.GetKey(KeyCode.Mouse0) 
             && attackCooldown <= 0f 
@@ -364,7 +368,7 @@ public class Character : MonoBehaviour {
     #region Combat
     public void ApplyDamage(int amount) {
         if (currentDashState != DashState.Dashing)
-        {
+        {   
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
             damageFlash = 0.5f;
             currentHealth -= amount;

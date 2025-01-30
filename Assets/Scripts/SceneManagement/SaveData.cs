@@ -7,6 +7,7 @@ public class SaveData : MonoBehaviour
     public Data data;
     public static SaveData Instance;
     private string filePath;
+    public HealthBar healthbar;
 
     private void Awake() {
         // Can only have one save system (singleton)
