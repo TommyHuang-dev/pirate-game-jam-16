@@ -103,6 +103,7 @@ public class Character : MonoBehaviour {
             Input.GetKey(KeyCode.Mouse0) 
             && attackCooldown <= 0f 
             && currentDashState != DashState.Charging 
+            && currentDashState != DashState.Dashing
             && currentState != PlayerState.NoControl
             )
         {
