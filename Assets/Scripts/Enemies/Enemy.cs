@@ -64,8 +64,8 @@ public class Enemy : MonoBehaviour
     void RangedScript()
     {
         var playerPos = player.transform.position;
-        var maxDistance = kiteDistance.x;
-        var stoppingDistance = kiteDistance.y;
+        var minDistance = kiteDistance.x;
+        var maxDistance = kiteDistance.y;
 
         // If the player is dead, stop shooting and go in a random direction
         if (player.GetComponent<Character>().currentHealth <= 0)
@@ -76,16 +76,18 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        if (Vector2.Distance(transform.position, playerPos) > stoppingDistance)
+        if (Vector2.Distance(transform.position, playerPos) > maxDistance)
         {
+            // move towards player
             transform.position = Vector2.Lerp(transform.position, Vector2.MoveTowards(transform.position, playerPos, maxSpeed * Time.deltaTime), acceleration);
         }
-        else if (Vector2.Distance(transform.position, playerPos) < stoppingDistance && Vector2.Distance(transform.position, playerPos) > maxDistance)
+        else if (Vector2.Distance(transform.position, playerPos) < maxDistance && Vector2.Distance(transform.position, playerPos) > maxDistance)
         {
             // don't move
         }
-        else if (Vector2.Distance(transform.position, playerPos) < maxDistance)
+        else if (Vector2.Distance(transform.position, playerPos) < minDistance)
         {
+            // move away from player
             transform.position = Vector2.Lerp(transform.position, Vector2.MoveTowards(transform.position, playerPos, maxSpeed * Time.deltaTime * (-1)), acceleration);
         }
 

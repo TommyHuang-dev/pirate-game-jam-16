@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      virus projectile_0: 7871960386570945990
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
