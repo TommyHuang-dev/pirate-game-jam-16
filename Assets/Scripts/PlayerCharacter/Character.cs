@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static System.TimeZoneInfo;
-using UnityEngine.SceneManagement;
 using CameraShake;
+using System.Collections;
+using UnityEngine;
 
 public class Character : MonoBehaviour {
     private Animator _animator;
@@ -30,14 +27,14 @@ public class Character : MonoBehaviour {
     }
     [SerializeField] public PlayerState currentState = PlayerState.Stopped;
 
-    private enum DashState
+    public enum DashState
     {
         None,
         Charging,
         Dashing,
         Recovery
     }
-    [SerializeField] private DashState currentDashState = DashState.None;
+    [SerializeField] public DashState currentDashState = DashState.None;
 
     [Header("Dash Variables")]
     #region Dash Attack
@@ -116,7 +113,7 @@ public class Character : MonoBehaviour {
             attackVelocity *= attackProjectileSpeed;
 
             spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
-            CameraShaker.Presets.ShortShake2D(positionStrength:0.04f, rotationStrength:0.05f);
+            //CameraShaker.Presets.ShortShake2D(positionStrength:0.04f, rotationStrength:0.05f);
             if (attackVelocity.x > 0.1f)
             {
                 flipped = false;
@@ -217,8 +214,6 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
         }
         #endregion
-
-
     }
 
     // Called every frame.
@@ -238,7 +233,10 @@ public class Character : MonoBehaviour {
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
             GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
             Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.1f));
+            //if (SaveData.Instance.data.attackRate < 20) {
+            //    AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+            //} else { } // Too annoying, figure it out later?
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
 
             rb.linearVelocity = velocity;
             Destroy(spawnedObject, attackProjectileDuration);
@@ -262,7 +260,7 @@ public class Character : MonoBehaviour {
                 currentDashState = DashState.Charging;
             }
         }
-        if (currentDashState == DashState.Charging)
+        if (currentDashState == DashState.Charging && currentState != PlayerState.NoControl)
         {
             // change state to dash and set dash vector if button released
             dashCharge.x = Mathf.Min(dashCharge.y, dashCharge.x + Time.deltaTime);
@@ -337,9 +335,9 @@ public class Character : MonoBehaviour {
             var enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
             if (enemyCount == 0)
             {
-            var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
-            Debug.Log("Going to a " + capillary.queuedScene.ToString());
-            _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
+                var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
+                SaveData.Instance.data.currentRoomCompleted = true;
+                _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
             } else
             {
                 Debug.Log("Went to the exit, but there are still " + enemyCount + " enemies alive!");
@@ -352,11 +350,31 @@ public class Character : MonoBehaviour {
             Debug.Log("Player ate enemy");
             // Add logic to damage the enemy
             Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null)
+            if (enemy != null && !enemy.isBoss) // Boss logic handled in onCollision
             {
                 Debug.Log("Applying " + dashDamage + " damage");
+                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
                 enemy.ApplyDamage(dashDamage); // Example damage value
             }
+        } else if (currentDashState != DashState.Dashing && other.CompareTag("Enemy")) {
+            damageFlash = 0.5f;
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        if (enemy != null) {
+            if (currentDashState == DashState.Dashing) {
+                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+            } else {
+                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+            }
+        }
+        if (enemy != null && enemy.isBoss) {
+            CameraShaker.Presets.ShortShake2D(positionStrength: 0.08f, rotationStrength: 0.05f);
+            Debug.Log("Applying " + dashDamage + " damage");
+            enemy.ApplyDamage(dashDamage); // Example damage value
         }
     }
     #endregion
@@ -370,7 +388,6 @@ public class Character : MonoBehaviour {
             damageFlash = 0.5f;
             currentHealth -= amount;
             SaveData.Instance.data.currentHealth -= amount;
-            //SyncStats();
         }
 
         if (currentHealth <= 0) {
@@ -379,16 +396,16 @@ public class Character : MonoBehaviour {
     }
 
     private void Die() {
-        currentState = PlayerState.NoControl;
-        //_rb.AddForce(5.0f * Vector2.up, ForceMode2D.Impulse);
         StartCoroutine(Lose());
     }
 
     private IEnumerator Lose() {
+        currentState = PlayerState.NoControl;
         damageFlash = 1.0f;
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, 0.7f, 1.4f);
         AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
         _collider.enabled = false;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(6f);
         _levelLoader.LoadNextLevel(0);
         SaveData.Instance.DeleteSaveData(); // ouch :(
     }

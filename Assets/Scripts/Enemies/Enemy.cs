@@ -1,10 +1,13 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 // Enemy superclass. All enemies should inherit from this
 public class Enemy : MonoBehaviour
 {
+    public bool isBoss = false;
     protected GameObject player;
     protected SpriteRenderer sprite;
+    protected LevelLoader levelLoader;
     [SerializeField] protected EnemyProjectile projectile;
 
     // all enemies should have these properties
@@ -37,12 +40,12 @@ public class Enemy : MonoBehaviour
         // use this to set the type of the enemy (idk a better way to do this)
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    private void Awake() {
         this.tag = "Enemy";
-        player = GameObject.FindGameObjectWithTag("Player");
         sprite = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        levelLoader = GetComponent<LevelLoader>();
+
         setType();
     }
 
@@ -111,6 +114,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (sprite == null) { Debug.Log("null sprite?"); }
         if (type == AIType.BasicMelee)
         {
             MeleeScript();
@@ -123,6 +127,7 @@ public class Enemy : MonoBehaviour
         }
         // Sprite colour changes to indicate damage
         sprite.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
+        
         damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
         DirectionFacing();
     }
@@ -133,9 +138,18 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+            //Die();
         }
         damageFlash = 0.5f;
     }
+    // todo
+    //private void Die() {
+    //    var enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length - 1;
+    //    if (enemyCount == 0) {
+    //        AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
+    //    }
+    //    Destroy(gameObject);
+    //}
     public void ApplyKnockback(Vector2 knockback)
     {
         var knockbackWithZ = new Vector3(knockback.x, knockback.y, 0f);

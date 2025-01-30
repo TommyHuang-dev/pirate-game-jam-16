@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour {
     void Start() {
         // Gross lol
         songs[0] = new Song(mainTheme, 84); songs[1] = new Song(battle, 136); songs[2] = new Song(evilBattle, 0);
-        songs[3] = new Song(boss, 0); songs[4] = new Song(finalBoss, 0);
+        songs[3] = new Song(boss, 138); songs[4] = new Song(finalBoss, 0);
         SwapTrack(0);
     }
 
@@ -57,8 +57,9 @@ public class AudioManager : MonoBehaviour {
         // SwapTrack(defaultAmbience);
     }
 
-    public void PlaySFX(SoundEffects sfx, float pitch) {
+    public void PlaySFX(SoundEffects sfx, float pitch, float volume) {
         audioSource.pitch = pitch;
+        audioSource.volume = volume;
         audioSource.PlayOneShot(SFX[(int)sfx]);
     }
 
@@ -67,13 +68,13 @@ public class AudioManager : MonoBehaviour {
         int songIdx = GetSongIndex(levelIndex);
         Song curr_song = songs[songIdx];
         Debug.Log("Play win " + hasWon + " curr song idx: " + songIdx);
-        if (curr_song.clips.Count <= 1) { return; }
+        if (curr_song.clips.Count <= 1) { Debug.Log("Wrong song?"); return; }
 
         //StopAllCoroutines();
 
         // Calculate the duration of a bar in 4/4 - not planning on other time signatures.
-        //double barDuration = (60d / curr_song.BPM * 4) * (4/4);
-        double barDuration = (60d / curr_song.BPM); // This is the beat duration
+        double barDuration = (60d / curr_song.BPM * 4) * (4/4);
+        //double barDuration = (60d / curr_song.BPM); // This is the beat duration
         // This line works out how far you are through the current bar
         double remainder;
         if (isPlayingMusic1) {
@@ -81,7 +82,6 @@ public class AudioManager : MonoBehaviour {
         } else {
             remainder = ((double)musicSource2.timeSamples / musicSource2.clip.frequency) % (barDuration);
         }
-                            
         // This line works out when the next bar will occur
         double nextBarTime = AudioSettings.dspTime + barDuration - remainder;
         // Set the current Clip to end on the next bar
@@ -90,7 +90,6 @@ public class AudioManager : MonoBehaviour {
         } else {
             musicSource2.SetScheduledEndTime(nextBarTime);
         }
-
         // Play the win/loss clip
         if (hasWon) { 
             musicSourceOutro.clip = curr_song.clips[(int)BattleSongParts.Win];
@@ -178,6 +177,9 @@ public class AudioManager : MonoBehaviour {
     }
 
     public enum SoundEffects {
-        Shoot
+        Shoot,
+        EnemyHit,
+        PlayerHurt,
+        Upgrade
     }
 }

@@ -1094,7 +1094,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
   FadeTime: 0
   SFX:
-  - {fileID: 8300000, guid: 6c4ab7c03a2a8094d80d6928024fdcf5, type: 3}
+  - {fileID: 8300000, guid: 43e71a5703bd08341bed30f1ecc31957, type: 3}
+  - {fileID: 8300000, guid: 7828bdc9cbb34dd4fbc0d0d977156896, type: 3}
+  - {fileID: 8300000, guid: fbbda3ed7785af0499ee47b314028822, type: 3}
+  - {fileID: 8300000, guid: 4d22db3327b80c14c940565bffaf3a5f, type: 3}
 --- !u!4 &890155945
 Transform:
   m_ObjectHideFlags: 0

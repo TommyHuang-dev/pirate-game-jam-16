@@ -14,11 +14,11 @@ public class BossCharger : Enemy
     [SerializeField] private float cooldown = 4.0f;  // cooldown between sets of charges
 
     private Vector2 testReset = new Vector2(0f, 2.0f);
-    
 
     protected override void setType()
     {
         levelLoader = FindFirstObjectByType<LevelLoader>();
+        isBoss = true;
         this.type = AIType.Custom;
     }
 
@@ -37,18 +37,29 @@ public class BossCharger : Enemy
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
-    {
-        // Check if the other object is an enemy
-        if (other.CompareTag("Player"))
-        {
+    //public void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    // Check if the other object is an player
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        // Damage the player on hit
+    //        Character player = other.GetComponent<Character>();
+    //        if (player != null)
+    //        {
+    //            Debug.Log("Applying " + damage + " damage");
+    //            player.ApplyDamage(damage);
+    //        }
+    //    }
+    //}
+    public void OnCollisionEnter2D(Collision2D other) { // Since the boss has collision, use this instead
+        // Check if the other object is an player
+        Character player = other.gameObject.GetComponent<Character>();
+        if (player != null && player.currentDashState != Character.DashState.Dashing) {
             // Damage the player on hit
-            Character player = other.GetComponent<Character>();
-            if (player != null)
-            {
-                Debug.Log("Applying " + damage + " damage");
-                player.ApplyDamage(damage);
-            }
+            Debug.Log("Applying " + damage + " damage");
+            player.ApplyDamage(damage);
+        } else {
+            damageFlash = 0.5f;
         }
     }
 
@@ -57,9 +68,13 @@ public class BossCharger : Enemy
         health -= damage;
         if (health <= 0)
         {
-            AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
+            Die();
             Destroy(gameObject);
         }
         damageFlash = 0.5f;
+    }
+    
+    private void Die() {
+        AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
     }
 }

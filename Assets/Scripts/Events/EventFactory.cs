@@ -58,6 +58,7 @@ public class EventFactory : MonoBehaviour
                 Debug.LogWarning("Invalid stat chosen for upgrade: " + stat);
                 break;
         }
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Upgrade, 1f, 1f);
         SaveData.Instance.SaveToJson();
         player.SyncStats();
         upgradeUI.gameObject.SetActive(false);

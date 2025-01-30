@@ -15,6 +15,7 @@ public class PlayerProjectileScript : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null) {
                 Debug.Log("Applying " + damage + " damage to enemy");
+                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, Random.Range(0.8f, 1.1f), Random.Range(0.8f, 1.1f));
                 enemy.ApplyDamage(damage);
                 var knockbackDirection = enemy.transform.position - this.transform.position;
                 knockbackDirection.z = 0;
