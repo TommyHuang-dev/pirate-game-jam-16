@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RBacteria_Chase : Enemy
+public class BacteriaChase : Enemy
 {
     protected override void setType()
     {

@@ -349,7 +349,7 @@ public class Character : MonoBehaviour {
         {
             Debug.Log("Player ate enemy");
             // Add logic to damage the enemy
-            RBacteria_Chase enemy = other.GetComponent<RBacteria_Chase>();
+            BacteriaChase enemy = other.GetComponent<BacteriaChase>();
             if (enemy != null)
             {
                 Debug.Log("Applying " + dashDamage + " damage");
