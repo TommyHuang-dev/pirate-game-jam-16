@@ -5,6 +5,7 @@ using UnityEngine;
 public class BossCharger : Enemy
 {
     private Rigidbody2D _rb;
+    private LevelLoader levelLoader;
 
     [SerializeField] private float numCharges = 3f;  // charges in a row
     [SerializeField] private float chargeDistance = 8f;
@@ -17,6 +18,7 @@ public class BossCharger : Enemy
 
     protected override void setType()
     {
+        levelLoader = FindFirstObjectByType<LevelLoader>();
         this.type = AIType.Custom;
     }
 
@@ -48,5 +50,16 @@ public class BossCharger : Enemy
                 player.ApplyDamage(damage);
             }
         }
+    }
+
+    public override void ApplyDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
+            Destroy(gameObject);
+        }
+        damageFlash = 0.5f;
     }
 }
