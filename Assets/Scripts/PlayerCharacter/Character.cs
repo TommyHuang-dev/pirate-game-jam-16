@@ -103,6 +103,7 @@ public class Character : MonoBehaviour {
             Input.GetKey(KeyCode.Mouse0) 
             && attackCooldown <= 0f 
             && currentDashState != DashState.Charging 
+            && currentDashState != DashState.Dashing
             && currentState != PlayerState.NoControl
             )
         {
@@ -167,7 +168,7 @@ public class Character : MonoBehaviour {
         {   
             _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
             dashDuration.x -= Time.fixedDeltaTime;
-            _rb.linearVelocity = dashVector;
+            //_rb.linearVelocity = dashVector;
             if (dashDuration.x <= 0)
             {
                 dashCooldown.x = dashCooldown.y;
@@ -175,7 +176,6 @@ public class Character : MonoBehaviour {
                 dashDrift.x = dashDrift.y;
                 currentDashState = DashState.Recovery;
             }
-            // TODO damage on enemy contact
         }
         #endregion
 
@@ -276,6 +276,7 @@ public class Character : MonoBehaviour {
                 dashDirection.z = 0;
                 dashDirection.Normalize();
                 dashVector = dashDirection * dashSpeed;
+                _rb.linearVelocity = dashVector;
 
                 dashDuration.x = dashDuration.y;
                 currentDashState = DashState.Dashing;
@@ -349,7 +350,7 @@ public class Character : MonoBehaviour {
         {
             Debug.Log("Player ate enemy");
             // Add logic to damage the enemy
-            BacteriaChase enemy = other.GetComponent<BacteriaChase>();
+            Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
                 Debug.Log("Applying " + dashDamage + " damage");
