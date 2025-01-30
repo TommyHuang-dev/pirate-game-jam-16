@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
-    public float transitionTime = 2.0f;
+    public float transitionTime = 1.5f;
 
     public enum SceneType {
         MainMenu,

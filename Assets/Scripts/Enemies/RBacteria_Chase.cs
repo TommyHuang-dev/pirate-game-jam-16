@@ -70,7 +70,7 @@ public class RBacteria_Chase : MonoBehaviour
             Character player = other.GetComponent<Character>();
             if (player != null) {
                 Debug.Log("Applying " + damage + " damage");
-                player.TakeDamage(damage);
+                player.ApplyDamage(damage);
             }
         }
     }

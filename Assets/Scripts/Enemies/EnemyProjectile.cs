@@ -38,7 +38,7 @@ public class EnemyProjectile : MonoBehaviour
             Character player = other.GetComponent<Character>();
             if (player != null) {
                 Debug.Log("Applying " + damage + " damage");
-                player.TakeDamage(damage); // Example damage value
+                player.ApplyDamage(damage); // Example damage value
             }
 
             // Destroy the projectile after impact

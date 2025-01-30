@@ -331,11 +331,17 @@ public class Character : MonoBehaviour {
 
     #region Collision Handling
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("RoomExit")) { 
-            // TODO: Check if room exit is open. Could probably check theres nothing left with the tag "Enemy"
+        if (other.CompareTag("RoomExit")) {
+            var enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+            if (enemyCount == 0)
+            {
             var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
             Debug.Log("Going to a " + capillary.queuedScene.ToString());
             _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
+            } else
+            {
+                Debug.Log("Went to the exit, but there are still " + enemyCount + " enemies alive!");
+            }
         }
 
         // Check if the other object is an enemy
@@ -355,11 +361,14 @@ public class Character : MonoBehaviour {
 
 
     #region Combat
-    public void TakeDamage(int amount) {
-        Debug.Log("Taking " + amount + " damage. Current health before = " + SaveData.Instance.data.currentHealth);
-        damageFlash = 0.5f;
-        SaveData.Instance.data.currentHealth -= amount;
-        SyncStats();
+    public void ApplyDamage(int amount) {
+        if (currentDashState != DashState.Dashing)
+        {
+            Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
+            damageFlash = 0.5f;
+            SaveData.Instance.data.currentHealth -= amount;
+            SyncStats();
+        }
 
         if (currentHealth <= 0) {
             Die();
@@ -376,9 +385,9 @@ public class Character : MonoBehaviour {
         damageFlash = 1.0f;
         AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
         _collider.enabled = false;
-        yield return new WaitForSeconds(9f);
+        yield return new WaitForSeconds(4f);
         _levelLoader.LoadNextLevel(0);
-        SaveData.Instance.DeleteSaveData(); // ouch
+        SaveData.Instance.DeleteSaveData(); // ouch :(
     }
 
     #endregion

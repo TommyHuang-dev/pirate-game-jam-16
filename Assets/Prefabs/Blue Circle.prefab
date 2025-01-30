@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   stoppingDistance: 7
-  kiteDistance: 4
+  kiteDistance: 5
   healthPoints: 10
   attackRate: 1
   projectile: {fileID: 5584876086513364690, guid: 860fbec022611a3499820060af070aa4, type: 3}
