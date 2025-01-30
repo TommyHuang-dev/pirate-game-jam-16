@@ -585,6 +585,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1881227073737904566, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
+      propertyPath: health
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 1237943348555027927, guid: 6c113d2cec34f8649b6f6857decf5c3e, type: 3}
       propertyPath: m_Name
       value: Red Bacteria (2)

@@ -366,8 +366,9 @@ public class Character : MonoBehaviour {
         {
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
             damageFlash = 0.5f;
+            currentHealth -= amount;
             SaveData.Instance.data.currentHealth -= amount;
-            SyncStats();
+            //SyncStats();
         }
 
         if (currentHealth <= 0) {

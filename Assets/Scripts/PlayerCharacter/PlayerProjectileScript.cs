@@ -12,24 +12,17 @@ public class PlayerProjectileScript : MonoBehaviour
         {
             Debug.Log("Projectile hit enemy");
             // Add logic to damage the enemy
-            RBacteria_Chase enemy = other.GetComponent<RBacteria_Chase>();
-            BlueRangedBacteria enemy2 = other.GetComponent <BlueRangedBacteria>();
+            Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null) {
                 Debug.Log("Applying " + damage + " damage to enemy");
-                enemy.ApplyDamage(damage); // Example damage value
-                // knockback stuff (TODO temporary, should make this code better)
+                enemy.ApplyDamage(damage);
                 var knockbackDirection = enemy.transform.position - this.transform.position;
                 knockbackDirection.z = 0;
                 knockbackDirection.Normalize();
-                enemy.transform.position += knockbackDirection * knockback;
-            }
-            else if (enemy2 != null) {
-                Debug.Log("Applying " + damage + " damage to enemy2");
-                enemy2.ApplyDamage(damage);
-                var knockbackDirection = enemy2.transform.position - this.transform.position;
-                knockbackDirection.z = 0;
-                knockbackDirection.Normalize();
-                enemy2.transform.position += knockbackDirection * knockback;
+                enemy.ApplyKnockback(knockbackDirection * knockback);
+            } else
+            {
+                Debug.LogError("Couldn't find the enemy object that was hit");
             }
 
             // Destroy the projectile after impact

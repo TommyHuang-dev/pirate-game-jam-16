@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687327322595652342}
+  - component: {fileID: -1881227073737904566}
   - component: {fileID: 8225797373955232799}
-  - component: {fileID: 7485553521614835980}
   - component: {fileID: 5651591905723713042}
   - component: {fileID: 881717708696843885}
   - component: {fileID: 1266760929076871999}
@@ -36,6 +36,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-1881227073737904566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237943348555027927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e6db8e32c508944bfcc927f013fdeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 0}
+  health: 20
+  knockBackResistance: 0
+  maxSpeed: 2
+  acceleration: 1
+  damage: 1
+  attackRate: 1
+  kiteDistance: {x: 5, y: 6}
 --- !u!212 &8225797373955232799
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -91,22 +111,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7485553521614835980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237943348555027927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76e6db8e32c508944bfcc927f013fdeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 3510197382726775008, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
-  speed: 2
-  distanceBetween: 998
-  healthPoints: 20
 --- !u!58 &5651591905723713042
 CircleCollider2D:
   m_ObjectHideFlags: 0
