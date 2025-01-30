@@ -167,7 +167,7 @@ public class Character : MonoBehaviour {
         {   
             _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
             dashDuration.x -= Time.fixedDeltaTime;
-            _rb.linearVelocity = dashVector;
+            //_rb.linearVelocity = dashVector;
             if (dashDuration.x <= 0)
             {
                 dashCooldown.x = dashCooldown.y;
@@ -175,7 +175,6 @@ public class Character : MonoBehaviour {
                 dashDrift.x = dashDrift.y;
                 currentDashState = DashState.Recovery;
             }
-            // TODO damage on enemy contact
         }
         #endregion
 
@@ -276,6 +275,7 @@ public class Character : MonoBehaviour {
                 dashDirection.z = 0;
                 dashDirection.Normalize();
                 dashVector = dashDirection * dashSpeed;
+                _rb.linearVelocity = dashVector;
 
                 dashDuration.x = dashDuration.y;
                 currentDashState = DashState.Dashing;
