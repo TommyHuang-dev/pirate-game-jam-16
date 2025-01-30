@@ -36,9 +36,8 @@ public class EnemyProjectile : MonoBehaviour
             Debug.Log("Enemy Projectile hit Player");
             // Damage the player on hit
             Character player = other.GetComponent<Character>();
-            if (player != null && player.currentDashState != Character.DashState.Dashing) {
+            if (player != null && player.currentDashState != Character.DashState.Dashing && !player.isInvincible) {
                 Debug.Log("Applying " + damage + " damage");
-                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, Random.Range(0.8f, 1.1f), Random.Range(0.8f, 1.1f));
                 player.ApplyDamage(damage); // Example damage value
             }
 

@@ -26,7 +26,6 @@ public class EventFactory : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             player = other.GetComponent<Character>();
-            Instantiate(pickupEffect, transform.position, transform.rotation);
             upgradeUI.gameObject.SetActive(true);
         }
     }
@@ -59,6 +58,7 @@ public class EventFactory : MonoBehaviour
                 break;
         }
         AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Upgrade, 1f, 1f);
+        Instantiate(pickupEffect, transform.position, transform.rotation);
         SaveData.Instance.SaveToJson();
         player.SyncStats();
         upgradeUI.gameObject.SetActive(false);

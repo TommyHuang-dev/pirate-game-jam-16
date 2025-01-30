@@ -56,13 +56,16 @@ public class Character : MonoBehaviour {
     [Header("Combat Variables")]
     public int maxHealth;
     public int currentHealth;
+    public bool isInvincible = false;
+    public float invincibilityDuration = 1.5f;
+    public float invincibilityDeltaTime = 0.15f;
+
     #region Ranged Attack
     public GameObject projectile;
     public float attackRate, attackDamage;
     private float attackCooldown = 0; // remaining cooldown before next shot
     public float attackProjectileSpeed = 10.0f;
     public float attackProjectileDuration = 1.5f;
-    private float damageFlash = 0;  // set after taking damage, ticks down
     #endregion
 
     [Header("Navigation")]
@@ -217,12 +220,6 @@ public class Character : MonoBehaviour {
         #endregion
     }
 
-    // Called every frame.
-    private void Update() {
-        _effects.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
-        damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
-    }
-
     private void spawnAttack(Vector2 velocity)
     {
         if (projectile != null)
@@ -354,12 +351,8 @@ public class Character : MonoBehaviour {
             if (enemy != null && !enemy.isBoss) // Boss logic handled in onCollision
             {
                 Debug.Log("Applying " + dashDamage + " damage");
-                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
                 enemy.ApplyDamage(dashDamage); // Example damage value
             }
-        } else if (currentDashState != DashState.Dashing && other.CompareTag("Enemy")) {
-            damageFlash = 0.5f;
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
         }
     }
 
@@ -368,8 +361,6 @@ public class Character : MonoBehaviour {
         if (enemy != null) {
             if (currentDashState == DashState.Dashing) {
                 AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
-            } else {
-                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
             }
         }
         if (enemy != null && enemy.isBoss) {
@@ -383,17 +374,33 @@ public class Character : MonoBehaviour {
 
     #region Combat
     public void ApplyDamage(int amount) {
+        if (isInvincible) { return;  }
         if (currentDashState != DashState.Dashing)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
-            damageFlash = 0.5f;
             currentHealth -= amount;
             SaveData.Instance.data.currentHealth -= amount;
+
+            if (currentHealth <= 0) {
+                Die();
+            } else {
+                StartCoroutine(Invincibility());
+            }
         }
 
-        if (currentHealth <= 0) {
-            Die();
+        
+    }
+
+    private IEnumerator Invincibility() {
+        isInvincible = true;
+        for (float i = 0; i < invincibilityDuration; i += invincibilityDeltaTime) {
+            _effects.color = new Color(255, 255, 255, 0);
+            yield return new WaitForSeconds(invincibilityDeltaTime);
+            _effects.color = Color.white;
+            yield return new WaitForSeconds(invincibilityDeltaTime);
         }
+        isInvincible = false;
     }
 
     private void Die() {
@@ -401,11 +408,13 @@ public class Character : MonoBehaviour {
     }
 
     private IEnumerator Lose() {
-        currentState = PlayerState.NoControl;
-        damageFlash = 1.0f;
+        _effects.color = Color.red;
         AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, 0.7f, 1.4f);
         AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
+        currentState = PlayerState.NoControl;
         _collider.enabled = false;
+        yield return new WaitForSeconds(1f);
+        _effects.color = new Color(0, 0, 0, 0);     
         yield return new WaitForSeconds(6f);
         _levelLoader.LoadNextLevel(0);
         SaveData.Instance.DeleteSaveData(); // ouch :(

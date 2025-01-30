@@ -66,6 +66,7 @@ public class BossCharger : Enemy
     public override void ApplyDamage(int damage)
     {
         health -= damage;
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.7f, 1f));
         if (health <= 0)
         {
             Die();
