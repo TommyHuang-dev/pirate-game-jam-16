@@ -58,7 +58,7 @@ public class BossCharger : Enemy
             // Damage the player on hit
             Debug.Log("Applying " + damage + " damage");
             player.ApplyDamage(damage);
-        } else {
+        } else if (player != null) {
             damageFlash = 0.5f;
         }
     }
