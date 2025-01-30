@@ -5,7 +5,6 @@ using UnityEngine;
 public class BossCharger : Enemy
 {
     private Rigidbody2D _rb;
-    private LevelLoader levelLoader;
 
     [SerializeField] private float numCharges = 3f;  // charges in a row
     [SerializeField] private float chargeDistance = 8f;

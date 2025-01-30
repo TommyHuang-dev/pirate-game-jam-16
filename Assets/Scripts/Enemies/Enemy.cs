@@ -1,5 +1,7 @@
 using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine;
+using static Character;
 
 // Enemy superclass. All enemies should inherit from this
 public class Enemy : MonoBehaviour
@@ -16,6 +18,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float maxSpeed = 2f;
     [SerializeField] protected float acceleration = 1f; // between 0 and 1. 1 means it instantly moves at max speed
     [SerializeField] protected int damage = 1;
+    private bool canMove = false;
 
     // for melee
     // nothing here lol
@@ -47,6 +50,7 @@ public class Enemy : MonoBehaviour
         levelLoader = GetComponent<LevelLoader>();
 
         setType();
+        StartCoroutine(SpawnIn());
     }
 
     void MeleeScript()
@@ -111,10 +115,27 @@ public class Enemy : MonoBehaviour
         // override this if needed
     }
 
+    private IEnumerator SpawnIn() {
+        canMove = false;
+        yield return new WaitForSeconds(1.3f);
+        canMove = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (sprite == null) { Debug.Log("null sprite?"); }
+        if (!canMove) { // Putting this here for now but if we do stuns it'll probably have to be moved to an isSpawning tracker
+            Vector2 target = new Vector2(Random.Range(transform.position.x - 2f, transform.position.x + 2f), transform.position.y - 10f);
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                target,
+                Random.Range(maxSpeed - 1f, maxSpeed * 3f) * Time.deltaTime
+            );
+            Debug.Log("current " + transform.position + " target " + target);
+            return;
+        }
+
         if (type == AIType.BasicMelee)
         {
             MeleeScript();

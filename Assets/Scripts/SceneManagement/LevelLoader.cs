@@ -17,8 +17,10 @@ public class LevelLoader : MonoBehaviour
     } [SerializeField] public SceneType currentScene;
 
     private void Start() {
-        SaveData.Instance.data.currentRoomType = SceneManager.GetActiveScene().buildIndex;
         currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
+        if (currentScene != SceneType.MainMenu) { // Don't overwrite stuff from main menu
+            SaveData.Instance.data.currentRoomType = SceneManager.GetActiveScene().buildIndex;
+        }
     }
 
     public void LoadNextLevel(SceneType nextType) {
