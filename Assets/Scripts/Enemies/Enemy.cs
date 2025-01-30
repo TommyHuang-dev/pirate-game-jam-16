@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
     }
     protected AIType type;
 
-    private float damageFlash = 0;  // set after taking damage, ticks down
+    protected float damageFlash = 0;  // set after taking damage, ticks down
 
     protected virtual void setType()
     {
@@ -127,7 +127,7 @@ public class Enemy : MonoBehaviour
         DirectionFacing();
     }
 
-    public void ApplyDamage(int damage)
+    public virtual void ApplyDamage(int damage)
     {
         health -= damage;
         if (health <= 0)
