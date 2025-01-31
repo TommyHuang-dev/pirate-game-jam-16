@@ -45,8 +45,8 @@ public class Capillary : MonoBehaviour
 
         roomText1 = GameObject.Find("Room1").GetComponent<TextMeshProUGUI>();
         roomText2 = GameObject.Find("Room2").GetComponent<TextMeshProUGUI>();
-        roomText1.text = CustomToString(exitCap1.queuedScene.ToString());
-        roomText2.text = CustomToString(exitCap2.queuedScene.ToString());
+        roomText1.text = (currRoomNum != 12) ? CustomToString(exitCap1.queuedScene.ToString()) : "";
+        roomText2.text = (currRoomNum != 12) ? CustomToString(exitCap2.queuedScene.ToString()) : "";
     }
 
     void Update(){

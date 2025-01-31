@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI; // Make sure you include this for UI components
 using TMPro;
+using System.Collections;
 
 public enum BasicUpgrade {
     MoveSpeed,
@@ -33,6 +34,10 @@ public class EventFactory : MonoBehaviour
     [SerializeField] public Button button0;
     [SerializeField] public Button button1;
 
+    private bool eventTriggerPopped = false;
+    private bool enemiesDefeated = false;
+    private SpriteRenderer sprite;
+
     private Character player = null;
 
     public EventUpgradeType upgradeType = EventUpgradeType.Basic;
@@ -52,13 +57,32 @@ public class EventFactory : MonoBehaviour
         {
             upgradeUI.gameObject.SetActive(false);
         }
+        sprite = GetComponent<SpriteRenderer>();
+        sprite.color = new Color(0, 0, 0, 0);
+
     }
 
+    private void Update() {
+        StartCoroutine(EnemiesAlive());
+    }
+
+    private IEnumerator EnemiesAlive() {
+        yield return new WaitForSeconds(1f);
+        if (FindFirstObjectByType<Enemy>() == null) {
+            yield return new WaitForSeconds(0.5f);
+            enemiesDefeated = true;
+            sprite.color = new Color(213, 255, 255, 255);
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
+            if (eventTriggerPopped || !enemiesDefeated) {
+                return;
+            }
             player = other.GetComponent<Character>();
 
             upgradeUI.gameObject.SetActive(true);
+            eventTriggerPopped = true;
             if (upgradeType == EventUpgradeType.Advanced)
             {
                 // rn we only have two advanced upgrades
@@ -100,12 +124,16 @@ public class EventFactory : MonoBehaviour
         SaveData.Instance.SaveToJson();
         player.SyncStats();
         upgradeUI.gameObject.SetActive(false);
+        Destroy(upgradeUI.gameObject);
         Destroy(gameObject);
     }
 
     private void PerformAdvancedUpgrade(string upgradeName)
     {
         var data = SaveData.Instance.data;
+        // Heal the player after boss fights
+        data.currentHealth = data.maxHealth;
+
         AdvancedUpgrade stat;
         if (upgradeName == "upgrade0")
         {

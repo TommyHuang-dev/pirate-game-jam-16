@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Character;
 
@@ -19,7 +20,7 @@ public class FinalBoss : Enemy {
 
     // Ranged
     private float timeBtwShots;
-    private float projectileSpeed = 5f;
+    private float projectileSpeed = 4f;
     // State
     private bool canMove;
     public enum State {
@@ -41,7 +42,7 @@ public class FinalBoss : Enemy {
         levelLoader = FindFirstObjectByType<LevelLoader>();
         isBoss = true;
         this.type = AIType.Custom;
-        health = 3000;
+        health = 2500;
         attackRate = 0.5f;
     }
 
@@ -104,19 +105,24 @@ public class FinalBoss : Enemy {
 
         float offsetX = Random.Range(-7f, 7f);
         float offsetY = Random.Range(-7f, 7f);
+        Vector2 offsetVec = new Vector2(bossPos.x + offsetX, bossPos.y + offsetY);
         // Prevent projectiles from spawning in a 2 unit rectangle around the player.
-        float playerBuffer = 5f;
-        while ((playerPos.x - playerBuffer) <= (bossPos.x + offsetX) && (bossPos.x + offsetX) <= (playerPos.x + playerBuffer)
-               && (playerPos.x - playerBuffer) <= (bossPos.x + offsetY) && (bossPos.x + offsetX) <= (playerPos.x + playerBuffer))
+        float playerBuffer = 7f;
+        if (Vector2.Distance(playerPos, offsetVec) < playerBuffer)
         {
-            offsetX = Random.Range(-7f, 7f);
-            offsetY = Random.Range(-7f, 7f);
+            offsetVec.x = bossPos.x + Random.Range(-7f, 7f);
+            offsetVec.y = bossPos.y + Random.Range(-7f, 7f);
+        }
+
+        // If we're still inside the buffer, don't spawn a projectile
+        if (Vector2.Distance(playerPos, offsetVec) < playerBuffer) {
+            return;
         }
         var projectileInstance = Instantiate(
-                                        projectile,
-                                        new Vector2(transform.position.x + offsetX, transform.position.y + offsetY),
-                                        Quaternion.identity
-                                       );
+                                    projectile,
+                                    new Vector2(transform.position.x + offsetX, transform.position.y + offsetY),
+                                    Quaternion.identity
+                                    );
         projectileInstance.damage = this.damage;
         projectileInstance.speed = projectileSpeed;
     }
