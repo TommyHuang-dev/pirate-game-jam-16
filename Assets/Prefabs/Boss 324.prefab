@@ -106,7 +106,7 @@ MonoBehaviour:
   isBoss: 0
   projectile: {fileID: 3395253121384911619, guid: 860fbec022611a3499820060af070aa4, type: 3}
   bossProjectile: {fileID: 2095737164271636193, guid: 02c3e7cfeb6b615439578db47ab5b6b9, type: 3}
-  health: 300
+  health: 1000
   knockBackResistance: 0
   maxSpeed: 2
   acceleration: 1
@@ -114,7 +114,7 @@ MonoBehaviour:
   attackRate: 1
   kiteDistance: {x: 5, y: 6}
   upgrader: {fileID: 0}
-  maximumHealth: 300
+  maximumHealth: 1000
 --- !u!50 &7350534640231080579
 Rigidbody2D:
   serializedVersion: 5

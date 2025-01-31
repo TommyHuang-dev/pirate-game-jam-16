@@ -297,7 +297,14 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      germ-Sheet_0: 1857560603859716565
+      germ-Sheet_1: 3629065312084167741
+      germ-Sheet_2: 6509378102906669632
+      germ-Sheet_3: 7819709940815376455
+      germ-Sheet_4: -6209675237572478768
+      germ-Sheet_5: -8893798236198690242
+      germ-Sheet_6: 1591528822043043402
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

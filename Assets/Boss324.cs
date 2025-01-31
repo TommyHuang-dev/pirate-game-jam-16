@@ -5,7 +5,7 @@ using UnityEngine;
 public class Boss324 : Enemy
 {
     public EventFactory upgrader;
-    public int maximumHealth = 300;
+    public int maximumHealth = 1000;
 
     public enum State
     {
