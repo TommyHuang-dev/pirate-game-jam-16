@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
         // TODO melee attack
     }
-    void RangedScript()
+    public void RangedScript()
     {
         var playerPos = player.transform.position;
         var minDistance = kiteDistance.x;
