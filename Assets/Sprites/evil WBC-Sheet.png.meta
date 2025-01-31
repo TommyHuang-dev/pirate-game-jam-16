@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      evil WBC-Sheet_0: -5822860980787622457
+      evil WBC-Sheet_1: 8516333950188604406
+      evil WBC-Sheet_2: 265718469287558151
+      evil WBC-Sheet_3: 4630716999746258464
+      evil WBC-Sheet_4: -5362024909868554393
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

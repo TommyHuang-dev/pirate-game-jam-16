@@ -247,7 +247,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      charger attack-Sheet-export_0: 5820236173076321208
+      charger attack-Sheet-export_1: 4196056508692411312
+      charger attack-Sheet-export_2: 2027112796959770454
+      charger attack-Sheet-export_3: -6638398246101970373
+      charger attack-Sheet-export_4: 6281555126499484255
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -11,6 +11,8 @@ public class Character : MonoBehaviour {
     private SpriteRenderer _effects;
     private Camera camera;
 
+    public LineRenderer _dashLine;
+
     // list of collected advanced upgrades
     public Dictionary<AdvancedUpgrade, int> collectedUpgrades = new Dictionary<AdvancedUpgrade, int>();
 
@@ -81,7 +83,9 @@ public class Character : MonoBehaviour {
 
     [Header("Sprite animation")]
     private bool flipped = false;
+
     private void Awake() {
+        _dashLine = GetComponentInChildren<LineRenderer>();
         SyncStats();
     }
 
@@ -317,6 +321,7 @@ public class Character : MonoBehaviour {
 
                 // DEBUG STUFF
                 Debug.DrawLine(transform.position, transform.position + (dashDuration.y * dashSpeed * dashDirection), Color.cyan, dashDuration.y);
+                _dashLine.enabled = false;
                 // ***
             }
             // DEBUG STUFF ***
@@ -329,7 +334,15 @@ public class Character : MonoBehaviour {
                 var dashDirection = mouseWorldPos - transform.position;
                 dashDirection.z = 0;
                 dashDirection.Normalize();
-                Debug.DrawLine(transform.position, transform.position + (dashDuration.y * dashSpeed * dashDirection), Color.white);
+
+                var lineVector0 = new Vector3(transform.position.x, transform.position.y, -1);
+                var lineVector1 = new Vector3(dashDirection.x, dashDirection.y, 0) * dashDistance;
+                lineVector1.Set(lineVector1.x, lineVector1.y, -1);
+                Debug.DrawLine(transform.position, transform.position + dashDirection, Color.white);
+                _dashLine.enabled = true;
+                _dashLine.positionCount = 2;
+                _dashLine.SetPosition(0, lineVector0);
+                _dashLine.SetPosition(1, lineVector0 + lineVector1);
             }
             // ***
         }
