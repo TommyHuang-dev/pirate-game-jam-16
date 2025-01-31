@@ -1,14 +1,21 @@
 using UnityEngine;
+using System;
+using UnityEngine.UI; // Make sure you include this for UI components
 
 public enum BasicUpgrade {
-    MoveSpeedBoost,
-    AttackSpeedBoost,
+    MoveSpeed,
+    AttackSpeed,
+    AttackDamage,
+    DashDistance,
+    DashDamage,
     Heal,
 }
 
 public enum AdvancedUpgrade
 {
-    Multishot
+    Multishot, // adds additional projectiles at an angle
+    RespiratoryBurst, // fires a spread of projectiles after a dash
+    DashLifesteal, // lifesteal during dash
 }
 
 public enum EventUpgradeType
@@ -22,13 +29,15 @@ public class EventFactory : MonoBehaviour
     [SerializeField] public BasicUpgrade eventType;
     [SerializeField] public GameObject pickupEffect;
     [SerializeField] public Canvas upgradeUI;
+    [SerializeField] public Button upButton0;
+    [SerializeField] public Button upButton1;
+
     private Character player = null;
 
     public EventUpgradeType upgradeType = EventUpgradeType.Basic;
 
     private void Start() {
         // Pick an event at random. Currently only 1 event!
-        eventType = (BasicUpgrade)Random.Range(0, 1);
         if (SaveData.Instance.data.currentRoomCompleted) {
             Destroy(gameObject);
         }
@@ -42,6 +51,16 @@ public class EventFactory : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             player = other.GetComponent<Character>();
+
+            var range = Enum.GetValues(typeof(BasicUpgrade)).Length;
+            var rand = new System.Random();
+            var upgrade0 = (BasicUpgrade)rand.Next(0, range);
+            var upgrade1 = (BasicUpgrade)rand.Next(0, range);
+            for (int i = 0; i < 5 && upgrade0 == upgrade1; i++)
+            {
+                upgrade1 = (BasicUpgrade)rand.Next(i, (range + i) % range);
+            }
+
             upgradeUI.gameObject.SetActive(true);
         }
     }
@@ -109,23 +128,23 @@ public class EventFactory : MonoBehaviour
         }
     }
 
-    private void StartEvent(Character player) {
-        switch (eventType) {
-            case BasicUpgrade.MoveSpeedBoost:
-                // Create an effect on pickup
-                Instantiate(pickupEffect, transform.position, transform.rotation);
-                // Increase player move speed by 5% of 5 (so it doesn't compound... unless we want it to)
-                Debug.Log("speed");
-                SaveData.Instance.data.moveSpeed = SaveData.Instance.data.moveSpeed * (1 + (5 * 0.05f));
-                SaveData.Instance.data.currentRoomCompleted = true;
-                SaveData.Instance.SaveToJson();
-                player.SyncStats();
-                // Remove event pickup asset.
-                Destroy(gameObject);
-                break;
-            default:
-                Debug.LogWarning("Invalid event type");
-                break;
-        }
-    }
+    //private void StartEvent(Character player) {
+    //    switch (eventType) {
+    //        case BasicUpgrade.MoveSpeed:
+    //            // Create an effect on pickup
+    //            Instantiate(pickupEffect, transform.position, transform.rotation);
+    //            // Increase player move speed by 5% of 5 (so it doesn't compound... unless we want it to)
+    //            Debug.Log("speed");
+    //            SaveData.Instance.data.moveSpeed = SaveData.Instance.data.moveSpeed * (1 + (5 * 0.05f));
+    //            SaveData.Instance.data.currentRoomCompleted = true;
+    //            SaveData.Instance.SaveToJson();
+    //            player.SyncStats();
+    //            // Remove event pickup asset.
+    //            Destroy(gameObject);
+    //            break;
+    //        default:
+    //            Debug.LogWarning("Invalid event type");
+    //            break;
+    //    }
+    //}
 }
