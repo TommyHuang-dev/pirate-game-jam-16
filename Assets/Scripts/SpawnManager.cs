@@ -12,8 +12,8 @@ public class SpawnManager : MonoBehaviour
     private LevelLoader.SceneType roomType;
 
     // Constants
-    private int eliteEnemyHP = 60;
-    private float eliteEnemyScale = 1.3f;
+    private int eliteEnemyHP = 150;
+    private float eliteEnemyScale = 1.4f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
                 return;
             case (LevelLoader.SceneType.EliteEnemy):
                 enemiesToSpawn = 3;
-                eliteEnemiesToSpawn = (int)(roomNum / 4) + 1;
+                eliteEnemiesToSpawn = (int)(roomNum / 2) + 1;
                 return;
             case (LevelLoader.SceneType.Boss):
                 isBossRoom = true;
@@ -76,11 +76,12 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnFromTop(bool spawnElite = false) {
         Vector3 spawnPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), -2);
-        int toSpawn = Random.Range(1, enemiesToSpawn);
+        int toSpawn = spawnElite ? Random.Range(1, eliteEnemiesToSpawn) : Random.Range(1, enemiesToSpawn);
         for (int i = 0; i < toSpawn; i++) {
             GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
             
             if (spawnElite) {
+                Debug.Log("spawn elite");
                 eliteEnemiesToSpawn--;
                 enemy.transform.localScale = Vector2.one * eliteEnemyScale;
                 enemy.GetComponent<Enemy>().health = eliteEnemyHP;

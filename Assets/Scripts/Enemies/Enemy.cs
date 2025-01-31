@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using static Character;
 
@@ -10,6 +11,7 @@ public class Enemy : MonoBehaviour
     protected GameObject player;
     protected SpriteRenderer sprite;
     protected LevelLoader levelLoader;
+    protected int numEnemies;
     [SerializeField] protected EnemyProjectile projectile;
     [SerializeField] protected BossProjectile bossProjectile;
 
@@ -69,7 +71,7 @@ public class Enemy : MonoBehaviour
 
         // TODO melee attack
     }
-    void RangedScript()
+    public void RangedScript()
     {
         var playerPos = player.transform.position;
         var minDistance = kiteDistance.x;
@@ -125,20 +127,23 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int numEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None).Count();
         if (sprite == null) { Debug.LogWarning("null sprite!"); }
         if (!canMove) { // Putting this here for now but if we do stuns it'll probably have to be moved to an isSpawning tracker
             // Move up or down depending on spawn location
             Vector2 target;
-            if (transform.position.y > 0) {
+            if (transform.position.y > 6) {
                 target = new Vector2(Random.Range(transform.position.x - 2f, transform.position.x + 2f), transform.position.y - 10f);
-            } else {
+            } else if (transform.position.y < -6) {
                 target = new Vector2(Random.Range(transform.position.x - 2f, transform.position.x + 2f), transform.position.y + 10f);
+            } else {
+                target = Vector2.zero;
             }
             
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 target,
-                Random.Range(maxSpeed - 1f, maxSpeed * 3f) * Time.deltaTime
+                Random.Range(maxSpeed * 0.5f, maxSpeed * 2f) * Time.deltaTime
             );
             //Debug.Log("current " + transform.position + " target " + target);
             return;
@@ -167,7 +172,14 @@ public class Enemy : MonoBehaviour
     public virtual void ApplyDamage(int damage)
     {
         health -= damage;
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.7f, 1f));
+        if (numEnemies < 5) {
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.3f, 0.4f));
+        } else if (numEnemies < 15) {
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.1f, 0.2f));
+        } else {
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.05f, 0.075f));
+        }
+
         if (health <= 0)
         {
             Destroy(gameObject);

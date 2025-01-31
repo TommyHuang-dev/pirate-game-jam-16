@@ -694,6 +694,10 @@ PrefabInstance:
       propertyPath: upgradeUI
       value: 
       objectReference: {fileID: 1763327728}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: upgradeType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
