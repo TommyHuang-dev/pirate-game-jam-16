@@ -1179,6 +1179,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: upgradeCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3163365809707268226, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3163365809707268226, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_fontStyle
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3163365809707268226, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4379373955538864188, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1266,6 +1278,18 @@ PrefabInstance:
     - target: {fileID: 5397776763014350874, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: upgrade0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136268259717611414, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136268259717611414, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_fontStyle
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136268259717611414, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8403397147108725521, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
