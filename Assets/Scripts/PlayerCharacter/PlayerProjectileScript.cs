@@ -10,18 +10,15 @@ public class PlayerProjectileScript : MonoBehaviour
         // Check if the other object is an enemy
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Projectile hit enemy");
             // Add logic to damage the enemy
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null) {
-                Debug.Log("Applying " + damage + " damage to enemy");
                 enemy.ApplyDamage(damage);
                 var knockbackDirection = enemy.transform.position - this.transform.position;
                 knockbackDirection.z = 0;
                 knockbackDirection.Normalize();
                 enemy.ApplyKnockback(knockbackDirection * knockback);
-            } else
-            {
+            } else {
                 Debug.LogError("Couldn't find the enemy object that was hit");
             }
 

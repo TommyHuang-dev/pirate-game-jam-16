@@ -14,7 +14,6 @@ public class SpawnManager : MonoBehaviour
     // Constants
     private int eliteEnemyHP = 60;
     private float eliteEnemyScale = 1.3f;
-    private int enemyHP = 20;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -23,7 +22,6 @@ public class SpawnManager : MonoBehaviour
         roomType = (LevelLoader.SceneType)SaveData.Instance.data.currentRoomType;
         CalcEnemiesToSpawn();
         
-        Debug.Log("Should spawn " +  enemiesToSpawn);
         StartCoroutine(SpawnEnemies());
     }
 
@@ -39,7 +37,6 @@ public class SpawnManager : MonoBehaviour
             case (LevelLoader.SceneType.EliteEnemy):
                 enemiesToSpawn = 3;
                 eliteEnemiesToSpawn = (int)(roomNum / 4) + 1;
-                Debug.Log("elites " + eliteEnemiesToSpawn);
                 return;
             case (LevelLoader.SceneType.Boss):
                 isBossRoom = true;
@@ -72,13 +69,13 @@ public class SpawnManager : MonoBehaviour
     }
 
     private void SpawnBoss() {
-        Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+        Vector3 spawnPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), -2);
         // Get the boss progression by (currentRoomNum / 4) - 1, where the prefabs are stored in order in an array
         GameObject boss = Instantiate(_bossPrefabs[(SaveData.Instance.data.currentRoomNumber / 4) - 1], spawnPos, Quaternion.identity);
     }
 
     private IEnumerator SpawnFromTop(bool spawnElite = false) {
-        Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+        Vector3 spawnPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f), -2);
         int toSpawn = Random.Range(1, enemiesToSpawn);
         for (int i = 0; i < toSpawn; i++) {
             GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
@@ -96,7 +93,7 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnFromBottom(bool spawnElite = false) {
         // Offset y by 14 to spawn from bottom (yay hardcoding)
-        Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), (transform.position.y - 14) + Random.Range(-0.5f, 0.5f));
+        Vector3 spawnPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), (transform.position.y - 14) + Random.Range(-0.5f, 0.5f), -2);
         int toSpawn = spawnElite ? Random.Range(1, eliteEnemiesToSpawn) : Random.Range(1, enemiesToSpawn);
         // Spawn a random number of enemies
         for (int i = 0; i < toSpawn; i++) {
