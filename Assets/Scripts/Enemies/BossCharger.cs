@@ -6,16 +6,30 @@ public class BossCharger : Enemy
 {
     private Rigidbody2D _rb;
 
-    [SerializeField] private float numCharges = 3f;  // charges in a row
-    [SerializeField] private float chargeDistance = 8f;
-    [SerializeField] private float chargeSpeed = 8f;
-    [SerializeField] private float interval = 0.5f;  // time between two charges in a set
-    [SerializeField] private float cooldown = 4.0f;  // cooldown between sets of charges
+    [SerializeField] private float chargeDistance = 6f;
+    [SerializeField] private float chargeSpeed = 10f;
 
-    private Vector2 testReset = new Vector2(0f, 2.0f);
+    [SerializeField] private int numCharges = 3;  // charges in a row
+    private Vector2 chargeCD = new Vector2(1.5f, 2.5f);
+    private float interval = 1.0f;  // time between two charges in a set
+    private int chargesLeft = 0;
+
+    public EventFactory upgrader;
+
+    public enum State
+    {
+        Charging,
+        Recovery
+    }
+    State state = State.Recovery;
 
     protected override void setType()
     {
+        upgrader = FindFirstObjectByType<EventFactory>();
+        upgrader.upgradeUI.gameObject.SetActive(false);
+        upgrader.upgradeType = EventUpgradeType.Advanced;
+        upgrader.gameObject.SetActive(false);
+        _rb = this.GetComponent<Rigidbody2D>();
         levelLoader = FindFirstObjectByType<LevelLoader>();
         isBoss = true;
         this.type = AIType.Custom;
@@ -23,42 +37,46 @@ public class BossCharger : Enemy
 
     protected override void CustomBehaviour()
     {
-        testReset.x -= Time.deltaTime;
-        if (testReset.x <= 0)
+        chargeCD.x -= Time.deltaTime;
+        // friction if not charging
+        if (state == State.Recovery)
+        {
+            _rb.linearVelocity *= (1 - (Time.deltaTime * 0.8f));
+            if (chargeCD.x <= 0)
+            {
+                chargesLeft = numCharges;
+                state = State.Charging;
+            }
+        }
+        if (state == State.Charging && chargeCD.x <= 0)
         {
             var directionDiff = player.transform.position - this.transform.position;
             var chargeVector = new Vector2(directionDiff.x, directionDiff.y).normalized;
+            chargeVector.x += Random.Range(-0.1f, 0.1f);
+            chargeVector.y += Random.Range(-0.1f, 0.1f);
             chargeVector *= chargeSpeed;
             _rb = this.GetComponent<Rigidbody2D>();
             _rb.linearVelocity = chargeVector;
 
-            testReset.x = testReset.y;
+            chargesLeft--;
+            chargeCD.x = interval;
+            if (chargesLeft <= 0)
+            {
+                state = State.Recovery;
+                chargeCD.x = chargeCD.y;
+            }
+        }
+        if (state == State.Charging && chargeCD.x <= interval * 0.2f)
+        {
+            _rb.linearVelocity *= (1 - (Time.deltaTime * 0.3f));
         }
     }
 
-    //public void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    // Check if the other object is an player
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        // Damage the player on hit
-    //        Character player = other.GetComponent<Character>();
-    //        if (player != null)
-    //        {
-    //            Debug.Log("Applying " + damage + " damage");
-    //            player.ApplyDamage(damage);
-    //        }
-    //    }
-    //}
     public void OnCollisionEnter2D(Collision2D other) { // Since the boss has collision, use this instead
-        // Check if the other object is an player
         Character player = other.gameObject.GetComponent<Character>();
-        if (player != null && player.currentDashState != Character.DashState.Dashing) {
-            // Damage the player on hit
-            Debug.Log("Applying " + damage + " damage");
+        if (player != null && state == State.Charging)
+        {
             player.ApplyDamage(damage);
-        } else if (player != null) {
-            damageFlash = 0.5f;
         }
     }
 
@@ -69,6 +87,7 @@ public class BossCharger : Enemy
         if (health <= 0)
         {
             Die();
+            upgrader.gameObject.SetActive(true);
             Destroy(gameObject);
         }
         damageFlash = 0.5f;

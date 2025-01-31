@@ -124,7 +124,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (sprite == null) { Debug.Log("null sprite?"); }
+        if (sprite == null) { Debug.LogWarning("null sprite!"); }
         if (!canMove) { // Putting this here for now but if we do stuns it'll probably have to be moved to an isSpawning tracker
             // Move up or down depending on spawn location
             Vector2 target;
@@ -139,7 +139,7 @@ public class Enemy : MonoBehaviour
                 target,
                 Random.Range(maxSpeed - 1f, maxSpeed * 3f) * Time.deltaTime
             );
-            Debug.Log("current " + transform.position + " target " + target);
+            //Debug.Log("current " + transform.position + " target " + target);
             return;
         }
 
