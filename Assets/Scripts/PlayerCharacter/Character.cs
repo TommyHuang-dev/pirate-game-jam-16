@@ -201,9 +201,19 @@ public class Character : MonoBehaviour {
             if (dashDuration.x <= 0)
             {
                 dashCooldown.x = dashCooldown.y;
-
+                
+                // end of dash
                 dashDrift.x = dashDrift.y;
                 currentDashState = DashState.Recovery;
+
+                if (collectedUpgrades.ContainsKey(AdvancedUpgrade.RespiratoryBurst))
+                {
+                    spawnAttack(
+                        new Vector2(attackProjectileSpeed, 0),
+                        16,
+                        22.5f
+                    );
+                }
             }
         }
         #endregion

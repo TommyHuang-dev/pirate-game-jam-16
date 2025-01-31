@@ -1149,7 +1149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5397776763014350874, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Multishot
+      value: upgrade0
       objectReference: {fileID: 0}
     - target: {fileID: 6136268259717611414, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_text
@@ -1165,7 +1165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8403397147108725521, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Multishot
+      value: upgrade1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

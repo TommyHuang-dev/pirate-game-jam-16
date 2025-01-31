@@ -39,6 +39,8 @@ public class EventFactory : MonoBehaviour
 
     private BasicUpgrade upgrade0;
     private BasicUpgrade upgrade1;
+    private AdvancedUpgrade advUpgrade0;
+    private AdvancedUpgrade advUpgrade1;
 
     private void Start() {
         // Pick an event at random. Currently only 1 event!
@@ -56,17 +58,30 @@ public class EventFactory : MonoBehaviour
         if (other.CompareTag("Player")) {
             player = other.GetComponent<Character>();
 
-            var range = Enum.GetValues(typeof(BasicUpgrade)).Length;
-            var rand = new System.Random();
-            upgrade0 = (BasicUpgrade)rand.Next(0, range);
-            upgrade1 = (BasicUpgrade)rand.Next(0, range);
-            for (int i = 0; i < 5 && upgrade0 == upgrade1; i++)
-            {
-                upgrade1 = (BasicUpgrade)rand.Next(i, (range + i) % range);
-            }
             upgradeUI.gameObject.SetActive(true);
-            button0.GetComponentInChildren<TextMeshProUGUI>().text = "adaptation: " + upgrade0.ToString();  // Set text for button 1
-            button1.GetComponentInChildren<TextMeshProUGUI>().text = "adaptation: " + upgrade1.ToString(); // Set text for button 2
+            if (upgradeType == EventUpgradeType.Advanced)
+            {
+                // rn we only have two advanced upgrades
+                advUpgrade0 = AdvancedUpgrade.Multishot;
+                advUpgrade1 = AdvancedUpgrade.RespiratoryBurst;
+
+                button0.GetComponentInChildren<TextMeshProUGUI>().text = "specialization: B cell";  // Set text for button 1
+                button1.GetComponentInChildren<TextMeshProUGUI>().text = "specialization: Macrophage"; // Set text for button 2
+            } else
+            {
+                // select two random basic upgrades
+                var range = Enum.GetValues(typeof(BasicUpgrade)).Length;
+                var rand = new System.Random();
+                upgrade0 = (BasicUpgrade)rand.Next(0, range);
+                upgrade1 = (BasicUpgrade)rand.Next(0, range);
+                for (int i = 0; i < 5 && upgrade0 == upgrade1; i++)
+                {
+                    upgrade1 = (BasicUpgrade)rand.Next(i, (range + i) % range);
+                }
+
+                button0.GetComponentInChildren<TextMeshProUGUI>().text = "adaptation: " + upgrade0.ToString();  // Set text for button 1
+                button1.GetComponentInChildren<TextMeshProUGUI>().text = "adaptation: " + upgrade1.ToString(); // Set text for button 2
+            }
         }
     }
 
@@ -88,16 +103,28 @@ public class EventFactory : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void PerformAdvancedUpgrade(string upgrade)
+    private void PerformAdvancedUpgrade(string upgradeName)
     {
-
         var data = SaveData.Instance.data;
-        switch (upgrade)
+        AdvancedUpgrade stat;
+        if (upgradeName == "upgrade0")
         {
-            case nameof(AdvancedUpgrade.Multishot):
+            stat = advUpgrade0;
+        }
+        else
+        {
+            stat = advUpgrade1;
+        }
+
+        switch (stat)
+        {
+            case AdvancedUpgrade.Multishot:
                 int val;
                 data.collectedUpgrades.TryGetValue(AdvancedUpgrade.Multishot, out val);
                 data.collectedUpgrades[AdvancedUpgrade.Multishot] = val + 1;
+                break;
+            case AdvancedUpgrade.RespiratoryBurst:
+                data.collectedUpgrades[AdvancedUpgrade.RespiratoryBurst] = 1;
                 break;
             default:
                 Debug.Log("did not find the upgrade: available upgrades: " + nameof(AdvancedUpgrade.Multishot));
