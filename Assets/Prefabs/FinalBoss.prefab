@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBoss: 1
   projectile: {fileID: -5446070440206145258, guid: 7bda312f6dc5e8d4cab3fc0c1fd14cc4, type: 3}
+  bossProjectile: {fileID: 0}
   health: 3000
   knockBackResistance: 0
   maxSpeed: 2
