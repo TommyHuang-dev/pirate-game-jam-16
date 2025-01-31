@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fc3b243fda3b512418427f35439930ae
+guid: 109d350c91208ca4bae4791f65368a10
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -722,7 +722,31 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WBC idle-Sheet_0: -5345772627853341888
+      WBC idle-Sheet_1: 4368378224697545382
+      WBC idle-Sheet_10: -3564329595939261634
+      WBC idle-Sheet_11: 5549452875552112374
+      WBC idle-Sheet_12: 411283437354028545
+      WBC idle-Sheet_13: -168523862413601221
+      WBC idle-Sheet_14: -2776994873652276425
+      WBC idle-Sheet_15: 8726385663641351077
+      WBC idle-Sheet_16: -843676478837352768
+      WBC idle-Sheet_17: -4457814251684538226
+      WBC idle-Sheet_18: 7095639845343887593
+      WBC idle-Sheet_19: -618656784812312471
+      WBC idle-Sheet_2: -4453385801897060916
+      WBC idle-Sheet_20: -3288128724201280445
+      WBC idle-Sheet_21: -4750286550862907402
+      WBC idle-Sheet_22: -2982759635045989618
+      WBC idle-Sheet_23: 5356411999468285266
+      WBC idle-Sheet_3: 6212118084694031611
+      WBC idle-Sheet_4: -734449814893324778
+      WBC idle-Sheet_5: 2725957314293495021
+      WBC idle-Sheet_6: 7647191720008854009
+      WBC idle-Sheet_7: -4303349434582302380
+      WBC idle-Sheet_8: -6397188060700596686
+      WBC idle-Sheet_9: -3915106240892382380
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

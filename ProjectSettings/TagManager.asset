@@ -6,6 +6,9 @@ TagManager:
   tags:
   - RoomExit
   - LevelLoader
+  - PlayerProjectile
+  - Enemy
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX

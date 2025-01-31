@@ -1,42 +1,64 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
-    public float transitionTime = 2.0f;
+    public float transitionTime = 1.5f;
 
     public enum SceneType {
         MainMenu,
-        BasicEnemy=2, // Start from 2, new run room = 1.
+        NewRunRoom,
+        BasicEnemy,
         EliteEnemy,
         Event,
         Boss
-    } [SerializeField] private SceneType currentScene;
+    } [SerializeField] public SceneType currentScene;
 
+    private void Start() {
+        currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
+        if (currentScene != SceneType.MainMenu) { // Don't overwrite stuff from main menu
+            SaveData.Instance.data.currentRoomType = SceneManager.GetActiveScene().buildIndex;
+        }
+        // Go from win scene to main menu. TODO: Win screen logic should flow better and not be split like this... what is it even doing in here
+        if (SaveData.Instance.data.currentRoomNumber == 13) {
+            SaveData.Instance.data.currentRoomNumber++;
+            AudioManager.Instance.PlayWinLoss(true, 2);
+            StartCoroutine(LoadFromWin());
+        }
+    }
+
+    private IEnumerator LoadFromWin() {
+        yield return new WaitForSeconds(10.0f);
+        SaveData.Instance.data.currentRoomType = (int)SceneType.MainMenu;
+        SceneManager.LoadScene((int)SceneType.MainMenu);
+    }
     public void LoadNextLevel(SceneType nextType) {
         StartCoroutine(LoadLevel((int) nextType));
     }
     public IEnumerator LoadLevel(int levelIndex) {//, SceneType nextSceneType) {
-        // Play animation (trigger fade start), then load the next scene after some time.
+         // Play animation (trigger fade start), then load the next scene after some time.
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
+        // Go to win screen if the player made it. TODO: Win screen logic should flow better and not be split like this
+        if (SaveData.Instance.data.currentRoomNumber == 12) {
+            SaveData.Instance.data.currentRoomNumber++;
+            Debug.Log("load win");
+            SceneManager.LoadScene("WinScene");
+            yield break;
+        }
         SceneManager.LoadScene(levelIndex);
         if (currentScene != SceneType.MainMenu) {
             // Increment player progression
-            PlayerPrefs.SetInt(
-                "currentRoomNumber",
-                PlayerPrefs.GetInt("currentRoomNumber", 0) + 1
-            );
-            Debug.Log("Current Room: " + PlayerPrefs.GetInt("currentRoomNumber", 0));
+            SaveData.Instance.data.currentRoomNumber++;
+            SaveData.Instance.data.currentRoomType = levelIndex;
+            SaveData.Instance.data.currentRoomCompleted = false;
+            
+            Debug.Log("Current Room: " + SaveData.Instance.data.currentRoomNumber);
         }
          
-        //TODO: Make this an enum maybe
-        if (levelIndex == 2 || levelIndex == 3 || levelIndex == 5) {
-            AudioManager.Instance.SwapTrack(1);
-        } else {
-            AudioManager.Instance.SwapTrack(0);
-        }
+        AudioManager.Instance.SwapTrack(levelIndex);
     }
 }
