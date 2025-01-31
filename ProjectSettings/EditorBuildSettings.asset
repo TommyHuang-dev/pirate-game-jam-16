@@ -20,9 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EventRoom.unity
     guid: 3243df935ea8db9408241fc93ef40448
+  - enabled: 0
+    path: Assets/Scenes/BossRoom_Test.unity
+    guid: 499b9f635e369d9458f0746eccd2abb3
   - enabled: 1
     path: Assets/Scenes/BossRoom.unity
-    guid: 499b9f635e369d9458f0746eccd2abb3
+    guid: c0e1d0c3eb136a848b8dd56885a028c4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
