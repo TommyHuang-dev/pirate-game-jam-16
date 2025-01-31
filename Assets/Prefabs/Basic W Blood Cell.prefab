@@ -121,6 +121,9 @@ MonoBehaviour:
   dashDrift: {x: 0, y: 0.4}
   maxHealth: 0
   currentHealth: 0
+  isInvincible: 0
+  invincibilityDuration: 1
+  invincibilityDeltaTime: 0.1
   projectile: {fileID: 6107819281015337438, guid: a3ec6206a7ff60c458f19717ed84a3a4, type: 3}
   attackRate: 4
   attackDamage: 5
@@ -142,7 +145,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 55dfdfd77a4bbb148881a7258e2e99f0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -163,7 +166,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 55dfdfd77a4bbb148881a7258e2e99f0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

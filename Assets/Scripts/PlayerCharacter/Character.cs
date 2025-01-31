@@ -1,8 +1,6 @@
+using CameraShake;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static System.TimeZoneInfo;
-using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour {
     private Animator _animator;
@@ -29,14 +27,14 @@ public class Character : MonoBehaviour {
     }
     [SerializeField] public PlayerState currentState = PlayerState.Stopped;
 
-    private enum DashState
+    public enum DashState
     {
         None,
         Charging,
         Dashing,
         Recovery
     }
-    [SerializeField] private DashState currentDashState = DashState.None;
+    [SerializeField] public DashState currentDashState = DashState.None;
 
     [Header("Dash Variables")]
     #region Dash Attack
@@ -58,13 +56,16 @@ public class Character : MonoBehaviour {
     [Header("Combat Variables")]
     public int maxHealth;
     public int currentHealth;
+    public bool isInvincible = false;
+    public float invincibilityDuration = 1.5f;
+    public float invincibilityDeltaTime = 0.15f;
+
     #region Ranged Attack
     public GameObject projectile;
     public float attackRate, attackDamage;
     private float attackCooldown = 0; // remaining cooldown before next shot
     public float attackProjectileSpeed = 10.0f;
     public float attackProjectileDuration = 1.5f;
-    private float damageFlash = 0;  // set after taking damage, ticks down
     #endregion
 
     [Header("Navigation")]
@@ -103,6 +104,7 @@ public class Character : MonoBehaviour {
             Input.GetKey(KeyCode.Mouse0) 
             && attackCooldown <= 0f 
             && currentDashState != DashState.Charging 
+            && currentDashState != DashState.Dashing
             && currentState != PlayerState.NoControl
             )
         {
@@ -115,7 +117,7 @@ public class Character : MonoBehaviour {
             attackVelocity *= attackProjectileSpeed;
 
             spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
-            
+            //CameraShaker.Presets.ShortShake2D(positionStrength:0.04f, rotationStrength:0.05f);
             if (attackVelocity.x > 0.1f)
             {
                 flipped = false;
@@ -167,7 +169,7 @@ public class Character : MonoBehaviour {
         {   
             _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
             dashDuration.x -= Time.fixedDeltaTime;
-            _rb.linearVelocity = dashVector;
+            //_rb.linearVelocity = dashVector;
             if (dashDuration.x <= 0)
             {
                 dashCooldown.x = dashCooldown.y;
@@ -175,7 +177,6 @@ public class Character : MonoBehaviour {
                 dashDrift.x = dashDrift.y;
                 currentDashState = DashState.Recovery;
             }
-            // TODO damage on enemy contact
         }
         #endregion
 
@@ -217,14 +218,6 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity += -frictionAmount * direction * Time.fixedDeltaTime;
         }
         #endregion
-
-
-    }
-
-    // Called every frame.
-    private void Update() {
-        _effects.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
-        damageFlash = Mathf.Max(0, damageFlash - 4 * Time.deltaTime);
     }
 
     private void spawnAttack(Vector2 velocity)
@@ -238,6 +231,10 @@ public class Character : MonoBehaviour {
             float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
             GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
             Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
+            //if (SaveData.Instance.data.attackRate < 20) {
+            //    AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+            //} else { } // Too annoying, figure it out later?
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
 
             rb.linearVelocity = velocity;
             Destroy(spawnedObject, attackProjectileDuration);
@@ -261,7 +258,7 @@ public class Character : MonoBehaviour {
                 currentDashState = DashState.Charging;
             }
         }
-        if (currentDashState == DashState.Charging)
+        if (currentDashState == DashState.Charging && currentState != PlayerState.NoControl)
         {
             // change state to dash and set dash vector if button released
             dashCharge.x = Mathf.Min(dashCharge.y, dashCharge.x + Time.deltaTime);
@@ -276,6 +273,7 @@ public class Character : MonoBehaviour {
                 dashDirection.z = 0;
                 dashDirection.Normalize();
                 dashVector = dashDirection * dashSpeed;
+                _rb.linearVelocity = dashVector;
 
                 dashDuration.x = dashDuration.y;
                 currentDashState = DashState.Dashing;
@@ -335,9 +333,9 @@ public class Character : MonoBehaviour {
             var enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
             if (enemyCount == 0)
             {
-            var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
-            Debug.Log("Going to a " + capillary.queuedScene.ToString());
-            _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
+                var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
+                SaveData.Instance.data.currentRoomCompleted = true;
+                _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
             } else
             {
                 Debug.Log("Went to the exit, but there are still " + enemyCount + " enemies alive!");
@@ -349,12 +347,26 @@ public class Character : MonoBehaviour {
         {
             Debug.Log("Player ate enemy");
             // Add logic to damage the enemy
-            BacteriaChase enemy = other.GetComponent<BacteriaChase>();
-            if (enemy != null)
+            Enemy enemy = other.GetComponent<Enemy>();
+            if (enemy != null && !enemy.isBoss) // Boss logic handled in onCollision
             {
                 Debug.Log("Applying " + dashDamage + " damage");
                 enemy.ApplyDamage(dashDamage); // Example damage value
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        if (enemy != null) {
+            if (currentDashState == DashState.Dashing) {
+                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+            }
+        }
+        if (enemy != null && enemy.isBoss) {
+            CameraShaker.Presets.ShortShake2D(positionStrength: 0.08f, rotationStrength: 0.05f);
+            Debug.Log("Applying " + dashDamage + " damage");
+            enemy.ApplyDamage(dashDamage); // Example damage value
         }
     }
     #endregion
@@ -362,31 +374,48 @@ public class Character : MonoBehaviour {
 
     #region Combat
     public void ApplyDamage(int amount) {
+        if (isInvincible) { return;  }
         if (currentDashState != DashState.Dashing)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
-            damageFlash = 0.5f;
             currentHealth -= amount;
             SaveData.Instance.data.currentHealth -= amount;
-            //SyncStats();
+
+            if (currentHealth <= 0) {
+                Die();
+            } else {
+                StartCoroutine(Invincibility());
+            }
         }
 
-        if (currentHealth <= 0) {
-            Die();
+        
+    }
+
+    private IEnumerator Invincibility() {
+        isInvincible = true;
+        for (float i = 0; i < invincibilityDuration; i += invincibilityDeltaTime) {
+            _effects.color = new Color(255, 255, 255, 0);
+            yield return new WaitForSeconds(invincibilityDeltaTime);
+            _effects.color = Color.white;
+            yield return new WaitForSeconds(invincibilityDeltaTime);
         }
+        isInvincible = false;
     }
 
     private void Die() {
-        currentState = PlayerState.NoControl;
-        //_rb.AddForce(5.0f * Vector2.up, ForceMode2D.Impulse);
         StartCoroutine(Lose());
     }
 
     private IEnumerator Lose() {
-        damageFlash = 1.0f;
+        _effects.color = Color.red;
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, 0.7f, 1.4f);
         AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
+        currentState = PlayerState.NoControl;
         _collider.enabled = false;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1f);
+        _effects.color = new Color(0, 0, 0, 0);     
+        yield return new WaitForSeconds(6f);
         _levelLoader.LoadNextLevel(0);
         SaveData.Instance.DeleteSaveData(); // ouch :(
     }
