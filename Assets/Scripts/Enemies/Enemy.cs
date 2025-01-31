@@ -153,6 +153,9 @@ public class Enemy : MonoBehaviour
         {
             CustomBehaviour();
         }
+        
+
+        
         // Sprite colour changes to indicate damage
         sprite.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
         
