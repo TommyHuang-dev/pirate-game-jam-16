@@ -22,4 +22,8 @@ public class MainMenu : MonoBehaviour
             AudioManager.Instance.SwapTrack(SaveData.Instance.data.currentRoomType);
         }       
     }
+
+    public void QuitGame() {
+        Application.Quit();
+    }
 }

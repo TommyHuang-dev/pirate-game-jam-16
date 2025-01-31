@@ -17,8 +17,10 @@ public class LevelLoader : MonoBehaviour
     } [SerializeField] public SceneType currentScene;
 
     private void Start() {
-        SaveData.Instance.data.currentRoomType = SceneManager.GetActiveScene().buildIndex;
         currentScene = (SceneType)SceneManager.GetActiveScene().buildIndex;
+        if (currentScene != SceneType.MainMenu) { // Don't overwrite stuff from main menu
+            SaveData.Instance.data.currentRoomType = SceneManager.GetActiveScene().buildIndex;
+        }
     }
 
     public void LoadNextLevel(SceneType nextType) {
@@ -32,6 +34,7 @@ public class LevelLoader : MonoBehaviour
         if (currentScene != SceneType.MainMenu) {
             // Increment player progression
             SaveData.Instance.data.currentRoomNumber++;
+            SaveData.Instance.data.currentRoomType = levelIndex;
             SaveData.Instance.data.currentRoomCompleted = false;
             
             Debug.Log("Current Room: " + SaveData.Instance.data.currentRoomNumber);
