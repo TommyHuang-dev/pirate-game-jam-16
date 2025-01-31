@@ -34,6 +34,7 @@ public class LevelLoader : MonoBehaviour
         if (currentScene != SceneType.MainMenu) {
             // Increment player progression
             SaveData.Instance.data.currentRoomNumber++;
+            SaveData.Instance.data.currentRoomType = levelIndex;
             SaveData.Instance.data.currentRoomCompleted = false;
             
             Debug.Log("Current Room: " + SaveData.Instance.data.currentRoomNumber);
