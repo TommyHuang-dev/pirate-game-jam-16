@@ -1,22 +1,37 @@
 fileFormatVersion: 2
-guid: e2416135f7a4b8e43aa3a96c03f61ba8
+guid: 0ed1643effe2e1c43a3851518fea1224
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7350829465463399392
-    second: WBC-movement-horizontal-2x-upscale_0
+      213: -5988773827620058720
+    second: topwall_0
   - first:
-      213: 4267651846631974316
-    second: WBC-movement-horizontal-2x-upscale_1
+      213: 1283723572660421205
+    second: topwall_1
   - first:
-      213: 2418584477140322377
-    second: WBC-movement-horizontal-2x-upscale_2
+      213: 2051988982648925778
+    second: topwall_2
   - first:
-      213: -3385226782898338074
-    second: WBC-movement-horizontal-2x-upscale_3
+      213: 7753978302406418565
+    second: topwall_3
   - first:
-      213: 6185565596143813398
-    second: WBC-movement-horizontal-2x-upscale_4
+      213: 7843395038333997023
+    second: topwall_4
+  - first:
+      213: 6845899973566691679
+    second: topwall_5
+  - first:
+      213: -3249372772874739960
+    second: topwall_6
+  - first:
+      213: -5918927842678106125
+    second: topwall_7
+  - first:
+      213: -1874542130422941919
+    second: topwall_8
+  - first:
+      213: 8985961663146489112
+    second: topwall_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -125,12 +140,100 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WBC-movement-horizontal-2x-upscale_0
+      name: topwall_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 7
-        width: 48
+        x: 0
+        y: 999
+        width: 161
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a9cc840fe993eca0800000000000000
+      internalID: -5988773827620058720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: topwall_1
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 1071
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5524832b9c3b0d110800000000000000
+      internalID: 1283723572660421205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: topwall_2
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 895
+        width: 1138
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25eedc99b112a7c10800000000000000
+      internalID: 2051988982648925778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: topwall_3
+      rect:
+        serializedVersion: 2
+        x: 1839
+        y: 1023
+        width: 81
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58065070f2aab9b60800000000000000
+      internalID: 7753978302406418565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: topwall_4
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 975
+        width: 18
         height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -140,20 +243,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e3ab65d374630660800000000000000
-      internalID: 7350829465463399392
+      spriteID: fdf85f43b3659dc60800000000000000
+      internalID: 7843395038333997023
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WBC-movement-horizontal-2x-upscale_1
+      name: topwall_5
       rect:
         serializedVersion: 2
-        x: 65
-        y: 13
-        width: 54
-        height: 40
+        x: 543
+        y: 887
+        width: 10
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +265,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca5e9875ebeb93b30800000000000000
-      internalID: 4267651846631974316
+      spriteID: f597c4c31c5810f50800000000000000
+      internalID: 6845899973566691679
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WBC-movement-horizontal-2x-upscale_2
+      name: topwall_6
       rect:
         serializedVersion: 2
-        x: 129
-        y: 13
-        width: 54
-        height: 40
+        x: 1143
+        y: 879
+        width: 10
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,20 +287,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 948093b84c9809120800000000000000
-      internalID: 2418584477140322377
+      spriteID: 80f99f1dda8e7e2d0800000000000000
+      internalID: -3249372772874739960
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WBC-movement-horizontal-2x-upscale_3
+      name: topwall_7
       rect:
         serializedVersion: 2
-        x: 193
-        y: 13
-        width: 54
-        height: 40
+        x: 1247
+        y: 879
+        width: 10
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,20 +309,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6e6c4393d224501d0800000000000000
-      internalID: -3385226782898338074
+      spriteID: 3f79006ac7ebbdda0800000000000000
+      internalID: -5918927842678106125
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WBC-movement-horizontal-2x-upscale_4
+      name: topwall_8
       rect:
         serializedVersion: 2
-        x: 257
-        y: 13
-        width: 54
-        height: 40
+        x: 1295
+        y: 887
+        width: 10
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,8 +331,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 613870d132b87d550800000000000000
-      internalID: 6185565596143813398
+      spriteID: 127f2a73dd94cf5e0800000000000000
+      internalID: -1874542130422941919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: topwall_9
+      rect:
+        serializedVersion: 2
+        x: 1255
+        y: 863
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 815ff11e58c84bc70800000000000000
+      internalID: 8985961663146489112
       vertices: []
       indices: 
       edges: []
@@ -247,12 +372,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      WBC-movement-horizontal-2x-upscale_0: 7350829465463399392
-      WBC-movement-horizontal-2x-upscale_1: 4267651846631974316
-      WBC-movement-horizontal-2x-upscale_2: 2418584477140322377
-      WBC-movement-horizontal-2x-upscale_3: -3385226782898338074
-      WBC-movement-horizontal-2x-upscale_4: 6185565596143813398
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
