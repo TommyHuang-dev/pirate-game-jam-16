@@ -4,39 +4,63 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public int enemiesToSpawn;
+    public int enemiesToSpawn = 0;
+    public int eliteEnemiesToSpawn = 0;
+    public bool isBossRoom = false;
     public GameObject[] _enemyPrefabs;
+    public GameObject[] _bossPrefabs;
     private LevelLoader.SceneType roomType;
-    //private LevelLoader _levelLoader;
+
+    // Constants
+    private int eliteEnemyHP = 60;
+    private float eliteEnemyScale = 1.3f;
+    private int enemyHP = 20;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         //_levelLoader = FindFirstObjectByType<LevelLoader>();
         roomType = (LevelLoader.SceneType)SaveData.Instance.data.currentRoomType;
-        enemiesToSpawn = CalcEnemiesToSpawn();
+        CalcEnemiesToSpawn();
         
         Debug.Log("Should spawn " +  enemiesToSpawn);
         StartCoroutine(SpawnEnemies());
     }
 
-    private int CalcEnemiesToSpawn() {
+    private void CalcEnemiesToSpawn() {
         int roomNum = SaveData.Instance.data.currentRoomNumber;
         Debug.Log("scenetype " + roomType);
 
         // Idk
         switch(roomType) {
             case (LevelLoader.SceneType.BasicEnemy):
-                return (roomNum > 8) ? roomNum : roomNum + 3; // Have some sense of scaling in enemy rooms
+                enemiesToSpawn = (roomNum > 8) ? roomNum : roomNum + 3; // Have some sense of scaling in enemy rooms
+                return;
             case (LevelLoader.SceneType.EliteEnemy):
-                return (roomNum > 8) ? 2 : 1;
+                enemiesToSpawn = 3;
+                eliteEnemiesToSpawn = (int)(roomNum / 4) + 1;
+                Debug.Log("elites " + eliteEnemiesToSpawn);
+                return;
             case (LevelLoader.SceneType.Boss):
-                return 1;
+                isBossRoom = true;
+                return;
             default:
-                return 0;
+                return;
         }
     }
     private IEnumerator SpawnEnemies() {
-        
+        if (isBossRoom) {
+            SpawnBoss();
+        }
+
+        while (eliteEnemiesToSpawn > 0) {
+            if (Random.Range(0f, 1f) > 0.5f) {
+                StartCoroutine(SpawnFromTop(spawnElite: true));
+            } else {
+                StartCoroutine(SpawnFromBottom(spawnElite: true));
+            }
+        }
+
         while (enemiesToSpawn > 0) {
             if (Random.Range(0f, 1f) > 0.5f) {
                 StartCoroutine(SpawnFromTop());
@@ -47,26 +71,46 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
     }
 
-    private IEnumerator SpawnFromTop() {
+    private void SpawnBoss() {
+        Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+        // Get the boss progression by (currentRoomNum / 4) - 1, where the prefabs are stored in order in an array
+        GameObject boss = Instantiate(_bossPrefabs[(SaveData.Instance.data.currentRoomNumber / 4) - 1], spawnPos, Quaternion.identity);
+    }
+
+    private IEnumerator SpawnFromTop(bool spawnElite = false) {
         Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
         int toSpawn = Random.Range(1, enemiesToSpawn);
         for (int i = 0; i < toSpawn; i++) {
             GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
-            enemiesToSpawn--;
+            
+            if (spawnElite) {
+                eliteEnemiesToSpawn--;
+                enemy.transform.localScale = Vector2.one * eliteEnemyScale;
+                enemy.GetComponent<Enemy>().health = eliteEnemyHP;
+            } else {
+                enemiesToSpawn--;
+            }
             yield return new WaitForSeconds(0.2f);
         }
     }
 
-    private IEnumerator SpawnFromBottom() {
+    private IEnumerator SpawnFromBottom(bool spawnElite = false) {
         // Offset y by 14 to spawn from bottom (yay hardcoding)
         Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), (transform.position.y - 14) + Random.Range(-0.5f, 0.5f));
-        int toSpawn = Random.Range(1, enemiesToSpawn);
+        int toSpawn = spawnElite ? Random.Range(1, eliteEnemiesToSpawn) : Random.Range(1, enemiesToSpawn);
+        // Spawn a random number of enemies
         for (int i = 0; i < toSpawn; i++) {
             GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
-            enemiesToSpawn--;
+            
+            if (spawnElite) {
+                eliteEnemiesToSpawn--;
+                enemy.transform.localScale = Vector2.one * eliteEnemyScale;
+                enemy.GetComponent<Enemy>().health = eliteEnemyHP;
+            } else {
+                enemiesToSpawn--;
+            }
             yield return new WaitForSeconds(0.2f);
         }
-
         yield return new WaitForSeconds(1f);
     }
 }

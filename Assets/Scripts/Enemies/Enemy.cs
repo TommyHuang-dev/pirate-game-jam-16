@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected EnemyProjectile projectile;
 
     // all enemies should have these properties
-    [SerializeField] protected int health = 20;
+    [SerializeField] public int health = 20;
     [SerializeField] protected float knockBackResistance = 0;
     [SerializeField] protected float maxSpeed = 2f;
     [SerializeField] protected float acceleration = 1f; // between 0 and 1. 1 means it instantly moves at max speed
