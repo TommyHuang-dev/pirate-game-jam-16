@@ -69,7 +69,7 @@ public class EventFactory : MonoBehaviour
     private IEnumerator EnemiesAlive() {
         yield return new WaitForSeconds(1f);
         if (FindFirstObjectByType<Enemy>() == null) {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
             enemiesDefeated = true;
             sprite.color = new Color(213, 255, 255, 255);
         }
