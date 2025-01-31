@@ -55,11 +55,11 @@ MonoBehaviour:
   knockBackResistance: 0.5
   maxSpeed: 1
   acceleration: 1
-  damage: 1
+  damage: 5
   attackRate: 1
   kiteDistance: {x: 5, y: 6}
-  chargeDistance: 8
-  chargeSpeed: 8
+  chargeDistance: 10
+  chargeSpeed: 10
   numCharges: 3
   upgrader: {fileID: 0}
 --- !u!212 &6830129783932203213
