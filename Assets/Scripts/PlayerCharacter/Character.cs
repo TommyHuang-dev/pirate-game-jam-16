@@ -278,7 +278,7 @@ public class Character : MonoBehaviour {
                 //} else { } // Too annoying, figure it out later?
                 rb.linearVelocity = rotatedVelocity;
                 spawnedObject.damage = Mathf.RoundToInt(attackDamage);
-                Destroy(spawnedObject, attackProjectileDuration);
+                Destroy(spawnedObject.gameObject, attackProjectileDuration);
             }
             else
             {
@@ -487,6 +487,9 @@ public class Character : MonoBehaviour {
         maxMoveSpeed = SaveData.Instance.data.moveSpeed;
         attackRate = SaveData.Instance.data.attackRate;
         attackDamage = SaveData.Instance.data.attackDamage;
+        dashMaxDistance = SaveData.Instance.data.dashDistance;
+        dashMinDistance = SaveData.Instance.data.dashDistance / 4f;
+        dashDamage = SaveData.Instance.data.dashDamage;
         maxHealth = SaveData.Instance.data.maxHealth;
         currentHealth = SaveData.Instance.data.currentHealth;
 
