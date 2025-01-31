@@ -172,7 +172,6 @@ public class Character : MonoBehaviour {
 
         // clamp velocity to max
         if (currentDashState != DashState.Dashing && currentDashState != DashState.Recovery) {
-            _animator.SetFloat("speed", 0);
             var tempMaxSpeed = maxMoveSpeed;
             if (currentDashState == DashState.Charging)
             {
@@ -185,10 +184,14 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity = Vector2.ClampMagnitude(_rb.linearVelocity, tempMaxSpeed);
         }
 
+        if (Input.GetKey(KeyCode.Space) && currentDashState != DashState.Recovery) {
+            _animator.SetFloat("speed", 1);
+        } else {
+            _animator.SetFloat("speed", 0);
+        }
         // dash movement
         if (currentDashState == DashState.Dashing)
         {   
-            _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
             dashDuration.x -= Time.fixedDeltaTime;
             //_rb.linearVelocity = dashVector;
             if (dashDuration.x <= 0)
