@@ -1263,10 +1263,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 767077314}
+    - target: {fileID: 5397776763014350874, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: upgrade0
+      objectReference: {fileID: 0}
     - target: {fileID: 8403397147108725521, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 767077314}
+    - target: {fileID: 8403397147108725521, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: upgrade1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1346,6 +1354,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: EventFactory
       objectReference: {fileID: 0}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: button0
+      value: 
+      objectReference: {fileID: 6596798770718353396}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: button1
+      value: 
+      objectReference: {fileID: 6596798770718353397}
     - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
       propertyPath: upButton0
       value: 

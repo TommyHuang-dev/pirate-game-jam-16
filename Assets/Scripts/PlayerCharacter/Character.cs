@@ -71,7 +71,7 @@ public class Character : MonoBehaviour {
 
 
     #region Ranged Attack
-    public GameObject projectile;
+    public PlayerProjectileScript projectile;
     public float attackRate, attackDamage;
     private float attackCooldown = 0; // remaining cooldown before next shot
     public float attackProjectileSpeed = 10.0f;
@@ -271,12 +271,13 @@ public class Character : MonoBehaviour {
                 var spawnLocation = new Vector3(transform.position.x, transform.position.y, -5);
                 var direction = rotatedVelocity.normalized;
                 float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-                GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
+                PlayerProjectileScript spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
                 Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
                 //if (SaveData.Instance.data.attackRate < 20) {
                 //    AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
                 //} else { } // Too annoying, figure it out later?
                 rb.linearVelocity = rotatedVelocity;
+                spawnedObject.damage = Mathf.RoundToInt(attackDamage);
                 Destroy(spawnedObject, attackProjectileDuration);
             }
             else

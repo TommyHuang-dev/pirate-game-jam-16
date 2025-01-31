@@ -127,7 +127,7 @@ MonoBehaviour:
   isInvincible: 0
   invincibilityDuration: 1
   invincibilityDeltaTime: 0.1
-  projectile: {fileID: 6107819281015337438, guid: a3ec6206a7ff60c458f19717ed84a3a4, type: 3}
+  projectile: {fileID: 3284027395170946763, guid: a3ec6206a7ff60c458f19717ed84a3a4, type: 3}
   attackRate: 4
   attackDamage: 5
   attackProjectileSpeed: 10

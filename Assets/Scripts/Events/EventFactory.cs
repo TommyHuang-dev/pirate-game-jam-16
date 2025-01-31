@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI; // Make sure you include this for UI components
+using TMPro;
 
 public enum BasicUpgrade {
     MoveSpeed,
@@ -29,12 +30,15 @@ public class EventFactory : MonoBehaviour
     [SerializeField] public BasicUpgrade eventType;
     [SerializeField] public GameObject pickupEffect;
     [SerializeField] public Canvas upgradeUI;
-    [SerializeField] public Button upButton0;
-    [SerializeField] public Button upButton1;
+    [SerializeField] public Button button0;
+    [SerializeField] public Button button1;
 
     private Character player = null;
 
     public EventUpgradeType upgradeType = EventUpgradeType.Basic;
+
+    private BasicUpgrade upgrade0;
+    private BasicUpgrade upgrade1;
 
     private void Start() {
         // Pick an event at random. Currently only 1 event!
@@ -54,14 +58,15 @@ public class EventFactory : MonoBehaviour
 
             var range = Enum.GetValues(typeof(BasicUpgrade)).Length;
             var rand = new System.Random();
-            var upgrade0 = (BasicUpgrade)rand.Next(0, range);
-            var upgrade1 = (BasicUpgrade)rand.Next(0, range);
+            upgrade0 = (BasicUpgrade)rand.Next(0, range);
+            upgrade1 = (BasicUpgrade)rand.Next(0, range);
             for (int i = 0; i < 5 && upgrade0 == upgrade1; i++)
             {
                 upgrade1 = (BasicUpgrade)rand.Next(i, (range + i) % range);
             }
-
             upgradeUI.gameObject.SetActive(true);
+            button0.GetComponentInChildren<TextMeshProUGUI>().text = "adaptation: " + upgrade0.ToString();  // Set text for button 1
+            button1.GetComponentInChildren<TextMeshProUGUI>().text = "adaptation: " + upgrade1.ToString(); // Set text for button 2
         }
     }
 
@@ -99,10 +104,8 @@ public class EventFactory : MonoBehaviour
                 break;
         }
     }
-    private void PerformBasicUpgrade(string stat)
+    private void PerformBasicUpgrade(string upgradeName)
     {
-        var amount = 1.5f;
-
         if (player == null)
         {
             Debug.LogWarning("Player not found when attempting to upgrade!");
@@ -111,16 +114,41 @@ public class EventFactory : MonoBehaviour
         }
 
         var data = SaveData.Instance.data;
+
+        BasicUpgrade stat;
+        if (upgradeName == "upgrade0")
+        {
+            stat = upgrade0;
+        }
+        else if (upgradeName == "upgrade1")
+        {
+            stat = upgrade1;
+        }
+        else
+        {
+            Debug.LogWarning("upgrade " + upgradeName + " is not valid");
+            upgradeUI.gameObject.SetActive(false);
+            return;
+        }
         switch (stat)
         {
-            case "maxMoveSpeed":
-                data.moveSpeed *= amount;
+            case BasicUpgrade.MoveSpeed:
+                data.moveSpeed += 1.5f; // +30% from base
                 break;
-            case "attackRate":
-                data.attackRate *= amount;
+            case BasicUpgrade.AttackSpeed:
+                data.attackRate += 2.0f; // +50% from base
                 break;
-            case "attackDamage":
-                data.attackDamage = (int)(data.attackDamage * amount);
+            case BasicUpgrade.AttackDamage:
+                data.attackDamage += 3;  // +60% from base
+                break;
+            case BasicUpgrade.DashDistance:
+                data.dashDistance += 4.0f; // +50% from base
+                break;
+            case BasicUpgrade.DashDamage:
+                data.dashDamage += 6; // +60% from base
+                break;
+            case BasicUpgrade.Heal:
+                data.currentHealth = data.maxHealth;
                 break;
             default:
                 Debug.LogWarning("Invalid stat chosen for upgrade: " + stat);

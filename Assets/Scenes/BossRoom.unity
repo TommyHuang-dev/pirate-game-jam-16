@@ -671,6 +671,14 @@ PrefabInstance:
       value: EventFactory
       objectReference: {fileID: 0}
     - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: button0
+      value: 
+      objectReference: {fileID: 1763327730}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: button1
+      value: 
+      objectReference: {fileID: 1763327729}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
       propertyPath: upButton0
       value: 
       objectReference: {fileID: 1763327730}
