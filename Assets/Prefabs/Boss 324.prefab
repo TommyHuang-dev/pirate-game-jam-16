@@ -104,15 +104,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBoss: 0
-<<<<<<< HEAD
   projectile: {fileID: 3395253121384911619, guid: 860fbec022611a3499820060af070aa4, type: 3}
   bossProjectile: {fileID: 2095737164271636193, guid: 02c3e7cfeb6b615439578db47ab5b6b9, type: 3}
   health: 1000
-=======
-  projectile: {fileID: 3395253121384911619, guid: 02c3e7cfeb6b615439578db47ab5b6b9, type: 3}
-  bossProjectile: {fileID: 2095737164271636193, guid: 69f68057a8dc9884383ea9571575cadc, type: 3}
-  health: 300
->>>>>>> ad5be24ccd0e2efe94a207303272b742aa593595
   knockBackResistance: 0
   maxSpeed: 2
   acceleration: 1
