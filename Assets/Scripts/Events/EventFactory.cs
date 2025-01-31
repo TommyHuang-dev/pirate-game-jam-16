@@ -1,18 +1,34 @@
 using UnityEngine;
 
-public enum AvailableEvents {
-    SpeedBoost
+public enum BasicUpgrade {
+    MoveSpeedBoost,
+    AttackSpeedBoost,
+    Heal,
 }
+
+public enum AdvancedUpgrade
+{
+    Multishot
+}
+
+public enum EventUpgradeType
+{
+    Basic,
+    Advanced
+}
+
 public class EventFactory : MonoBehaviour
 {
-    [SerializeField] public AvailableEvents eventType;
+    [SerializeField] public BasicUpgrade eventType;
     [SerializeField] public GameObject pickupEffect;
     [SerializeField] public Canvas upgradeUI;
     private Character player = null;
 
+    public EventUpgradeType upgradeType = EventUpgradeType.Basic;
+
     private void Start() {
         // Pick an event at random. Currently only 1 event!
-        eventType = (AvailableEvents)Random.Range(0, 1);
+        eventType = (BasicUpgrade)Random.Range(0, 1);
         if (SaveData.Instance.data.currentRoomCompleted) {
             Destroy(gameObject);
         }
@@ -31,6 +47,40 @@ public class EventFactory : MonoBehaviour
     }
 
     public void PerformUpgrade(string stat)
+    {
+        if (upgradeType == EventUpgradeType.Advanced)
+        {
+            PerformAdvancedUpgrade(stat);
+        } else
+        {
+            PerformBasicUpgrade(stat);
+        }
+
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Upgrade, 1f, 1f);
+        Instantiate(pickupEffect, transform.position, transform.rotation);
+        SaveData.Instance.SaveToJson();
+        player.SyncStats();
+        upgradeUI.gameObject.SetActive(false);
+        Destroy(gameObject);
+    }
+
+    private void PerformAdvancedUpgrade(string upgrade)
+    {
+
+        var data = SaveData.Instance.data;
+        switch (upgrade)
+        {
+            case nameof(AdvancedUpgrade.Multishot):
+                int val;
+                data.collectedUpgrades.TryGetValue(AdvancedUpgrade.Multishot, out val);
+                data.collectedUpgrades[AdvancedUpgrade.Multishot] = val + 1;
+                break;
+            default:
+                Debug.Log("did not find the upgrade: available upgrades: " + nameof(AdvancedUpgrade.Multishot));
+                break;
+        }
+    }
+    private void PerformBasicUpgrade(string stat)
     {
         var amount = 1.5f;
 
@@ -51,23 +101,17 @@ public class EventFactory : MonoBehaviour
                 data.attackRate *= amount;
                 break;
             case "attackDamage":
-                data.attackDamage = (int) (data.attackDamage * amount);
+                data.attackDamage = (int)(data.attackDamage * amount);
                 break;
             default:
                 Debug.LogWarning("Invalid stat chosen for upgrade: " + stat);
                 break;
         }
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Upgrade, 1f, 1f);
-        Instantiate(pickupEffect, transform.position, transform.rotation);
-        SaveData.Instance.SaveToJson();
-        player.SyncStats();
-        upgradeUI.gameObject.SetActive(false);
-        Destroy(gameObject);
     }
 
     private void StartEvent(Character player) {
         switch (eventType) {
-            case AvailableEvents.SpeedBoost:
+            case BasicUpgrade.MoveSpeedBoost:
                 // Create an effect on pickup
                 Instantiate(pickupEffect, transform.position, transform.rotation);
                 // Increase player move speed by 5% of 5 (so it doesn't compound... unless we want it to)

@@ -1,6 +1,8 @@
 using CameraShake;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Character : MonoBehaviour {
     private Animator _animator;
@@ -8,6 +10,9 @@ public class Character : MonoBehaviour {
     private Rigidbody2D _rb;
     private SpriteRenderer _effects;
     private Camera camera;
+
+    // list of collected advanced upgrades
+    public Dictionary<AdvancedUpgrade, int> collectedUpgrades = new Dictionary<AdvancedUpgrade, int>();
 
     [Header("Movement Variables")]
     public float maxMoveSpeed;
@@ -76,6 +81,9 @@ public class Character : MonoBehaviour {
 
     [Header("Sprite animation")]
     private bool flipped = false;
+    private void Awake() {
+        SyncStats();
+    }
 
     // Called before first frame update
     private void Start() {
@@ -96,9 +104,6 @@ public class Character : MonoBehaviour {
         // Player entrance
         currentState = PlayerState.NoControl;
         StartCoroutine(EnterScene());
-    }
-    private void Awake() {
-        SyncStats();
     }
 
     private void FixedUpdate() {
@@ -121,7 +126,18 @@ public class Character : MonoBehaviour {
             attackVelocity.Normalize();
             attackVelocity *= attackProjectileSpeed;
 
-            spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
+            if (collectedUpgrades.ContainsKey(AdvancedUpgrade.Multishot))
+            {
+                spawnAttack(
+                    new Vector2(attackVelocity.x, attackVelocity.y),
+                    1 + 2 * collectedUpgrades[AdvancedUpgrade.Multishot],
+                    60f / (2f + collectedUpgrades[AdvancedUpgrade.Multishot])
+                );
+            }
+            else
+            {
+                spawnAttack(new Vector2(attackVelocity.x, attackVelocity.y));
+            }
             //CameraShaker.Presets.ShortShake2D(positionStrength:0.04f, rotationStrength:0.05f);
             if (attackVelocity.x > 0.1f)
             {
@@ -225,28 +241,41 @@ public class Character : MonoBehaviour {
         #endregion
     }
 
-    private void spawnAttack(Vector2 velocity)
+    private void spawnAttack(Vector2 velocity, int num=1, float spread=0f)
     {
-        if (projectile != null)
-        {
-            var spawnLocation = new Vector3(transform.position.x, transform.position.y, -5);
-            var direction = velocity.normalized;
-            spawnLocation.x += direction.x * 0.5f;
-            spawnLocation.y += direction.y * 0.5f;
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-            GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
-            Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
-            //if (SaveData.Instance.data.attackRate < 20) {
-            //    AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
-            //} else { } // Too annoying, figure it out later?
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+        var startOffset = (num - 1) * spread / 2;
 
-            rb.linearVelocity = velocity;
-            Destroy(spawnedObject, attackProjectileDuration);
-        }
-        else
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+        for (int i = 0; i < num; i++)
         {
-            Debug.LogWarning("Player has no projectile");
+            var angleOffset = startOffset - i * spread;
+
+            float radians = angleOffset * Mathf.Deg2Rad; // Convert degrees to radians
+            float cos = Mathf.Cos(radians);
+            float sin = Mathf.Sin(radians);
+
+            var rotatedVelocity = new Vector2(
+                velocity.x * cos - velocity.y * sin,
+                velocity.x * sin + velocity.y * cos
+            );
+
+            if (projectile != null)
+            {
+                var spawnLocation = new Vector3(transform.position.x, transform.position.y, -5);
+                var direction = rotatedVelocity.normalized;
+                float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+                GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
+                Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
+                //if (SaveData.Instance.data.attackRate < 20) {
+                //    AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+                //} else { } // Too annoying, figure it out later?
+                rb.linearVelocity = rotatedVelocity;
+                Destroy(spawnedObject, attackProjectileDuration);
+            }
+            else
+            {
+                Debug.LogWarning("Player has no projectile");
+            }
         }
             
     }
@@ -377,7 +406,7 @@ public class Character : MonoBehaviour {
     #endregion
 
 
-    #region Combat
+    #region Taking Damage
     public void ApplyDamage(int amount) {
         if (isInvincible) { return;  }
         if (currentDashState != DashState.Dashing) {
@@ -443,5 +472,7 @@ public class Character : MonoBehaviour {
         attackDamage = SaveData.Instance.data.attackDamage;
         maxHealth = SaveData.Instance.data.maxHealth;
         currentHealth = SaveData.Instance.data.currentHealth;
+
+        collectedUpgrades = SaveData.Instance.data.collectedUpgrades;
     }
 }

@@ -1,6 +1,8 @@
 using System.IO;
 using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class SaveData : MonoBehaviour
 {
@@ -38,7 +40,7 @@ public class SaveData : MonoBehaviour
     }
 
     public void SaveToJson() {
-        string dataToWrite = JsonUtility.ToJson(data);
+        string dataToWrite = JsonConvert.SerializeObject(data);
         File.WriteAllText(filePath, dataToWrite);
         Debug.Log("Saved data to " + filePath);
     }
@@ -48,7 +50,7 @@ public class SaveData : MonoBehaviour
         if (File.Exists(filePath)) {
             string loadedData = File.ReadAllText(filePath);
 
-            data = JsonUtility.FromJson<Data>(loadedData);
+            data = JsonConvert.DeserializeObject<Data>(loadedData);
             Debug.Log("Loaded data from " + filePath);
             return true;
         } else {
@@ -83,4 +85,6 @@ public class Data {
     public int attackDamage = 5;
     public int maxHealth = 10;
     public int currentHealth = 10;
+
+    public Dictionary<AdvancedUpgrade, int> collectedUpgrades = new Dictionary<AdvancedUpgrade, int>();
 }
