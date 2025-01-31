@@ -9,6 +9,9 @@ public class EnemyProjectile : MonoBehaviour
     private Transform player;
     private Vector2 target;
 
+    protected float lifetime = 3f;
+    protected float elapsedTime = 0;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,12 +24,20 @@ public class EnemyProjectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime > lifetime)
+        {
+            Destroy(gameObject);
+        }
+
         transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
         if (transform.position.x == target.x && transform.position.y == target.y)
         {
             Destroy(gameObject);
         }
+        
     }
 
 
