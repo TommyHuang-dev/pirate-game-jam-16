@@ -11,6 +11,8 @@ public class Character : MonoBehaviour {
     private SpriteRenderer _effects;
     private Camera camera;
 
+    public LineRenderer _dashLine;
+
     // list of collected advanced upgrades
     public Dictionary<AdvancedUpgrade, int> collectedUpgrades = new Dictionary<AdvancedUpgrade, int>();
 
@@ -69,7 +71,7 @@ public class Character : MonoBehaviour {
 
 
     #region Ranged Attack
-    public GameObject projectile;
+    public PlayerProjectileScript projectile;
     public float attackRate, attackDamage;
     private float attackCooldown = 0; // remaining cooldown before next shot
     public float attackProjectileSpeed = 10.0f;
@@ -81,7 +83,9 @@ public class Character : MonoBehaviour {
 
     [Header("Sprite animation")]
     private bool flipped = false;
+
     private void Awake() {
+        _dashLine = GetComponentInChildren<LineRenderer>();
         SyncStats();
     }
 
@@ -172,7 +176,6 @@ public class Character : MonoBehaviour {
 
         // clamp velocity to max
         if (currentDashState != DashState.Dashing && currentDashState != DashState.Recovery) {
-            _animator.SetFloat("speed", 0);
             var tempMaxSpeed = maxMoveSpeed;
             if (currentDashState == DashState.Charging)
             {
@@ -185,18 +188,32 @@ public class Character : MonoBehaviour {
             _rb.linearVelocity = Vector2.ClampMagnitude(_rb.linearVelocity, tempMaxSpeed);
         }
 
+        if (Input.GetKey(KeyCode.Space) && currentDashState != DashState.Recovery) {
+            _animator.SetFloat("speed", 1);
+        } else {
+            _animator.SetFloat("speed", 0);
+        }
         // dash movement
         if (currentDashState == DashState.Dashing)
         {   
-            _animator.SetFloat("speed", _rb.linearVelocity.magnitude);
             dashDuration.x -= Time.fixedDeltaTime;
             //_rb.linearVelocity = dashVector;
             if (dashDuration.x <= 0)
             {
                 dashCooldown.x = dashCooldown.y;
-
+                
+                // end of dash
                 dashDrift.x = dashDrift.y;
                 currentDashState = DashState.Recovery;
+
+                if (collectedUpgrades.ContainsKey(AdvancedUpgrade.RespiratoryBurst))
+                {
+                    spawnAttack(
+                        new Vector2(attackProjectileSpeed, 0),
+                        16,
+                        22.5f
+                    );
+                }
             }
         }
         #endregion
@@ -264,13 +281,14 @@ public class Character : MonoBehaviour {
                 var spawnLocation = new Vector3(transform.position.x, transform.position.y, -5);
                 var direction = rotatedVelocity.normalized;
                 float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
-                GameObject spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
+                PlayerProjectileScript spawnedObject = Instantiate(projectile, spawnLocation, Quaternion.Euler(0f, 0f, -angle));
                 Rigidbody2D rb = spawnedObject.GetComponent<Rigidbody2D>();
                 //if (SaveData.Instance.data.attackRate < 20) {
                 //    AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
                 //} else { } // Too annoying, figure it out later?
                 rb.linearVelocity = rotatedVelocity;
-                Destroy(spawnedObject, attackProjectileDuration);
+                spawnedObject.damage = Mathf.RoundToInt(attackDamage);
+                Destroy(spawnedObject.gameObject, attackProjectileDuration);
             }
             else
             {
@@ -314,6 +332,7 @@ public class Character : MonoBehaviour {
 
                 // DEBUG STUFF
                 Debug.DrawLine(transform.position, transform.position + (dashDuration.y * dashSpeed * dashDirection), Color.cyan, dashDuration.y);
+                _dashLine.enabled = false;
                 // ***
             }
             // DEBUG STUFF ***
@@ -326,7 +345,15 @@ public class Character : MonoBehaviour {
                 var dashDirection = mouseWorldPos - transform.position;
                 dashDirection.z = 0;
                 dashDirection.Normalize();
-                Debug.DrawLine(transform.position, transform.position + (dashDuration.y * dashSpeed * dashDirection), Color.white);
+
+                var lineVector0 = new Vector3(transform.position.x, transform.position.y, -1);
+                var lineVector1 = new Vector3(dashDirection.x, dashDirection.y, 0) * dashDistance;
+                lineVector1.Set(lineVector1.x, lineVector1.y, -1);
+                Debug.DrawLine(transform.position, transform.position + dashDirection, Color.white);
+                _dashLine.enabled = true;
+                _dashLine.positionCount = 2;
+                _dashLine.SetPosition(0, lineVector0);
+                _dashLine.SetPosition(1, lineVector0 + lineVector1);
             }
             // ***
         }
@@ -470,6 +497,9 @@ public class Character : MonoBehaviour {
         maxMoveSpeed = SaveData.Instance.data.moveSpeed;
         attackRate = SaveData.Instance.data.attackRate;
         attackDamage = SaveData.Instance.data.attackDamage;
+        dashMaxDistance = SaveData.Instance.data.dashDistance;
+        dashMinDistance = SaveData.Instance.data.dashDistance / 4f;
+        dashDamage = SaveData.Instance.data.dashDamage;
         maxHealth = SaveData.Instance.data.maxHealth;
         currentHealth = SaveData.Instance.data.currentHealth;
 

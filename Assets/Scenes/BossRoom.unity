@@ -480,11 +480,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4869784009650708349, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.2
+      value: 9.52
       objectReference: {fileID: 0}
     - target: {fileID: 4869784009650708349, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.13
+      value: 6.37
       objectReference: {fileID: 0}
     - target: {fileID: 4869784009650708349, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -670,6 +670,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: EventFactory
       objectReference: {fileID: 0}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: button0
+      value: 
+      objectReference: {fileID: 1763327730}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: button1
+      value: 
+      objectReference: {fileID: 1763327729}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: upButton0
+      value: 
+      objectReference: {fileID: 1763327730}
+    - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
+      propertyPath: upButton1
+      value: 
+      objectReference: {fileID: 1763327729}
     - target: {fileID: 7714752304983203349, guid: 968bf0e876a62de4fb1f958f2a85cdc3, type: 3}
       propertyPath: upgradeUI
       value: 
@@ -1133,7 +1149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5397776763014350874, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Multishot
+      value: upgrade0
       objectReference: {fileID: 0}
     - target: {fileID: 6136268259717611414, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_text
@@ -1149,7 +1165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8403397147108725521, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Multishot
+      value: upgrade1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1161,6 +1177,28 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 8966126339436049346, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
   m_PrefabInstance: {fileID: 1763327727}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1763327729 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8403397147108725521, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+  m_PrefabInstance: {fileID: 1763327727}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1763327730 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5397776763014350874, guid: 98ad853e7c19aa746b292c72005dfdeb, type: 3}
+  m_PrefabInstance: {fileID: 1763327727}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1819068748
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,5 +1353,5 @@ SceneRoots:
   - {fileID: 2043236162}
   - {fileID: 1721166515}
   - {fileID: 345229550}
-  - {fileID: 1763327727}
   - {fileID: 656557500}
+  - {fileID: 1763327727}

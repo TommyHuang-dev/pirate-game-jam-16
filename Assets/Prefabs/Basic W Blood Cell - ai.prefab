@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1259552742695490182}
   - component: {fileID: -5367109473225231686}
   m_Layer: 0
-  m_Name: Basic W Blood Cell
+  m_Name: Basic W Blood Cell - ai
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1d376c357435345894104d969b4f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dashLine: {fileID: 0}
   maxMoveSpeed: 5
   acceleration: 2
   accelerationMaxSpeedInc: 2
@@ -121,7 +122,11 @@ MonoBehaviour:
   dashDrift: {x: 0, y: 0.4}
   maxHealth: 0
   currentHealth: 0
-  projectile: {fileID: 6107819281015337438, guid: a3ec6206a7ff60c458f19717ed84a3a4, type: 3}
+  healthBar: {fileID: 0}
+  isInvincible: 0
+  invincibilityDuration: 1.5
+  invincibilityDeltaTime: 0.15
+  projectile: {fileID: 3284027395170946763, guid: a3ec6206a7ff60c458f19717ed84a3a4, type: 3}
   attackRate: 4
   attackDamage: 5
   attackProjectileSpeed: 10
