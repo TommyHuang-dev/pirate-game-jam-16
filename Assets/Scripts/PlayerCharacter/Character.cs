@@ -380,11 +380,7 @@ public class Character : MonoBehaviour {
     #region Combat
     public void ApplyDamage(int amount) {
         if (isInvincible) { return;  }
-        if (currentDashState != DashState.Dashing)
-
-        {   
-
-        {
+        if (currentDashState != DashState.Dashing) {
             AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
 
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
@@ -397,8 +393,6 @@ public class Character : MonoBehaviour {
                 StartCoroutine(Invincibility());
             }
         }
-
-        
     }
 
     private IEnumerator Invincibility() {

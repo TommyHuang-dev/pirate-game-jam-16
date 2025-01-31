@@ -38,16 +38,35 @@ public class SpawnManager : MonoBehaviour
     private IEnumerator SpawnEnemies() {
         
         while (enemiesToSpawn > 0) {
-            Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
-            int toSpawn = Random.Range(1, enemiesToSpawn);
-            for (int i = 0; i < toSpawn; i++) {
-                GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
-                enemiesToSpawn--;
-                yield return new WaitForSeconds(0.2f);
+            if (Random.Range(0f, 1f) > 0.5f) {
+                StartCoroutine(SpawnFromTop());
+            } else {
+                StartCoroutine(SpawnFromBottom());
             }
-            
-            yield return new WaitForSeconds(1f);
+        }
+        yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator SpawnFromTop() {
+        Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(-0.5f, 0.5f));
+        int toSpawn = Random.Range(1, enemiesToSpawn);
+        for (int i = 0; i < toSpawn; i++) {
+            GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
+            enemiesToSpawn--;
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
+    private IEnumerator SpawnFromBottom() {
+        // Offset y by 14 to spawn from bottom (yay hardcoding)
+        Vector2 spawnPos = new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), (transform.position.y - 14) + Random.Range(-0.5f, 0.5f));
+        int toSpawn = Random.Range(1, enemiesToSpawn);
+        for (int i = 0; i < toSpawn; i++) {
+            GameObject enemy = Instantiate(_enemyPrefabs[Random.Range(0, _enemyPrefabs.Length)], spawnPos, Quaternion.identity);
+            enemiesToSpawn--;
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(1f);
+    }
 }

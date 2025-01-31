@@ -126,7 +126,14 @@ public class Enemy : MonoBehaviour
     {
         if (sprite == null) { Debug.Log("null sprite?"); }
         if (!canMove) { // Putting this here for now but if we do stuns it'll probably have to be moved to an isSpawning tracker
-            Vector2 target = new Vector2(Random.Range(transform.position.x - 2f, transform.position.x + 2f), transform.position.y - 10f);
+            // Move up or down depending on spawn location
+            Vector2 target;
+            if (transform.position.y > 0) {
+                target = new Vector2(Random.Range(transform.position.x - 2f, transform.position.x + 2f), transform.position.y - 10f);
+            } else {
+                target = new Vector2(Random.Range(transform.position.x - 2f, transform.position.x + 2f), transform.position.y + 10f);
+            }
+            
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 target,
