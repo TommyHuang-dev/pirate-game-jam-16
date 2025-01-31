@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3515576651271636147}
   - component: {fileID: 2569237024373821914}
   - component: {fileID: 7714752304983203349}
+  - component: {fileID: -6808136427323633894}
   m_Layer: 0
   m_Name: EventFactory
   m_TagString: Untagged
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 8363453244071517261, guid: 9ddd2ca6408e40e42a2ed6b0d4ba5cab, type: 3}
   m_Color: {r: 0.8349056, g: 1, b: 0.99844605, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -140,4 +141,28 @@ MonoBehaviour:
   eventType: 0
   pickupEffect: {fileID: 746543253332885063, guid: d76627d0957662e42960edaf3b2f588b, type: 3}
   upgradeUI: {fileID: 0}
+  button0: {fileID: 0}
+  button1: {fileID: 0}
   upgradeType: 0
+--- !u!95 &-6808136427323633894
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3670508420143324786}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e0a84ab6a2f5e1c42ab43e49c09f31c5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

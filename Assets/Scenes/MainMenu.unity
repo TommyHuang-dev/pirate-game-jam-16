@@ -497,8 +497,11 @@ MonoBehaviour:
     moveSpeed: 5
     attackRate: 4
     attackDamage: 5
+    dashDistance: 8
+    dashDamage: 10
     maxHealth: 10
     currentHealth: 10
+  healthbar: {fileID: 0}
 --- !u!4 &417487790
 Transform:
   m_ObjectHideFlags: 0
