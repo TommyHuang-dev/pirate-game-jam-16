@@ -122,12 +122,12 @@ TextureImporter:
       name: charger attack-Sheet_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 7
-        width: 134
-        height: 138
+        x: 12
+        y: 8
+        width: 132
+        height: 136
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -144,12 +144,12 @@ TextureImporter:
       name: charger attack-Sheet_1
       rect:
         serializedVersion: 2
-        x: 159
-        y: 0
-        width: 482
-        height: 160
+        x: 164
+        y: 1
+        width: 148
+        height: 154
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: charger attack-Sheet_2
       rect:
         serializedVersion: 2
-        x: 643
-        y: 0
-        width: 150
-        height: 153
+        x: 317
+        y: 1
+        width: 159
+        height: 159
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -184,11 +184,99 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: charger attack-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 1
+        width: 153
+        height: 157
+      alignment: 9
+      pivot: {x: 5.2260795, y: 0.06597233}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73ac0e3f50549b24a82e0ed2a670e48f
+      internalID: -1674148058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: charger attack-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 152
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12e6982e70faa424da651aa07597a0c8
+      internalID: -1228588140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: charger attack-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 1
+        width: 153
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ddb710b54ac65a4fb44ff40bd1d8307
+      internalID: -1450420850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: charger attack-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 84
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 116e909d2f088d4409ef53ca8df29236
+      internalID: -1221361137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 635bbd7289ed8034a9bee74066d1aeea
     internalID: 0
     vertices: []
     indices: 
@@ -201,6 +289,10 @@ TextureImporter:
       charger attack-Sheet_0: 3240368405340336082
       charger attack-Sheet_1: -8504443763058492141
       charger attack-Sheet_2: -8999788336703390172
+      charger attack-Sheet_3: -1674148058
+      charger attack-Sheet_4: -1228588140
+      charger attack-Sheet_5: -1450420850
+      charger attack-Sheet_6: -1221361137
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
