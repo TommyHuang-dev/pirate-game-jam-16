@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
     // nothing here lol
 
     // for ranged
-    [SerializeField] float attackRate = 1.0f;  // Time between attacks
+    [SerializeField] public float attackRate = 1.0f;  // Time between attacks
     private float timeBtwShots;
     [SerializeField] protected Vector2 kiteDistance = new Vector2(5f, 6f); // stay within these bounds
     protected enum AIType
@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
 
         // TODO melee attack
     }
-    void RangedScript()
+    public void RangedScript()
     {
         var playerPos = player.transform.position;
         var minDistance = kiteDistance.x;

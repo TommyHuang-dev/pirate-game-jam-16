@@ -33,11 +33,9 @@ public class EnemyProjectile : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other) {
         // Check if the other object is the player
         if (other.CompareTag("Player")) {
-            Debug.Log("Enemy Projectile hit Player");
             // Damage the player on hit
             Character player = other.GetComponent<Character>();
             if (player != null && player.currentDashState != Character.DashState.Dashing && !player.isInvincible) {
-                Debug.Log("Applying " + damage + " damage");
                 player.ApplyDamage(damage); // Example damage value
             }
 

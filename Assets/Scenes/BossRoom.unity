@@ -478,6 +478,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 1482401014807660724, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4869784009650708349, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.52
@@ -488,7 +492,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4869784009650708349, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.14074504
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4869784009650708349, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -533,7 +537,7 @@ PrefabInstance:
     - target: {fileID: 7842778350252101597, guid: e79c41d5217a9b64aacb21af15c0d7bf, type: 3}
       propertyPath: '_bossPrefabs.Array.data[2]'
       value: 
-      objectReference: {fileID: 6674055252771715290, guid: fda6063baa70fa64cbc707b5eff33b23, type: 3}
+      objectReference: {fileID: 8680756484669042645, guid: 3916c6c925f11424da9b72ecadded7fc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1305,7 +1309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2840841286152315110, guid: 05dbd2f45008825499b9d58a33315bac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 2840841286152315110, guid: 05dbd2f45008825499b9d58a33315bac, type: 3}
       propertyPath: m_LocalRotation.w
