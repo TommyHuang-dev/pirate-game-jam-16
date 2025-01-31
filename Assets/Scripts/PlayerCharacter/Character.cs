@@ -56,9 +56,12 @@ public class Character : MonoBehaviour {
     [Header("Combat Variables")]
     public int maxHealth;
     public int currentHealth;
+    public HealthBar healthBar;
+
     public bool isInvincible = false;
     public float invincibilityDuration = 1.5f;
     public float invincibilityDeltaTime = 0.15f;
+
 
     #region Ranged Attack
     public GameObject projectile;
@@ -81,6 +84,7 @@ public class Character : MonoBehaviour {
         _collider = GetComponent<Collider2D>();
         _levelLoader = FindFirstObjectByType<LevelLoader>();
         _effects = GetComponent<SpriteRenderer>();
+        healthBar = FindFirstObjectByType<HealthBar>();
 
         if (camera == null) {
             camera = Camera.main; // Automatically assign the main camera if not set
@@ -100,6 +104,7 @@ public class Character : MonoBehaviour {
     private void FixedUpdate() {
         #region attacc
         attackCooldown -= Time.fixedDeltaTime;
+        healthBar.SetHealth(currentHealth);
         if ( // Determine if the player can attack
             Input.GetKey(KeyCode.Mouse0) 
             && attackCooldown <= 0f 
@@ -375,9 +380,9 @@ public class Character : MonoBehaviour {
     #region Combat
     public void ApplyDamage(int amount) {
         if (isInvincible) { return;  }
-        if (currentDashState != DashState.Dashing)
-        {
+        if (currentDashState != DashState.Dashing) {
             AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
             currentHealth -= amount;
             SaveData.Instance.data.currentHealth -= amount;
@@ -388,8 +393,6 @@ public class Character : MonoBehaviour {
                 StartCoroutine(Invincibility());
             }
         }
-
-        
     }
 
     private IEnumerator Invincibility() {
