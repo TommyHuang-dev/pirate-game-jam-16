@@ -35,9 +35,7 @@ public class FinalBoss : Enemy {
 
     protected override void setType() {
         upgrader = FindFirstObjectByType<EventFactory>();
-        upgrader.upgradeUI.gameObject.SetActive(false);
         upgrader.upgradeType = EventUpgradeType.Advanced;
-        upgrader.gameObject.SetActive(false);
         _rb = this.GetComponent<Rigidbody2D>();
         levelLoader = FindFirstObjectByType<LevelLoader>();
         isBoss = true;
@@ -138,20 +136,5 @@ public class FinalBoss : Enemy {
         if (player != null && state == State.Charging) {
             player.ApplyDamage(damage);
         }
-    }
-
-    public override void ApplyDamage(int damage) {
-        health -= damage;
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.7f, 1f));
-        if (health <= 0) {
-            Die();
-            upgrader.gameObject.SetActive(true);
-            Destroy(gameObject);
-        }
-        damageFlash = 0.5f;
-    }
-
-    private void Die() {
-        AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
     }
 }

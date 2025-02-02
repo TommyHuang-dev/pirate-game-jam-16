@@ -11,7 +11,8 @@ public class Enemy : MonoBehaviour
     protected GameObject player;
     protected SpriteRenderer sprite;
     protected LevelLoader levelLoader;
-    protected int numEnemies;
+    protected SpawnManager spawnManager;
+    protected int enemyCount;
     [SerializeField] protected EnemyProjectile projectile;
     [SerializeField] protected BossProjectile bossProjectile;
 
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float acceleration = 1f; // between 0 and 1. 1 means it instantly moves at max speed
     [SerializeField] protected int damage = 1;
     private bool canMove = false;
+    private bool isDead = false;
 
     // for melee
     // nothing here lol
@@ -50,7 +52,8 @@ public class Enemy : MonoBehaviour
         this.tag = "Enemy";
         sprite = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
-        levelLoader = GetComponent<LevelLoader>();
+        levelLoader = FindFirstObjectByType<LevelLoader>();
+        spawnManager = FindFirstObjectByType<SpawnManager>();
 
         setType();
         StartCoroutine(SpawnIn());
@@ -120,6 +123,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator SpawnIn() {
         canMove = false;
+        spawnManager.enemyCount++;
         yield return new WaitForSeconds(1.3f);
         canMove = true;
     }
@@ -127,7 +131,6 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int numEnemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None).Count();
         if (sprite == null) { Debug.LogWarning("null sprite!"); }
         if (!canMove) { // Putting this here for now but if we do stuns it'll probably have to be moved to an isSpawning tracker
             // Move up or down depending on spawn location
@@ -160,8 +163,6 @@ public class Enemy : MonoBehaviour
             CustomBehaviour();
         }
         
-
-        
         // Sprite colour changes to indicate damage
         sprite.color = new Color(1, 1 - damageFlash, 1 - damageFlash);
         
@@ -172,29 +173,30 @@ public class Enemy : MonoBehaviour
     public virtual void ApplyDamage(int damage)
     {
         health -= damage;
-        if (numEnemies < 5) {
+        if (enemyCount < 5) {
             AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.3f, 0.4f));
-        } else if (numEnemies < 15) {
+        } else if (enemyCount < 15) {
             AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.1f, 0.2f));
         } else {
             AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.05f, 0.075f));
         }
 
-        if (health <= 0)
+        if (health <= 0 && !isDead)
         {
-            Destroy(gameObject);
-            //Die();
+            isDead = true;
+            spawnManager.enemyCount--;
+            Debug.Log(enemyCount + "enemies left after death");
+            Die();
         }
         damageFlash = 0.5f;
     }
     // todo
-    //private void Die() {
-    //    var enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length - 1;
-    //    if (enemyCount == 0) {
-    //        AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
-    //    }
-    //    Destroy(gameObject);
-    //}
+    private void Die() {
+        if (spawnManager.enemyCount == 0) {
+            AudioManager.Instance.PlayWinLoss(true, (int)levelLoader.currentScene);
+        }
+        Destroy(gameObject);
+    }
     public void ApplyKnockback(Vector2 knockback)
     {
         var knockbackWithZ = new Vector3(knockback.x, knockback.y, 0f);
