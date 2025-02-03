@@ -11,6 +11,8 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] _bossPrefabs;
     private LevelLoader.SceneType roomType;
 
+    public int enemyCount;
+
     // Constants
     private int eliteEnemyHP = 150;
     private float eliteEnemyScale = 1.4f;

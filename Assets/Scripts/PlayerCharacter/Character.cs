@@ -390,19 +390,6 @@ public class Character : MonoBehaviour {
 
     #region Collision Handling
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("RoomExit")) {
-            var enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-            if (enemyCount == 0)
-            {
-                var capillary = other.GetComponent<Collider2D>().GetComponent<Capillary>();
-                SaveData.Instance.data.currentRoomCompleted = true;
-                _levelLoader.LoadNextLevel(capillary.queuedScene ?? LevelLoader.SceneType.MainMenu);
-            } else
-            {
-                Debug.Log("Went to the exit, but there are still " + enemyCount + " enemies alive!");
-            }
-        }
-
         // Check if the other object is an enemy
         if (currentDashState == DashState.Dashing && other.CompareTag("Enemy"))
         {

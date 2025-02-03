@@ -7,6 +7,7 @@ public class EnemyProjectile : MonoBehaviour
     public float speed;
 
     private Transform player;
+    private SpawnManager spawnManager;
     private Vector2 target;
 
     protected float lifetime = 3f;
@@ -17,7 +18,7 @@ public class EnemyProjectile : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform; //Find Player Tag
-
+        spawnManager = FindFirstObjectByType<SpawnManager>();
         target = new Vector2(player.position.x, player.position.y); // Project moves towards where player was when projectile was spawned
     }
 
@@ -26,7 +27,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         elapsedTime += Time.deltaTime;
 
-        if (elapsedTime > lifetime)
+        if (elapsedTime > lifetime || spawnManager.enemyCount == 0)
         {
             Destroy(gameObject);
         }

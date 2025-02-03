@@ -34,8 +34,9 @@ public class EventFactory : MonoBehaviour
     [SerializeField] public Button button0;
     [SerializeField] public Button button1;
 
+    private SpawnManager spawnManager;
     private bool eventTriggerPopped = false;
-    private bool enemiesDefeated = false;
+    private int enemyCount;
     private SpriteRenderer sprite;
 
     private Character player = null;
@@ -59,24 +60,21 @@ public class EventFactory : MonoBehaviour
         }
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = new Color(0, 0, 0, 0);
+        spawnManager = FindFirstObjectByType<SpawnManager>();
+        enemyCount = (spawnManager == null) ? 0 : spawnManager.enemyCount;
 
     }
 
     private void Update() {
-        StartCoroutine(EnemiesAlive());
-    }
-
-    private IEnumerator EnemiesAlive() {
-        yield return new WaitForSeconds(1f);
-        if (FindFirstObjectByType<Enemy>() == null) {
-            yield return new WaitForSeconds(0.1f);
-            enemiesDefeated = true;
+        enemyCount = (spawnManager == null) ? 0 : spawnManager.enemyCount;
+        Debug.Log("Enemy count " + enemyCount);
+        if (enemyCount == 0) {
             sprite.color = new Color(213, 255, 255, 255);
         }
     }
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
-            if (eventTriggerPopped || !enemiesDefeated) {
+            if (eventTriggerPopped || !(enemyCount == 0)) {
                 return;
             }
             player = other.GetComponent<Character>();

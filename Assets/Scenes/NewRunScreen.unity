@@ -511,7 +511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8576685442405156074, guid: db84736a704057f4082ceaa8bd281c83, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -970,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2977512328460681612, guid: 79d5fb5d7dcc7494a85253d8c0110fba, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.060137726
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2977512328460681612, guid: 79d5fb5d7dcc7494a85253d8c0110fba, type: 3}
       propertyPath: m_LocalRotation.w
