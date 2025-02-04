@@ -173,14 +173,6 @@ public class Enemy : MonoBehaviour
     public virtual void ApplyDamage(int damage)
     {
         health -= damage;
-        if (enemyCount < 5) {
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.3f, 0.4f));
-        } else if (enemyCount < 15) {
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.1f, 0.2f));
-        } else {
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.05f, 0.075f));
-        }
-
         if (health <= 0 && !isDead)
         {
             isDead = true;
@@ -189,6 +181,10 @@ public class Enemy : MonoBehaviour
             Die();
         }
         damageFlash = 0.5f;
+    }
+
+    public void PlayEnemyHurtSFX() {
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.05f / (float)enemyCount, 0.1f / (float)enemyCount));
     }
     // todo
     private void Die() {
