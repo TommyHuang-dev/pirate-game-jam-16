@@ -400,6 +400,7 @@ public class Character : MonoBehaviour {
             {
                 Debug.Log("Applying " + dashDamage + " damage");
                 enemy.ApplyDamage(dashDamage); // Example damage value
+                enemy.PlayEnemyHurtSFX();
             }
         }
     }
@@ -415,6 +416,7 @@ public class Character : MonoBehaviour {
             CameraShaker.Presets.ShortShake2D(positionStrength: 0.08f, rotationStrength: 0.05f);
             Debug.Log("Applying " + dashDamage + " damage");
             enemy.ApplyDamage(dashDamage); // Example damage value
+            enemy.PlayEnemyHurtSFX();
         }
     }
     #endregion

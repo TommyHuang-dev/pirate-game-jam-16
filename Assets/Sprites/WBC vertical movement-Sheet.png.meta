@@ -172,7 +172,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WBC vertical movement-Sheet_0: -5551420333534613364
+      WBC vertical movement-Sheet_1: 955453731045052243
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
