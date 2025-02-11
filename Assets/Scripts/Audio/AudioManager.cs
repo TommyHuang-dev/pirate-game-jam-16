@@ -110,7 +110,6 @@ public class AudioManager : MonoBehaviour {
             source.pitch = pitch;
             source.volume = volume;
             source.clip = clip;
-            Debug.Log("reach play");
             source.Play();
             if (entry.currentSources == null) entry.currentSources = new List<AudioSource>();
             entry.currentSources.Add(source);
