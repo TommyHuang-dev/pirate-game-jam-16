@@ -67,7 +67,6 @@ public class EventFactory : MonoBehaviour
 
     private void Update() {
         enemyCount = (spawnManager == null) ? 0 : spawnManager.enemyCount;
-        Debug.Log("Enemy count " + enemyCount);
         if (enemyCount == 0) {
             sprite.color = new Color(213, 255, 255, 255);
         }
@@ -117,7 +116,7 @@ public class EventFactory : MonoBehaviour
             PerformBasicUpgrade(stat);
         }
 
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Upgrade, 1f, 1f);
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffect.Upgrade, 1f, 0.9f);
         Instantiate(pickupEffect, transform.position, transform.rotation);
         SaveData.Instance.SaveToJson();
         player.SyncStats();

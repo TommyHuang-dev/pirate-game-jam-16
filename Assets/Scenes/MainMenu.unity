@@ -1163,6 +1163,9 @@ MonoBehaviour:
   musicSourceIntro2: {fileID: 2037657462}
   musicSource2: {fileID: 83211267}
   musicSourceOutro: {fileID: 644782761}
+  maxSFXSources: 3
+  sfxSources: []
+  sfxSourcePrefab: {fileID: 5775875769042673645, guid: 568efa4b73ded8848b1f5a06943493f3, type: 3}
   mainTheme:
   - {fileID: 8300000, guid: da224b1b7ef007c4ea02efea705e731a, type: 3}
   battle:
@@ -1181,10 +1184,28 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8da79fa8ce3e6f34aa1e5311e5584fa1, type: 3}
   FadeTime: 0
   SFX:
-  - {fileID: 8300000, guid: 43e71a5703bd08341bed30f1ecc31957, type: 3}
-  - {fileID: 8300000, guid: 7828bdc9cbb34dd4fbc0d0d977156896, type: 3}
-  - {fileID: 8300000, guid: fbbda3ed7785af0499ee47b314028822, type: 3}
-  - {fileID: 8300000, guid: 4d22db3327b80c14c940565bffaf3a5f, type: 3}
+  - sound: 0
+    instanceLimit: 5
+    sounds:
+    - {fileID: 8300000, guid: 43e71a5703bd08341bed30f1ecc31957, type: 3}
+    currentSources: []
+  - sound: 1
+    instanceLimit: 5
+    sounds:
+    - {fileID: 8300000, guid: f17fbe4a0bef0834d847f704beb29654, type: 3}
+    - {fileID: 8300000, guid: 0e5a18501ba173741945517cff465b06, type: 3}
+    currentSources: []
+  - sound: 2
+    instanceLimit: 2
+    sounds:
+    - {fileID: 8300000, guid: fbbda3ed7785af0499ee47b314028822, type: 3}
+    currentSources: []
+  - sound: 3
+    instanceLimit: 1
+    sounds:
+    - {fileID: 8300000, guid: 4d22db3327b80c14c940565bffaf3a5f, type: 3}
+    - {fileID: 8300000, guid: 4dfd1cfa7e2733544888af368f8d0e15, type: 3}
+    currentSources: []
 --- !u!4 &890155945
 Transform:
   m_ObjectHideFlags: 0

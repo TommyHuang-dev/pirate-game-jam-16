@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AudioManager : MonoBehaviour {
     public class Song {
@@ -15,6 +16,9 @@ public class AudioManager : MonoBehaviour {
     }
     public static AudioManager Instance; // Singleton audio manager, shared by all scripts
     [SerializeField] private AudioSource audioSource, musicSourceIntro1, musicSource1, musicSourceIntro2, musicSource2, musicSourceOutro;
+    public int maxSFXSources = 3;
+    public List<AudioSource> sfxSources;
+    public AudioSource sfxSourcePrefab;
 
     [Header("Scene Music")]
     [SerializeField] List<AudioClip> mainTheme, battle, evilBattle, boss, finalBoss;
@@ -24,7 +28,8 @@ public class AudioManager : MonoBehaviour {
     private bool isPlayingMusic1 = false;
 
     [Header("SFX")]
-    [SerializeField] List<AudioClip> SFX;
+    [SerializeField] List<SoundEntry> SFX;
+    [SerializeField] Dictionary<SoundEffect, SoundEntry> soundLookup;
     
 
     private void Awake() {
@@ -32,10 +37,22 @@ public class AudioManager : MonoBehaviour {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            // Create dictionary for SFX lookup
+            soundLookup = new Dictionary<SoundEffect, SoundEntry>();
+            foreach(SoundEntry entry in SFX) {
+                soundLookup[entry.sound] = entry;
+            }
+            // Create SFX audio sources
+            for (int i = 0; i < maxSFXSources; i++) {
+                AudioSource source = Instantiate(sfxSourcePrefab);
+                source.transform.parent = transform;
+                sfxSources.Add(source);
+            }
         } else {
             Destroy(gameObject);
         }
     }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         // Gross lol
@@ -56,11 +73,57 @@ public class AudioManager : MonoBehaviour {
     public void ReturnToDefault() {
         // SwapTrack(defaultAmbience);
     }
+    #region SFX
+    private void Update() {
+        if (soundLookup != null) {
+            foreach (SoundEntry soundEntry in soundLookup.Values) {
+                soundEntry.currentSources.RemoveAll(x => !x.isPlaying);
+            }
+        }
+    }
+    public void PlaySFX(SoundEffect sfx, float pitch, float volume) {
+        AudioSource source = GetAudioSource();
+        if (source == null) { return; }
 
-    public void PlaySFX(SoundEffects sfx, float pitch, float volume) {
-        audioSource.pitch = pitch;
-        audioSource.volume = volume;
-        audioSource.PlayOneShot(SFX[(int)sfx]);
+        SoundEntry entry;
+        soundLookup.TryGetValue(sfx, out entry);
+
+        if (entry == null) {
+            Debug.Log("No sound entries for " + sfx);
+            return;
+        }
+
+        // Limit the number of concurrent sounds playing. The instance limit can be modified for individual SFX in the inspector.
+        if (entry.currentSources.Count >= entry.instanceLimit) { return; }
+
+        if (entry.sounds != null && entry.sounds.Count > 0) {
+            AudioClip clip;
+            if (entry.sounds.Count == 1) {
+                clip = entry.sounds[0];
+            } else {
+                {
+                    int i = Random.Range(0, entry.sounds.Count);
+                    clip = entry.sounds[i];
+                }
+            }
+
+            source.pitch = pitch;
+            source.volume = volume;
+            source.clip = clip;
+            Debug.Log("reach play");
+            source.Play();
+            if (entry.currentSources == null) entry.currentSources = new List<AudioSource>();
+            entry.currentSources.Add(source);
+        }
+    }
+
+    public AudioSource GetAudioSource() {
+        foreach(AudioSource source in sfxSources) {
+            if (!source.isPlaying) {
+                return source;
+            }
+        }
+        return null;
     }
 
     // Play win or loss music corresponding to current level.
@@ -99,6 +162,9 @@ public class AudioManager : MonoBehaviour {
         // Schedule an ending clip to start on the next bar
         musicSourceOutro.PlayScheduled(nextBarTime);
     }
+    #endregion
+
+    #region Music
     private int GetSongIndex(int levelIndex) {
         if (levelIndex == 2 || levelIndex == 3) { // Battle
             return 1;
@@ -168,7 +234,7 @@ public class AudioManager : MonoBehaviour {
             musicSource2.Stop(); musicSource2.loop = false;
         }
     }
-
+    #endregion
     public enum BattleSongParts {
         Intro,
         Loop,
@@ -176,10 +242,18 @@ public class AudioManager : MonoBehaviour {
         Loss,
     }
 
-    public enum SoundEffects {
+    public enum SoundEffect {
         Shoot,
         EnemyHit,
         PlayerHurt,
         Upgrade
+    }
+
+    [System.Serializable]
+    public class SoundEntry {
+        public SoundEffect sound;
+        public int instanceLimit = 2;
+        public List<AudioClip> sounds;
+        public List<AudioSource> currentSources;
     }
 }
