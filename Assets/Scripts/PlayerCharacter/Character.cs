@@ -262,7 +262,7 @@ public class Character : MonoBehaviour {
     {
         var startOffset = (num - 1) * spread / 2;
 
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffect.Shoot, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
         for (int i = 0; i < num; i++)
         {
             var angleOffset = startOffset - i * spread;
@@ -409,7 +409,7 @@ public class Character : MonoBehaviour {
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
         if (enemy != null) {
             if (currentDashState == DashState.Dashing) {
-                AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+                AudioManager.Instance.PlaySFX(AudioManager.SoundEffect.EnemyHit, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
             }
         }
         if (enemy != null && enemy.isBoss) {
@@ -426,7 +426,7 @@ public class Character : MonoBehaviour {
     public void ApplyDamage(int amount) {
         if (isInvincible) { return;  }
         if (currentDashState != DashState.Dashing) {
-            AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
+            AudioManager.Instance.PlaySFX(AudioManager.SoundEffect.PlayerHurt, UnityEngine.Random.Range(0.9f, 1.2f), UnityEngine.Random.Range(0.8f, 1f));
 
             Debug.Log("Taking " + amount + " damage. HP: " + currentHealth + " -> " + (currentHealth - amount));
             currentHealth -= amount;
@@ -457,7 +457,7 @@ public class Character : MonoBehaviour {
 
     private IEnumerator Lose() {
         _effects.color = Color.red;
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.PlayerHurt, 0.7f, 1.4f);
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffect.PlayerHurt, 0.7f, 1.4f);
         AudioManager.Instance.PlayWinLoss(false, (int)_levelLoader.currentScene);
         currentState = PlayerState.NoControl;
         _collider.enabled = false;

@@ -184,7 +184,7 @@ public class Enemy : MonoBehaviour
     }
 
     public void PlayEnemyHurtSFX() {
-        AudioManager.Instance.PlaySFX(AudioManager.SoundEffects.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.05f / (float)enemyCount, 0.1f / (float)enemyCount));
+        AudioManager.Instance.PlaySFX(AudioManager.SoundEffect.EnemyHit, UnityEngine.Random.Range(0.8f, 1.3f), UnityEngine.Random.Range(0.7f, 0.8f));
     }
     // todo
     private void Die() {
